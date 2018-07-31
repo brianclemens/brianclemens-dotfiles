@@ -41,6 +41,12 @@ ln -fsT "${CONFIG}/khard/khard.conf" "${HOME}/.config/khard/khard.conf"
 ln -fsT "${CONFIG}/kitty/diff.conf" "${HOME}/.config/kitty/diff.conf"
 ln -fsT "${CONFIG}/kitty/kitty.conf" "${HOME}/.config/kitty/kitty.conf"
 
+# libinput
+ln -fsT "${CONFIG}/libinput/libinput-gestures.conf" "${HOME}/.config/libinput-gestures.conf"
+
+# mpv
+ln -fsT "${CONFIG}/mpv/mpv.conf" "${HOME}/.config/mpv/mpv.conf"
+
 # mutt
 ln -fsT "${CONFIG}/mutt/mailcap" "${HOME}/.config/mutt/mailcap"
 ln -fsT "${CONFIG}/mutt/muttrc" "${HOME}/.config/mutt/muttrc"

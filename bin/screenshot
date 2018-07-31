@@ -1,0 +1,11 @@
+#!/bin/sh
+path="${HOME}/.cache/screenshot.png"
+
+# store screenshot to cache
+notify-send -i camera -t 1250 "Screenshot" "Select area to include"
+scrot -s "${path}"
+
+# upload to 0x0.st, put url in clipboard, send notification
+url=$(curl -F"file=@${path}" https://0x0.st)
+echo ${url} | xclip -sel clip
+notify-send -i "${path}" -t 3000 "Screenshot uploaded" "${url}"

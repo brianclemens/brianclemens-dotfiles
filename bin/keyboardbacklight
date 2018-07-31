@@ -1,0 +1,46 @@
+#!/bin/sh
+
+path="/sys/class/leds/asus::kbd_backlight"
+
+max=$(cat "${path}/max_brightness")
+previous=$(cat "${path}/brightness")
+
+function commit {
+    # return error if input is not a number
+    if [[ "${1}" != [0-9]* ]]; then
+        exit 1
+    fi
+
+    # check bounds
+    if [[ "${1}" -gt "${max}" ]]; then
+        next="${max}"
+    elif [[ "${1}" -lt 0 ]]; then
+        next=0
+    else
+        next="${1}"
+    fi
+
+    # commit to sys and send notification
+    echo "${next}" >> "${path}/brightness"
+    notify-send -i keyboard -t 1250 "Keyboard backlight" "${next}"
+}
+
+case "${1}" in
+    up)
+        commit "$((${previous} + 1))"
+    ;;
+    down)
+        commit "$((${previous} - 1))"
+    ;;
+    on)
+        commit "${max}"
+    ;;
+    off)
+        commit 0
+    ;;
+    show)
+        echo "${previous}"
+    ;;
+    *)
+        commit	"${1}"
+esac
