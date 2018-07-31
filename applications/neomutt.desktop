@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=neomutt
+GenericName=Email Client
+Comment=Launches the neomutt email client
+Icon=emblem-mail
+Terminal=true
+Exec=neomutt
+MimeType=x-scheme-handler/mailto;
+Categories=ConsoleOnly;System;Network;Email;

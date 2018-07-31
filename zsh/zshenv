@@ -1,0 +1,60 @@
+# {{{ GENERAL
+export BROWSER=w3m
+export DEFAULT_USER=oda
+export EDITOR=nvim
+export LANG=en_US.UTF-8
+# }}}
+
+# {{{ DOCKER
+export DOCKER_HOST="tcp://dockmaster.tiuxo.com:2376"
+export DOCKER_TLS_VERIFY=1
+# }}}
+
+# {{{ LESS
+export LESS="-giMnRSX#3~"
+export LESSOPEN="| pygmentize -g -f terminal256 -P style=abap %s"
+export LESS_TERMCAP_mb=$'\e[0;31m'      # less start blink escape sequence
+export LESS_TERMCAP_md=$'\e[0;34m'      # less start bold escape sequence
+export LESS_TERMCAP_me=$'\e[0m'         # less end bold, blink, and underline
+export LESS_TERMCAP_se=$'\e[0m'         # less stop standout escape sequence
+export LESS_TERMCAP_so=$'\e[0;34;36m'   # less start standout escape sequence
+export LESS_TERMCAP_ue=$'\e[0m'         # less stop underline escape sequence
+export LESS_TERMCAP_us=$'\e[0;35m'      # less start underline escape sequence
+# }}}
+
+# {{{ MAKE
+export MAKEFLAGS="$MAKEFLAGS -j$(($(nproc)))"   # use all vcpus when compiling
+# }}}
+
+# {{{ PATH
+if [ -d "$HOME/bin" ] ; then
+    PATH="$HOME/bin:$PATH"
+fi
+
+if [ -d "$HOME/.gem/ruby/2.4.0/bin" ] ; then
+    PATH="$HOME/.gem/ruby/2.4.0/bin:$PATH"
+fi
+
+if [ -d "$HOME/.local/bin" ] ; then
+    PATH="$HOME/.local/bin:$PATH"
+fi
+
+if [ -d "$HOME/go/bin" ] ; then
+    PATH="$HOME/go/bin:$PATH"
+fi
+# }}}
+
+# {{{ QT
+export NNTPSERVER='snews://news.eternal-september.org:563'
+export QT_QPA_PLATFORMTHEME=gtk2
+# }}}
+
+# {{{ XDG
+export XDG_CONFIG_HOME=~/.config
+export XDG_DATA_HOME=~/.config
+# }}}
+
+# {{{ ZSH
+export COLUMNS                  # remember columns for subprocesses
+export skip_global_compinit=1   # compinit handled in zshrc
+# }}}

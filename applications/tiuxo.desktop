@@ -1,0 +1,14 @@
+[Desktop Entry]
+Version=1.0
+Name=Tiuxo
+GenericName=Tiuxo file storage
+Comment=Manage file storage
+Exec=/usr/lib/firefox/firefox -P app --new-window https://files.tiuxo.com
+Icon=seafile
+Terminal=false
+Type=Application
+#MimeType=text/html;text/xml;application/xhtml+xml;application/vnd.mozilla.xul+xml;text/mml;x-scheme-handler/http;x-scheme-handler/https;
+StartupNotify=true
+#StartupWMClass=Firefox
+Categories=Network;FileTransfer
+Keywords=web;browser;internet;

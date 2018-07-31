@@ -1,0 +1,14 @@
+[Desktop Entry]
+Version=1.0
+Name=Miniflux
+GenericName=News reader
+Comment=Read news feeds
+Exec=/usr/lib/firefox/firefox -P app --new-window https://news.tiuxo.com/unread
+Icon=org.gnome.FeedReader
+Terminal=false
+Type=Application
+#MimeType=text/html;text/xml;application/xhtml+xml;application/vnd.mozilla.xul+xml;text/mml;x-scheme-handler/http;x-scheme-handler/https;
+StartupNotify=true
+#StartupWMClass=Firefox
+Categories=Network;News
+Keywords=web;browser;internet;

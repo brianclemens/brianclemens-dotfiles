@@ -1,0 +1,22 @@
+# Tag name          ;  color
+RADIO               ; #c0c0c0
+IBARAKI             ; #c0c0c0
+CHIBA               ; #c0c0c0
+POLICE              ; #c0c0c0
+TOKYO               ; #c0c0c0
+TETRA               ; #c0c0c0
+
+# Frequency ; Name                     ; Modulation          ;  Bandwidth; Tags
+    77100000; Open University of Japan ; WFM (mono)          ;     160000; RADIO
+    78000000; BayFM                    ; WFM (mono)          ;     160000; RADIO,CHIBA
+    78600000; Fm Fuji                  ; WFM (mono)          ;     160000; RADIO,TOKYO
+    80000000; TFM                      ; WFM (mono)          ;     160000; RADIO,TOKYO
+    80700000; NHK Chiba                ; WFM (mono)          ;     160000; RADIO,CHIBA
+    81300000; J-Wave                   ; WFM (mono)          ;     160000; RADIO,TOKYO
+    82500000; NHK Tokyo                ; WFM (mono)          ;     160000; RADIO,TOKYO
+    83200000; NHK Ibaraki              ; WFM (mono)          ;     160000; RADIO,IBARAKI
+    89700000; InterFM897               ; WFM (mono)          ;     160000; RADIO,CHIBA
+    91600000; Nippon Cultural Broadcasting; WFM (mono)          ;     160000; RADIO
+    93000000; Nippon Broadcasting System; WFM (mono)          ;     160000; RADIO
+    94600000; Ibaraki Broadcast System ; WFM (mono)          ;     160000; RADIO,IBARAKI
+   381600000; Chiba Police             ; Raw I/Q             ;       2000; POLICE,TETRA

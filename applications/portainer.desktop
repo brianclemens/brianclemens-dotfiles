@@ -1,0 +1,14 @@
+[Desktop Entry]
+Version=1.0
+Name=Portainer
+GenericName=Docker manager
+Comment=Manager docker hosts
+Exec=/usr/lib/firefox/firefox -P app --new-window https://portainer.tiuxo.com
+Icon=docky
+Terminal=false
+Type=Application
+#MimeType=text/html;text/xml;application/xhtml+xml;application/vnd.mozilla.xul+xml;text/mml;x-scheme-handler/http;x-scheme-handler/https;
+StartupNotify=true
+#StartupWMClass=Firefox
+Categories=Network;System
+Keywords=web;browser;internet;

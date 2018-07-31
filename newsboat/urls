@@ -1,0 +1,78 @@
+https://www.archlinux.org/feeds/news "~Arch Linux News" "linux"
+
+http://www.nkleadershipwatch.org/feed "~North Korean Leadership Watch" "focus"
+http://www.38north.org/feed "~38 North" "focus"
+
+https://warontherocks.com/feed "~War on the Rocks"
+http://www.cyintanalysis.com/feed "~CYINT Analysis Blog"
+https://www.wired.com/category/security/feed "~WIRED Security News"
+http://www.jratcliffe.net/blog/feed "~Jerry Ratcliffe's Blog"
+http://jiox.blogspot.com/feeds/posts/default "~JIOX Intelligence Tradecraft & Analysis"
+http://securitydebrief.com/feed "~Security Debrief"
+http://sourcesandmethods.blogspot.com/feeds/posts/default "~Sources and Methods"
+
+https://20committee.com/feed "~The XX Committee" "coin"
+
+http://feeds2.feedburner.com/TheConfidentialResource "~The Confidential Resource" "crime"
+http://www.crimeanalysthotspot.com/feed "~The Crime Analyst Hotspot" "crime"
+http://crimeanalystsblog.blogspot.com/feeds/posts/default "~Crime Analyst's Blog" "crime"
+
+https://allthingscounterterrorism.com/feed "~All Thing Counter-Terrorism" "ctac"
+http://www.counter-terrorismblog.com/feed "~Center for Security and Counter-Terrorism" "ctac"
+https://counterterrorismmatters.wordpress.com/feed "~Counter-Terrorism Matters" "ctac"
+http://www.financialintegritynetwork.net/2/feed "~Financial Integrity Network" "ctac"
+
+http://dfir.org/?q=rss.xml "~Andrew Case Blog" "cyber"
+https://blog.fortinet.com/feeds/latest.xml "~Fortinet Blog" "cyber"
+https://www.lookingglasscyber.com/blog/feed "~Looking Glass Cyber" "cyber"
+https://blogs.rsa.com/feed "~RSA Blog" "cyber"
+https://www.schneier.com/blog/atom.xml "~Schneier on Security" "cyber"
+https://taosecurity.blogspot.com/feeds/posts/default "~Tao Security" "cyber"
+http://www.veracode.com/blog/feed "~Veracode Blog" "cyber"
+https://warroom.securestate.com/feed "~Securestate War Room" "cyber"
+
+http://intelligence-ethics.blogspot.com/feeds/posts/default "~Intelligence Ethics Blog" "ethics"
+https://p10.secure.hostingprod.com/@spyblog.org.uk/ssl/spyblog/index.xml "~Spy Blog" "ethics"
+http://feeds.feedburner.com/typepad/Raelynn/the_spy_who_billed_me "~The Spy Who Billed Me" "ethics"
+
+http://feeds.feedburner.com/acw "~Arms Control Wonk" "hardware"
+https://www.defensetech.org/feed "~Defensetech" "hardware"
+http://feeds.feedburner.com/typepad/rzYD "~Global Guerrillas" "hardware"
+http://www.janes.com/magazines/ihs-janes-intelligence-review/rss "~IHS Jane's Intelligence Review" "hardware"
+https://missilethreat.csis.org/feed "~CSIS Missile Defense Project" "hardware"
+
+https://www.gearthblog.com/feed "~Google Earth Blog" "imint"
+http://usgif.org/news.rss "~USGIF GEOINT Blog" "imint"
+
+http://anti-money-laundering.offshore-journals.com/feed "~Anti Money Laundering Blog" "launder"
+https://ihatemoneylaundering.wordpress.com/feed "~I Hate Money Laundering" "launder"
+
+https://ewrossblog.com/feed "~Ed's Blog" "milint"
+http://op-for.com/feed "~Op For" "milint"
+http://feeds.feedburner.com/EebenBarlowsMilitaryAndSecurityBlog "~Eeben Barlow's Military Blog" "milint"
+
+https://intelligenceobserver.com/feed "~Intelligence Observer" "osint"
+https://publicintelligence.net/feed "~Public Intelligence" "osint"
+
+http://www.overtaction.org/feed "~Overt Action" "security"
+http://securityaffairs.co/wordpress/feed "~Security Affairs" "security"
+https://subrosapodcast.wordpress.com/feed "~Sub Rosa" "security"
+
+http://electrospaces.blogspot.com/feeds/posts/default "~Electrospaces" "sigint"
+https://rijmenants.blogspot.com/feeds/posts/default "~SIGINT Chatter" "sigint"
+
+http://feeds.feedburner.com/Blackfive "~BlackFive" "tactical"
+https://warisboring.com/feed "~War is Boring" "tactical"
+https://sofrep.com/feed "~SOFREP" "tactical"
+http://www.itstactical.com/feed "~ITS Tactical" "tactical"
+
+http://advat.blogspot.com/feeds/posts/default "~Advanced Analytic Techniques" "tradecraft"
+https://uz.wordpress.com/tag/intelligence-tradecraft/feed "~Intelligence Tradecraft" "tradecraft"
+http://feeds.feedburner.com/RedTeamJournal "~Red Team Journal" "tradecraft"
+
+http://blogsofwar.com/rss "~Blogs of War" "war"
+http://smallwarsjournal.com/rss/blogs "~Small Wars Journal" "war"
+
+https://intelnews.org/feed "~intelNews" "intel"
+http://www.matthewaid.com/rss "~Matthew Aid" "intel"
+http://mikerogers.com/feed "~Mike Rogers" "intel"

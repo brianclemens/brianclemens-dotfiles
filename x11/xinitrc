@@ -1,0 +1,81 @@
+# load xresources
+[[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
+
+# Japanese input
+export GTK_IM_MODULE='uim'
+export QT_IM_MODULE='uim'
+uim-xim &
+export XMODIFIERS='@im=uim'
+
+# X11 Bell
+pactl upload-sample /usr/share/sounds/freedesktop/stereo/bell.oga x11-bell &
+pactl load-module module-x11-bell sample=x11-bell display=$DISPLAY &
+
+# LED settings
+sudo diodes &
+
+# screen lock
+# xss-lock -- i3lock -n -t -i ~/dotfiles/wallpaper/tweed.png &
+
+# keyring
+dbus-update-activation-environment --systemd DISPLAY &
+eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh) &
+export SSH_AUTH_SOCK &
+
+# automatic device mounting
+devmon --sync --exec-on-drive "notify-send --icon=media-removable \"Volume mounted\" \"%l on %d\"" --exec-on-drive "urxvtc -e ranger %d" --exec-on-disc "notify-send --icon=media-optical \"Volume mounted\" \"%l on %d\"" --exec-on-disc "urxvtc -e ranger %d" &
+
+# use gtk widgets
+export QT_STYLE_OVERRIDE=GTK+
+
+# java fixes
+export _JAVA_AWT_WM_NONREPARENTING=1
+export _JAVA_OPTIONS='-Dsun.java2d.opengl=true'
+
+# screen temperature daemon
+pgrep redshift &> /dev/null || redshift &> /dev/null &
+
+# set background
+~/.fehbg &
+
+# terminal daemon (kitty has none)
+# urxvtd -q -f -o &
+
+# compositors
+compton &
+
+# notification daemon
+dunst &
+
+# hide cursor
+unclutter &
+
+# configure input devices
+xinput --set-prop 'ETPS/2 Elantech Touchpad' "libinput Tapping Enabled" 1 &
+xinput --set-prop 'ETPS/2 Elantech Touchpad' "libinput Natural Scrolling Enabled" 1 &
+xinput --set-prop 'ETPS/2 Elantech Touchpad' "libinput Accel Speed" 0.4 &
+
+xinput --set-prop 'Asus TouchPad' "libinput Tapping Enabled" 1 &
+xinput --set-prop 'Asus TouchPad' "libinput Natural Scrolling Enabled" 1 &
+xinput --set-prop 'Asus Touchpad' "libinput Accel Speed" 0.4 &
+
+# disable non-keyboards (moved to keybind)
+# xinput disable "ETPS/2 Elantech Touchpad" &
+# xinput disable "Atmel Atmel maXTouch Digitizer" &
+
+# disable display power management
+xset -dpms &
+xset s off &
+
+# use unix style control key
+xmodmap ~/.xmodmap &
+
+# static caches
+ln -sf ~/.config/roficache ~/.cache/rofi3.druncache
+ln -sf ~/.config/evolutioncache ~/.cache/evolution
+
+# welcome message
+notify-send -i /usr/share/icons/Paper/48x48@2x/places/archlinux.png "welcome, ${USER}" "$(fortune issa-haiku)" &
+
+# start session
+exec bspwm

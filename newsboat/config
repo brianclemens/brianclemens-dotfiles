@@ -1,0 +1,32 @@
+# auto-reload yes
+browser w3m %u
+html-renderer "w3m -dump -T text/html"
+cleanup-on-quit yes
+download-path "~/downloads/podcasts"
+feed-sort-order firsttag
+max-downloads 4
+notify-always yes
+notify-format "newsbeuter: %n unread articles within %f unread feeds"
+notify-program notify-send
+player mpv
+# refresh-on-startup yes
+reload-time 20
+reload-threads 2
+#show-read-articles no
+#show-read-feeds no
+
+bind-key "SPACE" open
+
+articlelist-format "%4i %f %D  %?T?|%-17T| ?%t"
+
+color background color223 color235
+color info color248 color239
+color article color223 color235
+color listnormal color246 color235
+color listfocus color246 color237
+color listnormal_unread color223 color235
+color listfocus_unread color223 color237
+highlight article "^Feed:.*|^Title:.*|^Author:.*|^Link:.*|^Date:.*" color246 default bold
+#highlight article "\\[[0-9][0-9]*\\]" color66 default bold
+#highlight article "\\[image [0-9][0-9]*\\]" color109 default bold
+#highlight article "\\[embedded flash: [0-9][0-9]*\\]" color66 default bold

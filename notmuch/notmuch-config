@@ -1,0 +1,20 @@
+[database]
+path=/home/oda/mail
+
+[user]
+name=Brian Clemens
+primary_email=brian@teknik.io
+other_email=brianfclemens@gmail.com;brian.f.clemens.mil@mail.mil
+
+[new]
+tags=unread;inbox;
+ignore=calendar;contacts;status
+
+[search]
+exclude_tags=
+
+[maildir]
+synchronize_flags=true
+
+[crypto]
+gpg_path=gpg

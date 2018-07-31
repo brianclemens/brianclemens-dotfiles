@@ -1,0 +1,311 @@
+; ########################################
+; # general settings
+; ########################################
+
+[colors]
+    aqua = #689d6a
+    background = #ff1d2021
+    blue = #458588
+    foreground = #a0ebdbb2
+    foreground-alt = #90665c54
+    green = #98971a
+    orange = #d65d0e
+    purple = #b16286
+    red = #cc241d
+    white = #fbf1c7
+    yellow = #d79921
+
+[global/wm]
+    margin-bottom = 4
+
+[settings]
+    screenchange-reload = true
+
+
+; ########################################
+; # bar definitions
+; ########################################
+
+[bar/default]
+    fixed-center = false
+    height = 28
+    offset-x = 33.33%
+    offset-y = 0
+    radius-bottom = 0
+    radius-top = 0
+    width = 33.33%
+
+    background = ${colors.background}
+    foreground = ${colors.foreground}
+
+    padding-left = 1
+    padding-right = 0
+
+    module-margin-left = 1
+    module-margin-right = 1
+
+    font-0 = Source Sans Pro:weight=semibold:pixelsize=16;3
+    font-1 = Font Awesome 5 Free Solid:pixelsize=14;3
+    font-2 = IPAGothic:pixelsize=15;3
+
+    click-middle = polybar-msg cmd restart
+    enable-ipc = true
+    wm-restack = bspwm
+
+
+[bar/kodama]
+    offset-x = 25%
+    width = 50%
+    inherit = bar/default
+    modules-left = mpd
+    modules-right = wifi_kodama bspwm memory temp_kodama volume bat_kodama date
+
+[bar/sarang]
+    inherit = bar/default
+    modules-left = mpd
+    modules-right = wifi_sarang bspwm memory temp_sarang volume bat_sarang date
+
+
+; ########################################
+; # module settings
+; ########################################
+
+[module/battery]
+    type = internal/battery
+    poll-interval = 30
+
+    format-full = <label-full>
+    format-full-foreground = ${colors.green}
+    label-full = ""
+
+    format-charging = <label-charging>
+    format-charging-foreground = ${colors.yellow}
+    label-charging = ""
+
+    format-discharging = <ramp-capacity>
+    label-discharging = %time%
+    time-format = %H:%M
+
+    ramp-capacity-0 = 
+    ramp-capacity-0-foreground = ${colors.red}
+    ramp-capacity-1 = 
+    ramp-capacity-1-foreground = ${colors.yellow}
+    ramp-capacity-2 = 
+    ramp-capacity-2-foreground = ${colors.yellow}
+    ramp-capacity-3 = 
+    ramp-capacity-3-foreground = ${colors.green}
+    ramp-capacity-4 = 
+    ramp-capacity-4-foreground = ${colors.green}
+
+
+[module/bat_kodama]
+    inherit = module/battery
+    battery = BATC
+    adapter = ADP1
+    full-at = 99
+
+
+[module/bat_sarang]
+    inherit = module/battery
+    battery = BAT0
+    adapter = AC0
+    full-at = 90
+
+
+[module/bspwm]
+    type = internal/bspwm
+    format = <label-mode>
+    label-foreground = ${colors.green}
+
+    label-monocle = ""
+    label-monocle-foreground = ${self.label-foreground}
+    label-monocle-padding = 1
+
+#    label-tiled = ""
+#    label-tiled-foreground = ${self.label-foreground}
+#    label-tiled-padding = 1
+
+#    label-fullscreen = ""
+#    label-fullscreen-foreground = ${self.label-foreground}
+#    label-fullscreen-padding = 1
+
+#    label-floating = ""
+#    label-floating-foreground = ${self.label-foreground}
+#    label-floating-padding = 1
+
+    label-pseudotiled = ""
+    label-pseudotiled-foreground = ${self.label-foreground}
+    label-pseudotiled-padding = 1
+
+    label-locked = ""
+    label-locked-foreground = ${self.label-foreground}
+    label-locked-padding = 1
+
+    label-sticky = ""
+    label-sticky-foreground = ${self.label-foreground}
+    label-sticky-padding = 1
+
+    label-private = ""
+    label-private-foreground = ${self.label-foreground}
+    label-private-padding = 1
+
+[module/date]
+    type = internal/date
+    interval = 5
+    format-foreground = ${colors.background}
+    format-background = ${colors.foreground}
+    format-padding = 2
+    label = %time%
+    time = %k:%M
+    time-alt =  "%A, %B %e"
+
+
+[module/memory]
+    type = internal/memory
+    format = <ramp-used>
+    interval = 2
+    label = %percentage_used%
+
+
+    ramp-used-0 = 
+    ramp-used-0-foreground = ${colors.green}
+    ramp-used-1 = 
+    ramp-used-1-foreground = ${colors.green}
+    ramp-used-2 = 
+    ramp-used-2-foreground = ${colors.green}
+    ramp-used-3 = 
+    ramp-used-3-foreground = ${colors.yellow}
+    ramp-used-4 = 
+    ramp-used-4-foreground = ${colors.red}
+
+[module/mpd]
+    type = internal/mpd
+    host = 127.0.0.1
+    port = 6600
+    interval = 1
+    click-left = xdotool set_desktop 10
+    format-online = <label-song>
+    format-offline = "mpd offline"
+
+    format-offline-prefix = ""
+    format-offline-prefix-foreground = ${colors.red}
+    format-offline-prefix-padding = 2
+
+    format-paused-prefix = ""
+    format-paused-prefix-foreground = ${colors.yellow}
+    format-paused-prefix-padding = 2
+
+    format-playing-prefix = ""
+    format-playing-prefix-foreground = ${colors.green}
+    format-playing-prefix-padding = 2
+
+    format-stopped-prefix = ""
+    format-stopped-prefix-foreground = ${colors.red}
+    format-stopped-prefix-padding = 2
+
+[module/temperature]
+    interval = 2
+    type = internal/temperature
+
+    format = <ramp>
+
+    format-warn = <ramp> <label-warn>
+    label-warn = %temperature-c%
+    label-warn-foreground = ${colors.red}
+
+    ramp-0 = 
+    ramp-0-foreground = ${colors.green}
+    ramp-1 = 
+    ramp-1-foreground = ${colors.green}
+    ramp-2 = 
+    ramp-2-foreground = ${colors.green}
+    ramp-3 = 
+    ramp-3-foreground = ${colors.green}
+    ramp-4 = 
+    ramp-4-foreground = ${colors.green}
+    ramp-5 = 
+    ramp-5-foreground = ${colors.green}
+    ramp-6 = 
+    ramp-6-foreground = ${colors.yellow}
+    ramp-7 = 
+    ramp-7-foreground = ${colors.red}
+
+
+[module/temp_kodama]
+    inherit = module/temperature
+    thermal-zone = 1
+    warn-temperature = 75
+
+
+[module/temp_sarang]
+    inherit = module/temperature
+    thermal-zone = 3
+    warn-temperature = 75
+
+
+[module/volume]
+    type = internal/volume
+
+    format-volume = <ramp-volume>
+    label-volume = %percentage%
+    label-muted = 
+    label-muted-foreground = ${colors.orange}
+
+    ramp-volume-0 = 
+    ramp-volume-0-foreground = ${colors.red}
+    ramp-volume-1 = 
+    ramp-volume-1-foreground = ${colors.yellow}
+    ramp-volume-2 = 
+    ramp-volume-2-foreground = ${colors.green}
+
+[module/wifi]
+    type = internal/network
+    interval = 6
+    ping-interval = 6
+
+    format-connected = <ramp-signal> <label-connected>
+    format-packetloss = <animation-packetloss> <label-connected>
+    label-connected = %essid%
+
+    ramp-signal-0 = 
+    ramp-signal-0-foreground = ${colors.red}
+    ramp-signal-1 = 
+    ramp-signal-1-foreground = ${colors.yellow}
+    ramp-signal-2 = 
+    ramp-signal-2-foreground = ${colors.green}
+
+    animation-packetloss-0 = 
+    animation-packetloss-0-foreground = ${colors.yellow}
+    animation-packetloss-1 = 
+    animation-packetloss-1-foreground = ${colors.background}
+    animation-packetloss-framerate = 1000
+
+
+[module/wifi_kodama]
+    inherit = module/wifi
+    interface = wlan0
+
+
+[module/wifi_sarang]
+    inherit = module/wifi
+    interface = wlp2s0
+
+
+[module/xbacklight]
+    type = internal/xbacklight
+
+    format = <ramp> <label>
+    label = %percentage%
+
+    ramp-0 = 
+    ramp-0-foreground = ${colors.red}
+    ramp-1 = 
+    ramp-1-foreground = ${colors.yellow}
+    ramp-2 = 
+    ramp-2-foreground = ${colors.yellow}
+    ramp-3 = 
+    ramp-3-foreground = ${colors.green}
+
+
+[module/xwindow]
+    type = internal/xwindow

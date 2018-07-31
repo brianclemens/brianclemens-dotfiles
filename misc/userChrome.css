@@ -1,0 +1,14 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+#TabsToolbar,
+#PersonalToolbar,
+#BookmarksToolbar,
+#MenuToolbar,
+#tabbrowser-tabs,
+#nav-bar,
+#TabsToolbar { display: none !important; }
+#content browser{
+  margin-right:-8px!important;
+  margin-bottom:0px!important;
+  overflow-y:hidden;
+  overflow-x:hidden;
+}

@@ -1,0 +1,18 @@
+directory: ~/music
+library: ~/music/library.db
+
+import:
+    move: yes
+
+plugins: chroma lastgenre fetchart embedart random scrub
+
+fetchart:
+    sources: coverart amazon albumart wikipedia fanarttv filesystem google
+    maxwidth: 512
+    enforce_ratio: yes
+
+embedart:
+    maxwidth: 256
+
+chroma:
+    auto: yes

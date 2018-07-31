@@ -1,0 +1,43 @@
+[calendars]
+
+[[personal]]
+path = ~/mail/calendar/personal/0e98481b-0f03-4ad3-8e38-f3cf7dba8697
+type = calendar
+color = dark green
+
+[[task_due]]
+path = ~/mail/calendar/task_due/d22ef874-2570-41c5-9c0f-c008c83b3d1a
+type = calendar
+color = dark red
+
+[[task_waiting]]
+path = ~/mail/calendar/task_waiting/061608a9-d0e5-426f-9716-95f38a1ffe79
+type = calendar
+color = dark red
+
+[[birthdays]]
+path = ~/mail/contacts/deacada0-0217-469c-9f51-da6936ffdee8
+type = birthdays
+color = dark magenta
+
+[[holidays]]
+path = ~/mail/calendar/holidays/114b8e03-4cab-4f9d-9f2d-2c8f6d6a06b4
+type = calendar
+color = dark blue
+
+[default]
+default_calendar = personal
+highlight_event_days = true
+print_new = event
+show_all_days = false
+timedelta = 7d
+
+[view]
+frame = top
+
+[locale]
+timeformat = %H:%M
+dateformat = %d/%m/%Y
+longdateformat = %d/%m/%Y
+datetimeformat = %d/%m/%Y %H:%M
+longdatetimeformat = %d/%m/%Y %H:%M
