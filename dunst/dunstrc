@@ -159,7 +159,7 @@
     max_icon_size = 128
 
     # Paths to default icons.
-    icon_folders = /usr/share/icons/Paper/512x512/status/:/usr/share/icons/Paper/512x512/devices/:/usr/share/icons/Paper/512x512/apps:/usr/share/icons/Paper/512x512/categories:/usr/share/icons/Paper/512x512/emblems
+    icon_folders = /usr/share/icons/Paper/48x48@2x/status/:/usr/share/icons/Paper/48x48@2x/devices/:/usr/share/icons/Paper/48x48@2x/apps:/usr/share/icons/Paper/48x48@2x/categories:/usr/share/icons/Paper/48x48@2x/emblems
 
     ### History ###
 

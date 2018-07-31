@@ -1,11 +1,12 @@
 # load xresources
 [[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
 
-# Japanese input
-export GTK_IM_MODULE='uim'
-export QT_IM_MODULE='uim'
-uim-xim &
-export XMODIFIERS='@im=uim'
+# Japanese input (disabled for troubleshooting)
+# export GTK_IM_MODULE='fcitx'
+# export QT_IM_MODULE='fcitx'
+# export XMODIFIERS='@im=fcitx'
+# fcitx &
+xmodmap .Xmodmap &
 
 # X11 Bell
 pactl upload-sample /usr/share/sounds/freedesktop/stereo/bell.oga x11-bell &
@@ -32,16 +33,10 @@ export QT_STYLE_OVERRIDE=GTK+
 export _JAVA_AWT_WM_NONREPARENTING=1
 export _JAVA_OPTIONS='-Dsun.java2d.opengl=true'
 
-# screen temperature daemon
-pgrep redshift &> /dev/null || redshift &> /dev/null &
-
 # set background
 ~/.fehbg &
 
-# terminal daemon (kitty has none)
-# urxvtd -q -f -o &
-
-# compositors
+# compositor
 compton &
 
 # notification daemon
@@ -59,6 +54,9 @@ xinput --set-prop 'Asus TouchPad' "libinput Tapping Enabled" 1 &
 xinput --set-prop 'Asus TouchPad' "libinput Natural Scrolling Enabled" 1 &
 xinput --set-prop 'Asus Touchpad' "libinput Accel Speed" 0.4 &
 
+# gestures daemon
+libinput-gestures &
+
 # disable non-keyboards (moved to keybind)
 # xinput disable "ETPS/2 Elantech Touchpad" &
 # xinput disable "Atmel Atmel maXTouch Digitizer" &
@@ -66,9 +64,6 @@ xinput --set-prop 'Asus Touchpad' "libinput Accel Speed" 0.4 &
 # disable display power management
 xset -dpms &
 xset s off &
-
-# use unix style control key
-xmodmap ~/.xmodmap &
 
 # static caches
 ln -sf ~/.config/roficache ~/.cache/rofi3.druncache

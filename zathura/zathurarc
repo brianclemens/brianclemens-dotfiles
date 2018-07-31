@@ -1,32 +1,32 @@
 set font                        "Source Code Pro 16"
-set default-bg                  "#282828"
+set default-bg                  "#1d2021"
 set default-fg                  "#ebdbb2"
 
 set statusbar-fg                "#ebdbb2"
-set statusbar-bg                "#282828"
+set statusbar-bg                "#1d2021"
 
-set inputbar-bg                 "#282828"
+set inputbar-bg                 "#1d2021"
 set inputbar-fg                 "#ebdbb2"
 
 set notification-error-bg       "#657056"
-set notification-error-fg       "#282828"
+set notification-error-fg       "#1d2021"
 
 set notification-warning-bg     "#4f473a"
-set notification-warning-fg     "#282828"
+set notification-warning-fg     "#1d2021"
 
-set highlight-color             "#282828"
+set highlight-color             "#1d2021"
 set highlight-active-color      "#ebdbb2"
 
-set completion-highlight-fg     "#282828"
+set completion-highlight-fg     "#1d2021"
 set completion-highlight-bg     "#458588"
 
-set completion-bg               "#282828"
+set completion-bg               "#1d2021"
 set completion-fg               "#ebdbb2"
 
-set notification-bg             "#282828"
+set notification-bg             "#1d2021"
 set notification-fg             "#4c544f"
 
-set recolor-lightcolor          "#282828"
+set recolor-lightcolor          "#1d2021"
 set recolor-darkcolor           "#ebdbb2"
 set recolor                     "true"
 
