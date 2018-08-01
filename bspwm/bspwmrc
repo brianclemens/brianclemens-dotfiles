@@ -1,7 +1,4 @@
 #! /bin/sh
-
-sxhkd &
-
 bspc monitor -d I II III IV V VI VII VIII IX X
 
 bspc config border_width            6
@@ -18,6 +15,7 @@ bspc config presel_feedback_color   "#3c3836"
 
 bspc rule -a feh state=floating
 bspc rule -a Gimp desktop='^8'
+bspc rule -a quick_terminal state=floating
 
 if [[ $(hostname) == 'kodama' ]]; then
     polybar kodama &

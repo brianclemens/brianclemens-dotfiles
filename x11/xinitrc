@@ -1,76 +1,69 @@
+# {{{ display
+# set background
+~/.fehbg &
+
+# compositor daemon
+compton &
+
+# notification daemon
+dunst &
+
+# disable display power management
+xset -dpms &
+xset s off &
+
 # load xresources
 [[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
+# }}}
 
-# Japanese input (disabled for troubleshooting)
+# {{{ keyboard and mouse
+# unix style control key (swap caps lock for control)
+xmodmap .Xmodmap &
+
+# configure touchpad (sarang)
+xinput --set-prop 'ETPS/2 Elantech Touchpad' "libinput Tapping Enabled" 1 &
+xinput --set-prop 'ETPS/2 Elantech Touchpad' "libinput Natural Scrolling Enabled" 1 &
+xinput --set-prop 'ETPS/2 Elantech Touchpad' "libinput Accel Speed" 0.4 &
+
+# configure touchpad (kodama)
+xinput --set-prop 'Asus TouchPad' "libinput Tapping Enabled" 1 &
+xinput --set-prop 'Asus TouchPad' "libinput Natural Scrolling Enabled" 1 &
+xinput --set-prop 'Asus Touchpad' "libinput Accel Speed" 0.4 &
+
+# cursor hiding daemon
+unclutter &
+# }}}
+
+# {{{ input daemons
+# hotkeys
+sxhkd &
+
+# touchpad gestures
+libinput-gestures &
+
+# Japanese input
 # export GTK_IM_MODULE='fcitx'
 # export QT_IM_MODULE='fcitx'
 # export XMODIFIERS='@im=fcitx'
 # fcitx &
-xmodmap .Xmodmap &
+# }}}
 
-# X11 Bell
+# bell
 pactl upload-sample /usr/share/sounds/freedesktop/stereo/bell.oga x11-bell &
 pactl load-module module-x11-bell sample=x11-bell display=$DISPLAY &
 
-# LED settings
+# use the capslock led for network activity
 sudo diodes &
 
-# screen lock
-# xss-lock -- i3lock -n -t -i ~/dotfiles/wallpaper/tweed.png &
+# device mounting
+devmon --sync --exec-on-drive "notify-send --icon=media-removable \"Volume mounted\" \"%l on %d\"" --exec-on-drive "urxvtc -e ranger %d" --exec-on-disc "notify-send --icon=media-optical \"Volume mounted\" \"%l on %d\"" --exec-on-disc "urxvtc -e ranger %d" &
 
 # keyring
 dbus-update-activation-environment --systemd DISPLAY &
 eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh) &
 export SSH_AUTH_SOCK &
 
-# automatic device mounting
-devmon --sync --exec-on-drive "notify-send --icon=media-removable \"Volume mounted\" \"%l on %d\"" --exec-on-drive "urxvtc -e ranger %d" --exec-on-disc "notify-send --icon=media-optical \"Volume mounted\" \"%l on %d\"" --exec-on-disc "urxvtc -e ranger %d" &
-
-# use gtk widgets
-export QT_STYLE_OVERRIDE=GTK+
-
-# java fixes
-export _JAVA_AWT_WM_NONREPARENTING=1
-export _JAVA_OPTIONS='-Dsun.java2d.opengl=true'
-
-# set background
-~/.fehbg &
-
-# compositor
-compton &
-
-# notification daemon
-dunst &
-
-# hide cursor
-unclutter &
-
-# configure input devices
-xinput --set-prop 'ETPS/2 Elantech Touchpad' "libinput Tapping Enabled" 1 &
-xinput --set-prop 'ETPS/2 Elantech Touchpad' "libinput Natural Scrolling Enabled" 1 &
-xinput --set-prop 'ETPS/2 Elantech Touchpad' "libinput Accel Speed" 0.4 &
-
-xinput --set-prop 'Asus TouchPad' "libinput Tapping Enabled" 1 &
-xinput --set-prop 'Asus TouchPad' "libinput Natural Scrolling Enabled" 1 &
-xinput --set-prop 'Asus Touchpad' "libinput Accel Speed" 0.4 &
-
-# gestures daemon
-libinput-gestures &
-
-# disable non-keyboards (moved to keybind)
-# xinput disable "ETPS/2 Elantech Touchpad" &
-# xinput disable "Atmel Atmel maXTouch Digitizer" &
-
-# disable display power management
-xset -dpms &
-xset s off &
-
-# static caches
-ln -sf ~/.config/roficache ~/.cache/rofi3.druncache
-ln -sf ~/.config/evolutioncache ~/.cache/evolution
-
 # welcome message
-notify-send -i /usr/share/icons/Paper/48x48@2x/places/archlinux.png "welcome, ${USER}" "$(fortune issa-haiku)" &
+notify-send -i /usr/share/icons/Paper/48x48@2x/places/archlinux.png "welcome, ${USER}" "$(fortune ${HOME}/.config/haikus)" &
 
-# start session
 exec bspwm

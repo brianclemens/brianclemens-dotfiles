@@ -1,4 +1,4 @@
-# toggle trackpad
+# toggle touchpad
 XF86TouchpadToggle
     ~/bin/toggletouchpad
 
@@ -22,12 +22,9 @@ super + shift + Return
 super + space
     rofi -show combi
 
+# vim
 super + v
     kitty --single-instance -e nvim
-
-# password manager
-super + P
-    rofipass
 
 # file manager
 super + e
@@ -62,7 +59,7 @@ XF86KbdBrightness{Down,Up}
 
 # task manager
 XF86Launch6
-    kitty --single-instance -e htop
+    kitty --single-instance --class quick_terminal -e htop
 
 # mpd
 super + bracket{left,right}

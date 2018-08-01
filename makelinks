@@ -96,5 +96,6 @@ ln -fsT "${CONFIG}/zathura/zathurarc" "${HOME}/.config/zathura/zathurarc"
 
 # zsh
 ln -fsT "${CONFIG}/zsh/zshenv" "${HOME}/.zshenv"
-ln -fsT "${CONFIG}/zsh/zshrc" "${HOME}/.zshrc"
+ln -fsT "${CONFIG}/zsh/zlogin" "${HOME}/.zlogin"
 ln -fsT "${CONFIG}/zsh/zprofile" "${HOME}/.zprofile"
+ln -fsT "${CONFIG}/zsh/zshrc" "${HOME}/.zshrc"

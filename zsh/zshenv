@@ -1,38 +1,40 @@
-# {{{ GENERAL
+# {{{ general
 export BROWSER=w3m
 export DEFAULT_USER=oda
 export EDITOR=nvim
 export LANG=en_US.UTF-8
 # }}}
 
-# {{{ DOCKER
+# {{{ docker
 export DOCKER_HOST="tcp://dockmaster.tiuxo.com:2376"
 export DOCKER_TLS_VERIFY=1
 # }}}
 
-# {{{ LESS
-export LESS="-giMnRSX#3~"
-export LESSOPEN="| pygmentize -g -f terminal256 -P style=abap %s"
-export LESS_TERMCAP_mb=$'\e[0;31m'      # less start blink escape sequence
-export LESS_TERMCAP_md=$'\e[0;34m'      # less start bold escape sequence
-export LESS_TERMCAP_me=$'\e[0m'         # less end bold, blink, and underline
-export LESS_TERMCAP_se=$'\e[0m'         # less stop standout escape sequence
-export LESS_TERMCAP_so=$'\e[0;34;36m'   # less start standout escape sequence
-export LESS_TERMCAP_ue=$'\e[0m'         # less stop underline escape sequence
-export LESS_TERMCAP_us=$'\e[0;35m'      # less start underline escape sequence
+# {{{ java
+# fix java glitches in bspwm
+export _JAVA_AWT_WM_NONREPARENTING=1
+export _JAVA_OPTIONS='-Dsun.java2d.opengl=true'
 # }}}
 
-# {{{ MAKE
+# {{{ less
+export LESS="-giMnRSX#3~"
+export LESSOPEN="| pygmentize -g -f terminal256 -P style=abap %s"
+export LESS_TERMCAP_mb=$'\e[0;31m'      # start blink escape sequence
+export LESS_TERMCAP_md=$'\e[0;34m'      # start bold escape sequence
+export LESS_TERMCAP_me=$'\e[0m'         # end bold, blink, and underline
+export LESS_TERMCAP_se=$'\e[0m'         # stop standout escape sequence
+export LESS_TERMCAP_so=$'\e[0;34;36m'   # start standout escape sequence
+export LESS_TERMCAP_ue=$'\e[0m'         # stop underline escape sequence
+export LESS_TERMCAP_us=$'\e[0;35m'      # start underline escape sequence
+# }}}
+
+# {{{ makeflags
 export MAKEFLAGS="$MAKEFLAGS -j$(($(nproc)))"   # use all vcpus when compiling
 # }}}
 
-# {{{ PATH
+# {{{ path
 if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
-fi
-
-if [ -d "$HOME/.gem/ruby/2.4.0/bin" ] ; then
-    PATH="$HOME/.gem/ruby/2.4.0/bin:$PATH"
 fi
 
 if [ -d "$HOME/.local/bin" ] ; then
@@ -44,17 +46,18 @@ if [ -d "$HOME/go/bin" ] ; then
 fi
 # }}}
 
-# {{{ QT
-export NNTPSERVER='snews://news.eternal-september.org:563'
+# {{{ qt
+# use gtk styles where possible
 export QT_QPA_PLATFORMTHEME=gtk2
+export QT_STYLE_OVERRIDE=GTK+
 # }}}
 
-# {{{ XDG
+# {{{ xdg
 export XDG_CONFIG_HOME=~/.config
 export XDG_DATA_HOME=~/.config
 # }}}
 
-# {{{ ZSH
+# {{{ zsh
 export COLUMNS                  # remember columns for subprocesses
 export skip_global_compinit=1   # compinit handled in zshrc
 # }}}
