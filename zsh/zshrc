@@ -26,7 +26,7 @@ function extract() {
             *.tar)       tar xvf $1      ;;
             *.tbz2)      tar xvjf $1     ;;
             *.tgz)       tar xvzf $1     ;;
-            *.zip)       unzip $1        ;;
+            *.zip)       7z x $1         ;;
             *.Z)         uncompress $1   ;;
             *.7z)        7z x $1         ;;
             *)           echo "'$1' cannot be extracted via >extract<" ;;
@@ -46,8 +46,8 @@ alias testpowerline='echo "\ue0b0 \u00b1 \ue0a0 \u27a6 \u2718 \u26a1 \u2699"'
 #   }}}
 
 #   {{{ WEB SERVICES
-0x0() { curl -F"file=@$1" https://0x0.st; }             # temp upload
-cheatsheet() { curl cheat.sh/$1; }                      # get command cheatsheet
+0x0() { curl -F"file=@$1" https://0x0.st; }             # temporary upload
+cheatsheet() { curl cheat.sh/$1; }                      # command cheatsheet
 qrcode() { echo $@ | curl -F-=\<- qrenco.de; }          # print qrcode
 alias porn=' mpv "http://www.pornhub.com/random"'       # ayy lmao
 alias wanip='dig +short myip.opendns.com @resolver1.opendns.com'
@@ -56,9 +56,11 @@ alias weatherforecast='curl -s wttr.in/~白井市 | head -37 | tail -30'
 #   }}}
 
 alias ap='sudo create_ap --config ~/.config/create_ap.conf' # spawn wifi spot
+alias axel='axel -a -n 2 -T 10 -U "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36" -v'
 alias bm='bmon -p wlp0s29u1u2,wlp0s29u1u1,wlp2s0,ap0 -o "curses:fgchar=S;bgchar=.;nchar=N;uchar=?;details"'
 alias d='kitty +kitten diff'                            # fast diff
 alias dc='docker-compose'                               # docker
+alias feh='feh --scale-down'                            # feh fit photo
 alias kal='khal interactive'                            # calendar
 alias ic='kitty +kitten icat --align left'              # image cat
 alias ip='ip -c'                                        # colorize ip
@@ -69,10 +71,11 @@ alias grep='grep --color=auto'                          # colorize grep
 alias mutt='neomutt'                                    # neomutt
 # alias ncmpcpp='ncmpcpp --screen visualizer --slave-screen media_library'
 alias pactree='pactree --color'         # colorize pactree
-alias 死んで='systemctl poweroff'       # great for shitposting
+alias ping='ping -c 4'                  # don't ping forever
 alias tree='tree -C'                    # colorize tree
 alias vi='nvim'; alias vim='nvim'       # use nvim where vi or vim is called
 alias vd='nvim -d'                      # use nvim when diffing
+alias zeph='Xephyr :5 & sleep 1 ; DISPLAY=:5 awesome'   # xephyr window
 
 # }}}
 

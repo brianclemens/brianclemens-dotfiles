@@ -4,10 +4,11 @@
 
 [colors]
     aqua = #689d6a
-    background = #ff1d2021
+    background = #1d2021
+    background-alt = #928374
     blue = #458588
-    foreground = #a0ebdbb2
-    foreground-alt = #90665c54
+    foreground = #bdae93
+    foreground-alt = #665c54
     green = #98971a
     orange = #d65d0e
     purple = #b16286
@@ -27,22 +28,22 @@
 ; ########################################
 
 [bar/default]
-    fixed-center = false
+    fixed-center = true
     height = 28
-    offset-x = 33.33%
+    offset-x = 0
     offset-y = 0
     radius-bottom = 0
     radius-top = 0
-    width = 33.33%
+    width = 100%
 
     background = ${colors.background}
     foreground = ${colors.foreground}
 
-    padding-left = 1
-    padding-right = 0
+    padding-left = 3
+    padding-right = 3
 
-    module-margin-left = 1
-    module-margin-right = 1
+    module-margin-left = 0
+    module-margin-right = 3
 
     font-0 = Source Sans Pro:weight=semibold:pixelsize=16;3
     font-1 = Font Awesome 5 Free Solid:pixelsize=14;3
@@ -53,17 +54,19 @@
     wm-restack = bspwm
 
 
-[bar/kodama]
+[bar/samum]
     offset-x = 25%
     width = 50%
     inherit = bar/default
-    modules-left = mpd
-    modules-right = wifi_kodama bspwm memory temp_kodama volume bat_kodama date
+    modules-left = bspwm
+    modules-center = date
+    modules-right = mpd wifi memory temp_samum volume bat_samum
 
-[bar/sarang]
+[bar/iblis]
     inherit = bar/default
-    modules-left = mpd
-    modules-right = wifi_sarang bspwm memory temp_sarang volume bat_sarang date
+    modules-left = bspwm
+    modules-center = date
+    modules-right = mpd wifi memory temp_iblis volume
 
 
 ; ########################################
@@ -75,14 +78,16 @@
     poll-interval = 30
 
     format-full = <label-full>
-    format-full-foreground = ${colors.green}
-    label-full = ""
+    format-full-prefix = " "
+    format-full-prefix-foreground = ${colors.green}
+    label-full = %percentage%
 
     format-charging = <label-charging>
-    format-charging-foreground = ${colors.yellow}
-    label-charging = ""
+    format-charging-prefix = " "
+    format-charging-prefix-foreground = ${colors.yellow}
+    label-charging = %percentage%
 
-    format-discharging = <ramp-capacity>
+    format-discharging = <ramp-capacity> <label-discharging>
     label-discharging = %time%
     time-format = %H:%M
 
@@ -98,71 +103,80 @@
     ramp-capacity-4-foreground = ${colors.green}
 
 
-[module/bat_kodama]
+[module/bat_samum]
     inherit = module/battery
     battery = BATC
     adapter = ADP1
     full-at = 99
 
 
-[module/bat_sarang]
+[module/bat_iblis]
     inherit = module/battery
     battery = BAT0
     adapter = AC0
-    full-at = 90
+    full-at = 88
 
 
 [module/bspwm]
     type = internal/bspwm
-    format = <label-mode>
-    label-foreground = ${colors.green}
 
-    label-monocle = ""
-    label-monocle-foreground = ${self.label-foreground}
-    label-monocle-padding = 1
+    format = <label-state>
+    label-focused-occupied = 
+    label-focused-occupied-padding = 2
 
-#    label-tiled = ""
-#    label-tiled-foreground = ${self.label-foreground}
-#    label-tiled-padding = 1
+    label-focused-urgent = 
+    label-focused-urgent-padding = 2
 
-#    label-fullscreen = ""
-#    label-fullscreen-foreground = ${self.label-foreground}
-#    label-fullscreen-padding = 1
+    label-focused-empty = 
+    label-focused-empty-padding = 2
 
-#    label-floating = ""
-#    label-floating-foreground = ${self.label-foreground}
-#    label-floating-padding = 1
+    label-occupied = 
+    label-occupied-foreground = ${colors.foreground-alt}
+    label-occupied-padding = 2
 
-    label-pseudotiled = ""
-    label-pseudotiled-foreground = ${self.label-foreground}
-    label-pseudotiled-padding = 1
+    label-urgent = 
+    label-urgent-foreground = ${colors.orange}
+    label-urgent-padding = 2
 
-    label-locked = ""
-    label-locked-foreground = ${self.label-foreground}
-    label-locked-padding = 1
+    label-empty = 
+    label-empty-foreground = ${colors.foreground-alt}
+    label-empty-padding = 2
 
-    label-sticky = ""
-    label-sticky-foreground = ${self.label-foreground}
-    label-sticky-padding = 1
+    label-monocle = " "
+    label-monocle-foreground = ${colors.foreground-alt}
+    label-tiled = " "
+    label-tiled-foreground = ${colors.foreground-alt}
+    label-fullscreen = " "
+    label-fullscreen-foreground = ${colors.foreground-alt}
+    label-floating = " "
+    label-floating-foreground = ${colors.foreground-alt}
+    label-pseudotiled = " "
+    label-pseudotiled-foreground = ${colors.foreground-alt}
+    label-locked = " "
+    label-locked-foreground = ${colors.foreground-alt}
+    label-sticky = " "
+    label-sticky-foreground = ${colors.foreground-alt}
+    label-private = "  "
+    label-private-foreground = ${colors.foreground-alt}
 
-    label-private = ""
-    label-private-foreground = ${self.label-foreground}
-    label-private-padding = 1
 
 [module/date]
     type = internal/date
     interval = 5
-    format-foreground = ${colors.background}
-    format-background = ${colors.foreground}
-    format-padding = 2
-    label = %time%
-    time = %k:%M
-    time-alt =  "%A, %B %e"
+
+    time-alt = " %k:%M"
+    date-alt = " %A, %B %e"
+    time = %H:%M
+
+    label = %date% %time%
+    format-prefix = 
+    format-prefix-alt = 
+    format-prefix-foreground = ${colors.aqua}
 
 
 [module/memory]
     type = internal/memory
-    format = <ramp-used>
+    format = <ramp-used> <label>
     interval = 2
     label = %percentage_used%
 
@@ -207,7 +221,8 @@
     interval = 2
     type = internal/temperature
 
-    format = <ramp>
+    format = <ramp> <label>
+    label = %temperature%
 
     format-warn = <ramp> <label-warn>
     label-warn = %temperature-c%
@@ -231,13 +246,13 @@
     ramp-7-foreground = ${colors.red}
 
 
-[module/temp_kodama]
+[module/temp_samum]
     inherit = module/temperature
     thermal-zone = 1
     warn-temperature = 75
 
 
-[module/temp_sarang]
+[module/temp_iblis]
     inherit = module/temperature
     thermal-zone = 3
     warn-temperature = 75
@@ -246,9 +261,9 @@
 [module/volume]
     type = internal/volume
 
-    format-volume = <ramp-volume>
+    format-volume = <ramp-volume> <label-volume>
     label-volume = %percentage%
-    label-muted = 
+    label-muted =  00
     label-muted-foreground = ${colors.orange}
 
     ramp-volume-0 = 
@@ -260,6 +275,7 @@
 
 [module/wifi]
     type = internal/network
+    interface = wifi0
     interval = 6
     ping-interval = 6
 
@@ -279,16 +295,6 @@
     animation-packetloss-1 = 
     animation-packetloss-1-foreground = ${colors.background}
     animation-packetloss-framerate = 1000
-
-
-[module/wifi_kodama]
-    inherit = module/wifi
-    interface = wlan0
-
-
-[module/wifi_sarang]
-    inherit = module/wifi
-    interface = wlp2s0
 
 
 [module/xbacklight]

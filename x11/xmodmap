@@ -1,9 +1,11 @@
-!
-! Swap Caps_Lock and Control_L
-!
-remove Lock = Caps_Lock
-remove Control = Control_L
-keysym Control_L = Caps_Lock
-keysym Caps_Lock = Control_L
-add Lock = Caps_Lock
-add Control = Control_L
+! caps lock as control
+clear lock
+clear control
+keycode 66 = Control_L
+add control = Control_L Control_R
+
+! swap colon / semicolon
+keycode  47 = colon semicolon colon semicolon
+
+! left alt as escape
+keycode  64 = Escape NoSymbol Escape

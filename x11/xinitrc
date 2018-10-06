@@ -1,12 +1,12 @@
 # {{{ display
 # set background
-~/.fehbg &
+# ~/.fehbg &
 
 # compositor daemon
 compton &
 
 # notification daemon
-dunst &
+# dunst &
 
 # disable display power management
 xset -dpms &
@@ -20,12 +20,12 @@ xset s off &
 # unix style control key (swap caps lock for control)
 xmodmap .Xmodmap &
 
-# configure touchpad (sarang)
+# configure touchpad (iblis)
 xinput --set-prop 'ETPS/2 Elantech Touchpad' "libinput Tapping Enabled" 1 &
 xinput --set-prop 'ETPS/2 Elantech Touchpad' "libinput Natural Scrolling Enabled" 1 &
 xinput --set-prop 'ETPS/2 Elantech Touchpad' "libinput Accel Speed" 0.4 &
 
-# configure touchpad (kodama)
+# configure touchpad (samum)
 xinput --set-prop 'Asus TouchPad' "libinput Tapping Enabled" 1 &
 xinput --set-prop 'Asus TouchPad' "libinput Natural Scrolling Enabled" 1 &
 xinput --set-prop 'Asus Touchpad' "libinput Accel Speed" 0.4 &
@@ -33,10 +33,6 @@ xinput --set-prop 'Asus Touchpad' "libinput Accel Speed" 0.4 &
 # cursor hiding daemon
 unclutter &
 # }}}
-
-# {{{ input daemons
-# hotkeys
-sxhkd &
 
 # touchpad gestures
 libinput-gestures &
@@ -46,7 +42,6 @@ libinput-gestures &
 # export QT_IM_MODULE='fcitx'
 # export XMODIFIERS='@im=fcitx'
 # fcitx &
-# }}}
 
 # bell
 pactl upload-sample /usr/share/sounds/freedesktop/stereo/bell.oga x11-bell &
@@ -55,8 +50,8 @@ pactl load-module module-x11-bell sample=x11-bell display=$DISPLAY &
 # use the capslock led for network activity
 sudo diodes &
 
-# device mounting
-devmon --sync --exec-on-drive "notify-send --icon=media-removable \"Volume mounted\" \"%l on %d\"" --exec-on-drive "urxvtc -e ranger %d" --exec-on-disc "notify-send --icon=media-optical \"Volume mounted\" \"%l on %d\"" --exec-on-disc "urxvtc -e ranger %d" &
+# file manager daemon
+thunar --daemon &
 
 # keyring
 dbus-update-activation-environment --systemd DISPLAY &
@@ -64,6 +59,6 @@ eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh) &
 export SSH_AUTH_SOCK &
 
 # welcome message
-notify-send -i /usr/share/icons/Paper/48x48@2x/places/archlinux.png "welcome, ${USER}" "$(fortune ${HOME}/.config/haikus)" &
+notify-send -i /usr/share/icons/Paper/48x48@2x/places/archlinux.png "welcome, ${USER}" "$(fortune ${HOME}/.config/fortune)" &
 
-exec bspwm
+exec awesome

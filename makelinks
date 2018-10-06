@@ -7,6 +7,9 @@ CONFIG="$(pwd)"
 # applications
 ln -fsT "${CONFIG}/applications" "${HOME}/.config/applications"
 
+# awesome
+ln -fsT "${CONFIG}/awesome" "${HOME}/.config/awesome"
+
 # beets
 ln -fsT "${CONFIG}/beets/config.yaml" "${HOME}/.config/beets/config.yaml"
 
@@ -43,6 +46,9 @@ ln -fsT "${CONFIG}/kitty/kitty.conf" "${HOME}/.config/kitty/kitty.conf"
 
 # libinput
 ln -fsT "${CONFIG}/libinput/libinput-gestures.conf" "${HOME}/.config/libinput-gestures.conf"
+
+# mpd
+ln -fsT "${CONFIG}/mpd/mpd.conf" "${HOME}/.config/mpd/mpd.conf"
 
 # mpv
 ln -fsT "${CONFIG}/mpv/mpv.conf" "${HOME}/.config/mpv/mpv.conf"
@@ -96,6 +102,5 @@ ln -fsT "${CONFIG}/zathura/zathurarc" "${HOME}/.config/zathura/zathurarc"
 
 # zsh
 ln -fsT "${CONFIG}/zsh/zshenv" "${HOME}/.zshenv"
-ln -fsT "${CONFIG}/zsh/zlogin" "${HOME}/.zlogin"
 ln -fsT "${CONFIG}/zsh/zprofile" "${HOME}/.zprofile"
 ln -fsT "${CONFIG}/zsh/zshrc" "${HOME}/.zshrc"

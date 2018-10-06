@@ -7,19 +7,19 @@
 
 " {{{ PLUGINS
 call plug#begin('~/.config/nvim/plugged')
-    Plug 'morhetz/gruvbox'                      " theme
-    Plug 'vim-airline/vim-airline'              " status line
     Plug 'airblade/vim-gitgutter'               " show git diffs
-"    Plug 'scrooloose/nerdtree'                  " file browser
-"    Plug 'w0rp/ale'                             " linting
-"    Plug 'Yggdroot/indentLine'                  " indentation guides
-"    Plug 'majutsushi/tagbar'                    " code browser
-"    Plug 'fatih/vim-go'                         " golang plugin
+"   Plug 'fatih/vim-go'                         " golang plugin
+"   Plug 'majutsushi/tagbar'                    " code browser
+    Plug 'morhetz/gruvbox'                      " theme
+"   Plug 'scrooloose/nerdtree'                  " file browser
+    Plug 'vim-airline/vim-airline'              " status line
+"   Plug 'w0rp/ale'                             " linting
+    Plug 'Yggdroot/indentLine'                  " indentation guides
 
     " completion plugins
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-"    Plug 'zchee/deoplete-go', { 'do': 'make' }      " golang
-"    Plug 'zchee/deoplete-jedi'                      " python
+"   Plug 'zchee/deoplete-go', { 'do': 'make' }      " golang
+"   Plug 'zchee/deoplete-jedi'                      " python
     Plug 'zchee/deoplete-zsh'                       " zsh
 call plug#end()
 " }}}

@@ -10,6 +10,10 @@ export DOCKER_HOST="tcp://dockmaster.tiuxo.com:2376"
 export DOCKER_TLS_VERIFY=1
 # }}}
 
+# {{{ gtk
+export GDK_DPI_SCALE=1.5
+# }}}
+
 # {{{ java
 # fix java glitches in bspwm
 export _JAVA_AWT_WM_NONREPARENTING=1
