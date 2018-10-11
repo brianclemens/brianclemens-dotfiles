@@ -1,12 +1,14 @@
 # {{{ general
-export BROWSER=w3m
-export DEFAULT_USER=oda
-export EDITOR=nvim
-export LANG=en_US.UTF-8
+export BROWSER='w3m'
+export DEFAULT_USER='oda'
+export EDITOR='nvim'
+export LANG='en_US.UTF-8'
+export TERMINAL='kitty'
+export VISUAL='nvim'
 # }}}
 
 # {{{ docker
-export DOCKER_HOST="tcp://dockmaster.tiuxo.com:2376"
+export DOCKER_HOST='tcp://dockmaster.tiuxo.com:2376'
 export DOCKER_TLS_VERIFY=1
 # }}}
 
@@ -21,7 +23,7 @@ export _JAVA_OPTIONS='-Dsun.java2d.opengl=true'
 # }}}
 
 # {{{ less
-export LESS="-giMnRSX#3~"
+export LESS='-giMnRSX#3~'
 export LESSOPEN="| pygmentize -g -f terminal256 -P style=abap %s"
 export LESS_TERMCAP_mb=$'\e[0;31m'      # start blink escape sequence
 export LESS_TERMCAP_md=$'\e[0;34m'      # start bold escape sequence
@@ -30,6 +32,8 @@ export LESS_TERMCAP_se=$'\e[0m'         # stop standout escape sequence
 export LESS_TERMCAP_so=$'\e[0;34;36m'   # start standout escape sequence
 export LESS_TERMCAP_ue=$'\e[0m'         # stop underline escape sequence
 export LESS_TERMCAP_us=$'\e[0;35m'      # start underline escape sequence
+export MANROFFOPT='-c'
+export SYSTEMD_LESS="$LESS"
 # }}}
 
 # {{{ makeflags
@@ -37,17 +41,9 @@ export MAKEFLAGS="$MAKEFLAGS -j$(($(nproc)))"   # use all vcpus when compiling
 # }}}
 
 # {{{ path
-if [ -d "$HOME/bin" ] ; then
-    PATH="$HOME/bin:$PATH"
-fi
-
-if [ -d "$HOME/.local/bin" ] ; then
-    PATH="$HOME/.local/bin:$PATH"
-fi
-
-if [ -d "$HOME/go/bin" ] ; then
-    PATH="$HOME/go/bin:$PATH"
-fi
+PATH="$HOME/bin:$PATH"
+PATH="$HOME/.local/bin:$PATH"
+PATH="$HOME/go/bin:$PATH"
 # }}}
 
 # {{{ qt

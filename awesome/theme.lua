@@ -29,6 +29,67 @@ theme.useless_gap   = dpi(12)
 theme.border_radius = dpi(12)
 theme.border_width  = dpi(0)
 
+-- {{{ calendar widget
+theme.calendar_focus_bg_color = "#00000000"
+theme.calendar_focus_border_width = 2
+theme.calendar_focus_shape = function(cr,w,h)
+                gears.shape.rounded_rect(cr,w,h,dpi(5))
+            end
+theme.calendar_focus_markup = function(t) return '<b>' .. t .. '</b>' end
+theme.calendar_header_bg_color = "#00000000"
+theme.calendar_header_markup = function(t) return '<b>' .. t .. '</b>' end
+theme.calendar_month_bg_color = "#00000000"
+theme.calendar_month_padding = "20"
+theme.calendar_normal_bg_color = "#00000000"
+theme.calendar_normal_padding = 3
+theme.calendar_weekday_bg_color = "#00000000"
+theme.calendar_weekday_markup = function(t) return '<i>' .. t .. '</i>' end
+-- }}}
+
+-- {{{ hotkey cheat sheet
+theme.hotkeys_description_font = "Source Sans Pro 16"
+theme.hotkeys_font = "Source Code Pro 16"
+theme.hotkeys_group_margin = dpi(12)
+theme.hotkeys_label_bg = "#8ec07cd8"
+theme.hotkeys_modifiers_fg = "#8ec07cd8"
+theme.hotkeys_shape = function(cr,w,h)
+    gears.shape.rounded_rect(cr,w,h,theme.border_radius)
+end
+-- }}}
+
+-- There are other variable sets overriding the default one when defined, the sets are:
+-- taglist_[bg|fg]_[focus|urgent|occupied|empty|volatile]
+-- tooltip_[font|opacity|fg_color|bg_color|border_width|border_color]
+-- mouse_finder_[color|timeout|animate_timeout|radius|factor]
+-- prompt_[fg|bg|fg_cursor|bg_cursor|font]
+
+-- Generate taglist squares:
+local taglist_square_size = dpi(4)
+theme.taglist_squares_sel = theme_assets.taglist_squares_sel(
+    taglist_square_size, theme.fg_normal
+)
+theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(
+    taglist_square_size, theme.fg_normal
+)
+
+-- {{{ notifications
+-- theme.notification_border_color = "#1d2021d8"
+theme.notification_font = "Source Sans Pro 18"
+-- theme.notification_margin = dpi(20)
+theme.notification_shape = function(cr,w,h)
+    gears.shape.rounded_rect(cr,w,h,theme.border_radius)
+end
+theme.notification_width = dpi(500)
+-- }}}
+
+-- Variables set for theming the menu:
+-- menu_[bg|fg]_[normal|focus]
+-- menu_[border_color|border_width]
+theme.menu_submenu_icon = themes_path.."default/submenu.png"
+theme.menu_height = dpi(15)
+theme.menu_width  = dpi(100)
+
+-- {{{ titlebars
 theme.titlebar_bg_focus = ({ type = "linear",
                              from = { 0, 0 },
                              to = { 0, 50 },
@@ -61,49 +122,6 @@ theme.titlebar_fg_normal = ({ type = "linear",
                                      }
                            })
 
-theme.hotkeys_description_font = "Source Sans Pro 16"
-theme.hotkeys_font = "Source Code Pro 16"
-theme.hotkeys_group_margin = dpi(12)
-theme.hotkeys_label_bg = "#8ec07cd8"
-theme.hotkeys_modifiers_fg = "#8ec07cd8"
-theme.hotkeys_shape = function(cr,w,h)
-    gears.shape.rounded_rect(cr,w,h,theme.border_radius)
-end
-
-
--- There are other variable sets overriding the default one when defined, the sets are:
--- taglist_[bg|fg]_[focus|urgent|occupied|empty|volatile]
--- tasklist_[bg|fg]_[focus|urgent]
--- tooltip_[font|opacity|fg_color|bg_color|border_width|border_color]
--- mouse_finder_[color|timeout|animate_timeout|radius|factor]
--- prompt_[fg|bg|fg_cursor|bg_cursor|font]
--- hotkeys_[bg|fg|border_width|border_color|shape|opacity|modifiers_fg|label_bg|label_fg|group_margin|font|description_font]
--- Example:
---theme.taglist_bg_focus = "#ff0000"
-
--- Generate taglist squares:
-local taglist_square_size = dpi(4)
-theme.taglist_squares_sel = theme_assets.taglist_squares_sel(
-    taglist_square_size, theme.fg_normal
-)
-theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(
-    taglist_square_size, theme.fg_normal
-)
-
--- Variables set for theming notifications:
--- notification_font
--- notification_[bg|fg]
--- notification_[width|height|margin]
--- notification_[border_color|border_width|shape|opacity]
-
--- Variables set for theming the menu:
--- menu_[bg|fg]_[normal|focus]
--- menu_[border_color|border_width]
-theme.menu_submenu_icon = themes_path.."default/submenu.png"
-theme.menu_height = dpi(15)
-theme.menu_width  = dpi(100)
-
--- titlebar
 theme.titlebar_close_button_focus           = icon_path .. "tb_close_focus.svg"
 theme.titlebar_close_button_focus_hover     = icon_path .. "tb_close_focus_hover.svg"
 theme.titlebar_close_button_focus_press     = icon_path .. "tb_close_focus_press.svg"
@@ -131,10 +149,11 @@ theme.titlebar_minimize_button_focus_press  = icon_path .. "tb_minimize_focus_pr
 theme.titlebar_minimize_button_normal       = icon_path .. "tb_minimize_normal.svg"
 theme.titlebar_minimize_button_normal_hover = icon_path .. "tb_minimize_normal_hover.svg"
 theme.titlebar_minimize_button_normal_press = icon_path .. "tb_minimize_normal_press.svg"
+-- }}}
 
 theme.wallpaper = "/home/oda/.config/wallpaper/oyama.jpg"
 
--- You can use your own layout icons like this:
+-- {{{ layout icons
 theme.layout_fairh = themes_path.."default/layouts/fairhw.png"
 theme.layout_fairv = themes_path.."default/layouts/fairvw.png"
 theme.layout_floating  = themes_path.."default/layouts/floatingw.png"
@@ -151,6 +170,7 @@ theme.layout_cornernw = themes_path.."default/layouts/cornernww.png"
 theme.layout_cornerne = themes_path.."default/layouts/cornernew.png"
 theme.layout_cornersw = themes_path.."default/layouts/cornersww.png"
 theme.layout_cornerse = themes_path.."default/layouts/cornersew.png"
+-- }}}
 
 -- Generate Awesome icon:
 theme.awesome_icon = theme_assets.awesome_icon(
