@@ -75,7 +75,7 @@ theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(
 -- {{{ notifications
 -- theme.notification_border_color = "#1d2021d8"
 theme.notification_font = "Source Sans Pro 18"
--- theme.notification_margin = dpi(20)
+theme.notification_margin = dpi(20)
 theme.notification_shape = function(cr,w,h)
     gears.shape.rounded_rect(cr,w,h,theme.border_radius)
 end

@@ -1,19 +1,13 @@
-"                          _                              __ _
-"    _ __   ___  _____   _(_)_ __ ___     ___ ___  _ __  / _(_) __ _
-"   | '_ \ / _ \/ _ \ \ / / | '_ ` _ \   / __/ _ \| '_ \| |_| |/ _` |
-"   | | | |  __/ (_) \ V /| | | | | | | | (_| (_) | | | |  _| | (_| |
-"   |_| |_|\___|\___/ \_/ |_|_| |_| |_|  \___\___/|_| |_|_| |_|\__, |
-"         use z [o,c] to open and close folded text            |___/
-
-" {{{ PLUGINS
+" {{{ Plugins
 call plug#begin('~/.config/nvim/plugged')
     Plug 'airblade/vim-gitgutter'               " show git diffs
 "   Plug 'fatih/vim-go'                         " golang plugin
 "   Plug 'majutsushi/tagbar'                    " code browser
+    Plug '/usr/bin/fzf'                         " file search
     Plug 'morhetz/gruvbox'                      " theme
 "   Plug 'scrooloose/nerdtree'                  " file browser
     Plug 'vim-airline/vim-airline'              " status line
-"   Plug 'w0rp/ale'                             " linting
+    Plug 'w0rp/ale'                             " linting
     Plug 'Yggdroot/indentLine'                  " indentation guides
 
     " completion plugins
@@ -24,61 +18,126 @@ call plug#begin('~/.config/nvim/plugged')
 call plug#end()
 " }}}
 
-" {{{ PLUGIN SETTINGS
-" gruvbox
-let g:gruvbox_contrast_dark = "hard"    " darker background
-let g:gruvbox_italic = 1                " italic have to be manually enabled
+" {{{ Plugin Settings
+"   {{{ Airline
+let g:airline_theme='gruvbox'
+let g:airline_powerline_fonts=1
+let g:airline_skip_empty_sections=0
+let g:airline_section_z='%3p%% %3l:%-2v'
 
-" deoplete
-let g:deoplete#enable_at_startup = 1
-set completeopt-=preview
-
-" indentLine
-let g:indentLine_setColors = 0
-let g:indentLine_char = '▏'
-
-" jedi
-autocmd FileType python setlocal completeopt-=preview
-let g:jedi#use_splits_not_buffers = "left"
-
-" airline
-let g:airline#extensions#ale#enabled = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline_section=''
-let g:airline_detect_paste=1 " Show PASTE if in paste mode
-let g:airline_powerline_fonts = 1
+" Symbols table
 if !exists('g:airline_symbols')
-    let g:airline_symbols = {}
+    let g:airline_symbols={}
 endif
 
-" unicode symbols
-let g:airline_left_sep = '»'
+" Unicode symbols
+let g:airline_left_alt_sep = '»'
 let g:airline_left_sep = '▶'
-let g:airline_right_sep = '«'
+let g:airline_right_alt_sep = '«'
 let g:airline_right_sep = '◀'
+let g:airline_symbols.crypt = '🔒'
+let g:airline_symbols.linenr = '☰'
 let g:airline_symbols.linenr = '␊'
 let g:airline_symbols.linenr = '␤'
 let g:airline_symbols.linenr = '¶'
+let g:airline_symbols.maxlinenr = '␤'
 let g:airline_symbols.branch = '⎇'
 let g:airline_symbols.paste = 'ρ'
 let g:airline_symbols.paste = 'Þ'
 let g:airline_symbols.paste = '∥'
+let g:airline_symbols.spell = 'Ꞩ'
+let g:airline_symbols.notexists = '∄'
 let g:airline_symbols.whitespace = 'Ξ'
-" airline symbols
+
+" Powerline symbols
 let g:airline_left_sep = ''
 let g:airline_left_alt_sep = ''
 let g:airline_right_sep = ''
 let g:airline_right_alt_sep = ''
 let g:airline_symbols.branch = ''
 let g:airline_symbols.readonly = ''
-let g:airline_symbols.linenr = ''
+let g:airline_symbols.linenr = '☰'
+let g:airline_symbols.maxlinenr = ''
 
-" NERDTree
+""" Extensions
+let g:airline#extensions#ale#enabled = 1
+let g:airline#extensions#ale#error_symbol = ''
+let g:airline#extensions#ale#warning_symbol = ''
+let g:airline#extensions#ale#show_line_numbers = 0
+
+let g:airline#extensions#hunks#enabled = 0
+
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#buffer_idx_mode = 1
+let g:airline#extensions#tabline#tab_nr_type = 1
+let g:airline#extensions#tabline#show_tab_nr = 0
+let g:airline#extensions#tabline#show_close_button = 0
+let g:airline#extensions#tabline#exclude_preview = 1
+let g:airline#extensions#tabline#fnamecollapse = 1
+let g:airline#extensions#tabline#fnamemod = ':~:.'
+let g:airline#extensions#tabline#buffers_label = 'buffers'
+let g:airline#extensions#tabline#tabs_label = 'tabs'
+let g:airline#extensions#tabline#overflow_marker = '…'
+
+let g:airline#extensions#whitespace#show_message = 1
+let g:airline#extensions#whitespace#mixed_indent_algo=1
+"   }}}
+
+"   {{{ Ale
+let g:ale_set_loclist=1
+let g:ale_sign_error=' ●'
+let g:ale_sign_warning=' ●'
+let g:ale_lint_on_text_changed='never'
+let g:ale_lint_on_enter=1
+let g:ale_lint_on_save=1
+let g:ale_lint_on_filetype_changed=1
+let g:ale_set_highlights=1
+let g:ale_set_signs=1
+
+nmap [w <plug>(ale_previous_wrap)
+nmap ]w <plug>(ale_next_wrap)
+nnoremap <leader>a :ALEEnable<CR>
+
+augroup Ale
+    autocmd!
+    autocmd VimEnter * ALEDisable
+augroup END
+"   }}}
+
+"   {{{ Gruvbox
+let g:gruvbox_contrast_dark = "hard"    " darker background
+let g:gruvbox_italic = 1                " italic have to be manually enabled
+"   }}}
+
+"   {{{ Deoplete
+let g:deoplete#enable_at_startup = 1
+set completeopt-=preview
+"   }}}
+
+"   {{{ GitGutter
+let g:gitgutter_sign_added='┃'
+let g:gitgutter_sign_modified='┃'
+let g:gitgutter_sign_removed='◢'
+let g:gitgutter_sign_removed_first_line='◥'
+let g:gitgutter_sign_modified_removed='◢'
+"   }}}
+
+"   {{{ IndentLine
+let g:indentLine_setColors = 0
+let g:indentLine_char = '▏'
+"   }}}
+
+"   {{{ Jedi
+autocmd FileType python setlocal completeopt-=preview
+let g:jedi#use_splits_not_buffers = "left"
+"   }}}
+
+"   {{{ NERDTree
 nmap <silent><Leader>t :NERDTreeToggle<CR> " open NERDTree with \t
-
+"   }}}
 " }}}
 
-" {{{ BEHAVIOR
+" {{{ Behavior
 set fileencodings=utf-8,cp932,euc-jp,iso-2022-jp,latin1
 set nocompatible    " avoid legacy compatibility nonsense
 set path=$PWD/**    " use path vim is opened in as base directory
@@ -136,7 +195,7 @@ set splitbelow      " open new panes on the bottom
 set splitright      " open new panes on the right
 " }}}
 
-" {{{ INTERFACE
+" {{{ Interface
 syntax on                   " enable syntax highlighting
 set showmatch               " highlight matching brackets
 set title                   " set window title
@@ -178,7 +237,7 @@ set cursorline              " highlight current line
 set ttyfast                 " improves redrawing for newer computers
 " }}}
 
-" {{{ FORMATTING
+" {{{ Formatting
 set tabstop=4               " width of tab character
 set softtabstop=4           " how many columns the tab key inserts
 set shiftwidth=4            " width of indentation levels
@@ -191,61 +250,4 @@ set foldenable
 set foldmethod=marker
 set foldlevel=0
 set foldcolumn=0
-" }}}
-
-" {{{ KEYBINDINGS
-let mapleader = ' '         " use spacebar as map leader
-let g:mapleader = ' '       " same-same but different
-
-" indentLine
-nnoremap <Leader>i  :IndentLinesToggle<CR>
-
-" tagbar
-nnoremap <Leader>t  :TagbarToggle<CR>
-
-" buffer management
-nnoremap tg  :buffer<Space> " go to buffer x
-nnoremap th  :bfirst<CR>    " go to first buffer
-nnoremap tj  :bnext<CR>     " go to next buffer
-nnoremap tk  :bprev<CR>     " go to previous buffer
-nnoremap tl  :blast<CR>     " go to last buffer
-nnoremap tt  :edit<Space>   " open file in current buffer
-nnoremap tn  :enew<CR>      " open file in new buffer
-nnoremap td  :bdelete<CR>   " close current buffer
-nnoremap ts  :files<CR>     " list buffers
-
-" space clears search highlights and any message displayed
-nnoremap <silent> <Space> :silent noh<Bar>echo<CR>
-
-" move lines up and down with alt + [j,k]
-nnoremap <A-j> :m+<CR>==
-nnoremap <A-k> :m-2<CR>==
-vnoremap <A-j> :m'>+<CR>gv=gv
-vnoremap <A-k> :m-2<CR>gv=gv
-
-" indenting
-nnoremap <Tab> >>_          " increase indent with >>
-nnoremap <S-Tab> <<_        " decrease indent with <<
-inoremap <S-Tab> <C-D>
-vnoremap <Tab> >gv          " tab to increase indent
-vnoremap <S-Tab> <gv        " shift tab to decrease indent
-
-" save file as root
-noremap <Leader>W :w !sudo tee % > /dev/null<CR>
-
-" left and right arrow keys to move between buffers
-nnoremap <silent> <Right>   :bn<CR>
-nnoremap <silent> <Left>  :bp<CR>
-
-map <C-c> "+y<CR>           " ctrl c to copy selected text
-map <C-v> "+p<CR>           " ctrl v to paste text
-
-" toggle paste mode
-set pastetoggle=<F2>
-
-" NerdTree
-" silent! nmap <C-p> :NERDTreeToggle<CR>
-silent! map <F3> :NERDTreeFind<CR>
-let g:NERDTreeMapActivateNode="<F3>"
-let g:NERDTreeMapPreview="<F4>"
 " }}}

@@ -2,7 +2,7 @@
 ln -sf ~/.config/rofi/cache ~/.cache/rofi3.druncache
 ln -sf ~/.config/evolutioncache ~/.cache/evolution
 
-start x11 on vt1
+# start x11 on vt1
 if [ -z "$DISPLAY" ] && [ -n "$XDG_VTNR" ] && [ "$XDG_VTNR" -le 1 ]; then
   exec startx
 fi

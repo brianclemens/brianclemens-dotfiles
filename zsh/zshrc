@@ -1,6 +1,6 @@
-# {{{ ALIASES
+# {{{ Aliases
 
-#   {{{ FILE MANAGEMENT
+#   {{{ File Management
 alias .='cd ../'                # up a directory
 alias ..='cd ../../'            # up two directories
 alias ...='cd ../../../'       # up three directories
@@ -37,7 +37,7 @@ function extract() {
 }
 #   }}}
 
-#   {{{ SHELL MANAGEMENT
+#   {{{ Shell Management
 alias :q='exit'                                     # quit shell
 alias j='jobs -l'                                   # list jobs
 alias path='echo -e ${PATH//:/\\n}'                 # show executable paths
@@ -45,7 +45,7 @@ alias libpath='echo -e ${LD_LIBRARY_PATH//:/\\n}'   # show library paths
 alias testpowerline='echo "\ue0b0 \u00b1 \ue0a0 \u27a6 \u2718 \u26a1 \u2699"'
 #   }}}
 
-#   {{{ WEB SERVICES
+#   {{{ Web Services
 0x0() { curl -F"file=@$1" https://0x0.st; }             # temporary upload
 cheatsheet() { curl cheat.sh/$1; }                      # command cheatsheet
 qrcode() { echo $@ | curl -F-=\<- qrenco.de; }          # print qrcode
@@ -79,7 +79,7 @@ alias zeph='Xephyr :5 & sleep 1 ; DISPLAY=:5 awesome'   # xephyr window
 
 # }}}
 
-# {{{ ZSH OPTIONS
+# {{{ ZSH Options
 
 bindkey -v  # VIM mode
 
@@ -90,7 +90,7 @@ SAVEHIST=4000                   # max amount of history to keep
 setopt HIST_IGNORE_DUPS         # disabled for smart autocompletion
 # }}}
 
-# {{{ PLUGINS
+# {{{ Plugins
 
 # fzf
 source /usr/share/fzf/completion.zsh
@@ -107,7 +107,7 @@ source /usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.
 
 # }}}
 
-# {{{ COMPLETION
+# {{{ Completion
 
 autoload -Uz compinit
 
@@ -138,7 +138,7 @@ zstyle ':completion:*' group-name ''
 
 # }}}
 
-# {{{ PROMPT
+# {{{ Prompt
 
 autoload -Uz promptinit && promptinit
 prompt elite
@@ -262,4 +262,21 @@ build_prompt() {
 
 PROMPT='%{%f%b%k%}$(build_prompt) '
 
+# }}}
+
+# {{{ Window Title
+case $TERM in
+  (*xterm* | rxvt)
+    # Write some info to terminal title.
+    # This is seen when the shell prompts for input.
+    function precmd {
+      print -Pn "\e]0;zsh %(1j,%j job%(2j|s|); ,)%~\a"
+    }
+    # Write command and args to terminal title.
+    # This is seen while the shell waits for a command to complete.
+    function preexec {
+      printf "\033]0;%s\a" "$1"
+    }
+  ;;
+esac
 # }}}
