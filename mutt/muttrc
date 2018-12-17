@@ -1,27 +1,34 @@
 # Paths ----------------------------------------------
-set folder           = ~/mail               # mailbox location
-set alias_file       = ~/.mutt/alias         # where to store aliases
-set header_cache     = ~/.mutt/cache/headers # where to store headers
-set message_cachedir = ~/.mutt/cache/bodies  # where to store bodies
-set certificate_file = ~/.mutt/certificates  # where to store certs
-set mailcap_path     = ~/.mutt/mailcap       # entries for filetypes
-set tmpdir           = ~/.mutt/temp          # where to keep temp files
-set signature        = ~/.mutt/sig           # signature file
+set folder           = ~/mail               # mailbox
+set alias_file       = ~/.config/mutt/alias         # aliases
+set header_cache     = ~/.config/mutt/cache/headers # message headers
+set message_cachedir = ~/.config/mutt/cache/bodies  # message bodies
+set certificate_file = ~/.config/mutt/certificates  # certificates
+set mailcap_path     = ~/.config/mutt/mailcap       # filetype handling
+set tmpdir           = ~/.cache/mutt                # temp files
+set signature        = ~/.config/mutt/sig           # signature
 
+# PGP
+source ~/.config/mutt/gpg.rc
+
+# Attachments
+auto_view image/*
 auto_view text/html
-alternative_order text/plain text/enriched text/html
+auto_view text/x-vcard
+auto_view video/*
+# view enriched text if availible before plain or html
+alternative_order text/enriched text/plain text/html
 
 # Basic Options --------------------------------------
 set realname = "Brian Clemens"
 set wait_key = no
 # set mbox_type = Maildir  # mailbox type
-set timeout = 3          # idle time before scanning
+set timeout = 30         # idle time to wait for user input before aborting
 set mail_check = 0       # minimum time between scans
 set delete               # don't ask, just do
 unset confirmappend      # don't ask, just do
 set quit                 # don't ask, just do
-unset mark_old           # read/new is good enough for me
-set beep_new             # bell on new mails
+unset mark_old           # read/new is good enough
 set pipe_decode          # strip headers and eval mimes when piping
 set thorough_search      # strip headers and eval mimes before searching
 set mail_check_stats     # stats for counts
@@ -60,7 +67,7 @@ hdr_order from: to: cc: date: subject:  # and in this order
 
 # Account Settings -----------------------------------
 
-set sendmail = "/usr/bin/msmtp"
+set sendmail = "/usr/bin/msmtp --read-envelope-from"
 
 # Default inbox.
 set virtual_spoolfile=yes
@@ -93,13 +100,15 @@ macro index \Cr "T~U<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "ma
 macro index O "<shell-escape>offlineimap<enter>"           "run offlineimap full sync"
 macro index o "<shell-escape>offlineimap -qf INBOX<enter>" "run offlineimap quick sync"
 
-# tag-transforms "inbox"   "i"   \
-#                "unread"  "u"   \
-#                "replied" "↻ "  \
-#                "sent"    "➥ "  \
-#                "todo"    "T"   \
-#                "deleted" "DEL" \
-#                "invites" "CAL"
+macro attach 'V' "<pipe-entry>cat >~/.cache/mail.html && firefox ~/.cache/mail.html && rm ~/.cache/fmail.html<enter>"
+
+tag-transforms "inbox"   "i"   \
+               "unread"  "u"   \
+               "replied" "↻ "  \
+               "sent"    "➥ "  \
+               "todo"    "T"   \
+               "deleted" "DEL" \
+               "invites" "CAL"
 
 # custom body highlights -----------------------------------------------
 # highlight my name and other personally relevant strings

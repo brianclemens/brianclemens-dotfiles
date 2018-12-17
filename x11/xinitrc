@@ -38,10 +38,10 @@ unclutter &
 libinput-gestures &
 
 # Japanese input
-# export GTK_IM_MODULE='fcitx'
-# export QT_IM_MODULE='fcitx'
-# export XMODIFIERS='@im=fcitx'
-# fcitx &
+export GTK_IM_MODULE='fcitx'
+export QT_IM_MODULE='fcitx'
+export XMODIFIERS='@im=fcitx'
+fcitx &
 
 # bell
 pactl upload-sample /usr/share/sounds/freedesktop/stereo/bell.oga x11-bell &

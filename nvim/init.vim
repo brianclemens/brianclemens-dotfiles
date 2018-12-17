@@ -1,29 +1,32 @@
 " {{{ Plugins
 call plug#begin('~/.config/nvim/plugged')
     Plug 'airblade/vim-gitgutter'               " show git diffs
-"   Plug 'fatih/vim-go'                         " golang plugin
-"   Plug 'majutsushi/tagbar'                    " code browser
-    Plug '/usr/bin/fzf'                         " file search
+    Plug 'majutsushi/tagbar'                    " code browser
+    Plug 'junegunn/fzf'                         " search
     Plug 'morhetz/gruvbox'                      " theme
-"   Plug 'scrooloose/nerdtree'                  " file browser
     Plug 'vim-airline/vim-airline'              " status line
     Plug 'w0rp/ale'                             " linting
     Plug 'Yggdroot/indentLine'                  " indentation guides
+    Plug 'tomtom/tcomment_vim'                  " comments
 
-    " completion plugins
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-"   Plug 'zchee/deoplete-go', { 'do': 'make' }      " golang
-"   Plug 'zchee/deoplete-jedi'                      " python
-    Plug 'zchee/deoplete-zsh'                       " zsh
+    Plug 'autozimu/LanguageClient-neovim', {
+            \ 'branch': 'next',
+            \ 'do': 'bash install.sh',
+            \ }
+"     Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
+     Plug 'lervag/vimtex', { 'for': ['latex', 'tex'] }
 call plug#end()
 " }}}
 
-" {{{ Plugin Settings
+" {{{ Plugin settings
 "   {{{ Airline
 let g:airline_theme='gruvbox'
 let g:airline_powerline_fonts=1
 let g:airline_skip_empty_sections=0
 let g:airline_section_z='%3p%% %3l:%-2v'
+let g:airline_focuslost_inactive=1
+
 
 " Symbols table
 if !exists('g:airline_symbols')
@@ -104,17 +107,81 @@ augroup Ale
 augroup END
 "   }}}
 
-"   {{{ Gruvbox
-let g:gruvbox_contrast_dark = "hard"    " darker background
-let g:gruvbox_italic = 1                " italic have to be manually enabled
-"   }}}
-
-"   {{{ Deoplete
+"   {{{ Deoplete and LanguageClient
 let g:deoplete#enable_at_startup = 1
 set completeopt-=preview
+
+call g:deoplete#custom#source('LanguageClient',
+            \ 'min_pattern_length',
+            \ 2)
+
+"" EchoDoc
+let g:echodoc#enable_at_startup=1
+
+"" LanguageClient
+let g:LanguageClient_serverCommands = {
+            \ 'c': ['clangd'],
+            \ 'cpp': ['clangd'],
+            \ 'css': ['css-languageserver'],
+            \ 'html': ['html-languageserver'],
+            \ 'go': ['go-langserver'],
+            \ 'java': ['jdtls'],
+            \ 'lua': ['lua-lsp'],
+            \ 'python': ['pyls'],
+            \ 'rust': ['rls'],
+            \ }
+
+" Automatically start language servers
+let g:LanguageClient_autoStart=1
+
+augroup LanguageClient_config
+    autocmd!
+    autocmd User LanguageClientStarted setlocal signcolumn=yes
+    autocmd User LanguageClientStopped setlocal signcolumn=auto
+augroup END
+
+nnoremap <silent> <F12> :call LanguageClient_contextMenu()<CR>
+nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+nnoremap <silent> gr :call LanguageClient_textDocument_rename()<CR>
 "   }}}
 
-"   {{{ GitGutter
+"   {{{ FZF
+" Default key bindings
+let g:fzf_action = {
+            \ 'ctrl-t': 'tab split',
+            \ 'ctrl-x': 'split',
+            \ 'ctrl-v': 'vsplit' }
+
+" Default fzf layout
+let g:fzf_layout = { 'down': '~30%' }
+
+" Customize the options used by 'git log'
+let g:fzf_commits_log_options='--graph --color=always --format="%c(auto)%h%d %s %c(black)%c(bold)%cr"'
+
+" Command to generate tags file
+let g:fzf_tags_command = 'ctags -R'
+
+" Mapping selecting mappings
+nmap <leader><tab> <plug>(fzf-maps-n)
+xmap <leader><tab> <plug>(fzf-maps-x)
+omap <leader><tab> <plug>(fzf-maps-o)
+"imap <leader><tab> <plug>(fzf-maps-i)
+
+"" FZF
+nnoremap <leader>f :Files<CR>
+nnoremap <leader>b :Buffers<CR>
+nnoremap <leader>w :Windows<CR>
+nnoremap <leader>t :Tags<CR>
+
+" Insert mode completion
+imap <c-x><c-k> <plug>(fzf-complete-word)
+imap <c-x><c-f> <plug>(fzf-complete-path)
+imap <c-x><c-j> <plug>(fzf-complete-file-ag)
+imap <c-x><c-l> <plug>(fzf-complete-line)
+"   }}}
+
+"   {{{ Gitgutter
 let g:gitgutter_sign_added='┃'
 let g:gitgutter_sign_modified='┃'
 let g:gitgutter_sign_removed='◢'
@@ -122,9 +189,18 @@ let g:gitgutter_sign_removed_first_line='◥'
 let g:gitgutter_sign_modified_removed='◢'
 "   }}}
 
-"   {{{ IndentLine
+"   {{{ Gruvbox
+let g:gruvbox_contrast_dark = "hard"    " darker background
+let g:gruvbox_bold = 1
+let g:gruvbox_italic = 1
+let g:gruvbox_underline = 1
+let g:gruvbox_undercurl = 1
+"   }}}
+
+"   {{{ Indentline
 let g:indentLine_setColors = 0
 let g:indentLine_char = '▏'
+nnoremap <Leader>i  :IndentLinesToggle<CR>
 "   }}}
 
 "   {{{ Jedi
@@ -132,9 +208,128 @@ autocmd FileType python setlocal completeopt-=preview
 let g:jedi#use_splits_not_buffers = "left"
 "   }}}
 
-"   {{{ NERDTree
-nmap <silent><Leader>t :NERDTreeToggle<CR> " open NERDTree with \t
+"   {{{ Tagbar
+nmap <silent><Leader>t :TagbarToggle<CR>
+
+let g:tagbar_type_go = {
+	\ 'ctagstype' : 'go',
+	\ 'kinds'     : [
+		\ 'p:package',
+		\ 'i:imports:1',
+		\ 'c:constants',
+		\ 'v:variables',
+		\ 't:types',
+		\ 'n:interfaces',
+		\ 'w:fields',
+		\ 'e:embedded',
+		\ 'm:methods',
+		\ 'r:constructor',
+		\ 'f:functions'
+	\ ],
+	\ 'sro' : '.',
+	\ 'kind2scope' : {
+		\ 't' : 'ctype',
+		\ 'n' : 'ntype'
+	\ },
+	\ 'scope2kind' : {
+		\ 'ctype' : 't',
+		\ 'ntype' : 'n'
+	\ },
+	\ 'ctagsbin'  : 'gotags',
+	\ 'ctagsargs' : '-sort -silent'
+    \ }
 "   }}}
+
+"   {{{ Vimtex
+let g:vimtex_view_method='zathura'
+"   }}}
+" }}}
+
+" {{{ Keybinds
+
+"" Leader key
+nnoremap <Space> <Nop>
+nnoremap <CR> <Nop>
+let mapleader=' '
+
+"" Split navigation
+nnoremap <C-h> <C-w><C-h>
+nnoremap <C-j> <C-w><C-j>
+nnoremap <C-k> <C-w><C-k>
+nnoremap <C-l> <C-w><C-l>
+
+"" Split resize
+nnoremap <silent> <C-w>h 5<C-w><
+nnoremap <silent> <C-w>j 5<C-w>-
+nnoremap <silent> <C-w>k 5<C-w>+
+nnoremap <silent> <C-w>l 5<C-w>>
+
+"" New tab
+nnoremap <silent> <C-w>t :tabedit<CR>
+
+" space clears search highlights and any message displayed
+nnoremap <silent> <Space> :silent noh<Bar>echo<CR>
+
+" move lines up and down with alt + [j,k]
+nnoremap <A-j> :m+<CR>==
+nnoremap <A-k> :m-2<CR>==
+vnoremap <A-j> :m'>+<CR>gv=gv
+vnoremap <A-k> :m-2<CR>gv=gv
+
+" indenting
+nnoremap <Tab> >>_          " increase indent with >>
+nnoremap <S-Tab> <<_        " decrease indent with <<
+inoremap <S-Tab> <C-D>
+vnoremap <Tab> >gv          " tab to increase indent
+vnoremap <S-Tab> <gv        " shift tab to decrease indent
+
+" Copy to system clipboard
+nnoremap gy "+y
+nnoremap gY "+Y
+nnoremap gp "+p
+nnoremap gP "+P
+xnoremap gy "+y
+xnoremap gY "+Y
+xnoremap gp "+p
+xnoremap gP "+P
+
+" Keep selection after indenting
+xnoremap < <gv
+xnoremap > >gv
+
+" Swap lines
+xnoremap <leader>j :m '>+1<CR>gv=gv
+xnoremap <leader>k :m '<-2<CR>gv=gv
+nnoremap <leader>j :m .+1<CR>
+nnoremap <leader>k :m .-2<CR>
+
+" Use CTRL-S for saving, also in Insert mode
+nnoremap <silent> <C-s> :write<CR>
+xnoremap <silent> <C-s> <Esc>:write<CR>
+inoremap <silent> <C-s> <C-o>:write<CR><Esc>
+
+" Move cursor by display lines when wrapping
+nnoremap <expr> j v:count ? 'j' : 'gj'
+nnoremap <expr> k v:count ? 'k' : 'gk'
+xnoremap <expr> j v:count ? 'j' : 'gj'
+xnoremap <expr> k v:count ? 'k' : 'gk'
+
+" Go to tab
+nnoremap <M-1> 1gt
+nnoremap <M-2> 2gt
+nnoremap <M-3> 3gt
+nnoremap <M-4> 4gt
+nnoremap <M-5> 5gt
+nnoremap <M-6> 6gt
+nnoremap <M-7> 7gt
+nnoremap <M-8> 8gt
+nnoremap <M-9> :tablast<CR>
+
+" Remove trailing whitespaces
+nnoremap <silent> <F3> mz:keepp %s/\\\@1<!\s\+$//e<CR>`z
+
+" Write as sudo
+command! W execute 'silent! w !sudo /usr/bin/tee % >/dev/null' <bar> edit!
 " }}}
 
 " {{{ Behavior
@@ -197,6 +392,7 @@ set splitright      " open new panes on the right
 
 " {{{ Interface
 syntax on                   " enable syntax highlighting
+set synmaxcol=800
 set showmatch               " highlight matching brackets
 set title                   " set window title
 set scrolljump=10           " scroll jump lines
@@ -208,9 +404,6 @@ set nostartofline           " sticky columns when moving cursor
 " line numbers
 set number                  " show line numbers
 set numberwidth=3           " pad number column
-" set colorcolumn=81          " highlight 81st column
-" uncomment to highlight all columns beyond the 80th
-" execute "set colorcolumn=" . join(range(81,335), ',')
 
 " status line
 set showcmd                 " show command in statusline
@@ -226,15 +419,70 @@ set listchars=tab:>-,trail:·        " show tabs and trailing space
 set list                            " enable the above settings
 autocmd BufWritePre * :%s/\s\+$//e  " auto remove trailing whitespace
 
-" colours
+" colors
 " set t_Co=256                " enable 256 colour themes
 set termguicolors           " enable 256 colour themes
 colorscheme gruvbox         " gruvbox colourscheme
 set background=dark         " use dark background
-" hi Normal ctermbg=none    " transparent background
-
+let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
 set cursorline              " highlight current line
 set ttyfast                 " improves redrawing for newer computers
+
+augroup LighterCursorLine
+    autocmd!
+    "autocmd ColorScheme * highlight clear CursorLine
+    "autocmd ColorScheme * highlight CursorLine guibg=#32302f
+    autocmd ColorScheme * if &background == "dark" | highlight CursorLine guibg=#32302f | else | highlight CursorLine guibg=#f2e5bc | endif
+augroup END
+
+augroup BoldCursorLineNr
+    autocmd!
+    "autocmd ColorScheme * highlight CursorLineNR cterm=bold guibg=#282828
+    autocmd ColorScheme * if &background == "dark" | highlight CursorLineNR cterm=bold guibg=#32302f | else | highlight CursorLineNR cterm=bold guibg=#f2e5bc | endif
+augroup END
+
+augroup LighterQuickFixLine
+    autocmd!
+    "autocmd ColorScheme * highlight QuickFixLine ctermbg=Yellow guibg=#504945
+    "autocmd ColorScheme * highlight qfFileName guifg=#fe8019
+    autocmd ColorScheme * if &background == "dark" | highlight QuickFixLine ctermbg=Yellow guibg=#504945 | else | highlight QuickFixLine ctermbg=Yellow guibg=#d5c4a1 | endif
+    autocmd ColorScheme * if &background == "dark" | highlight qfFileName guifg=#fe8019 | else | highlight qfFileName guifg=#af3a03 | endif
+augroup END
+
+augroup SearchHighlightColor
+    autocmd!
+    "autocmd ColorScheme * highlight Search guibg=#282828 guifg=#fe8019
+    autocmd ColorScheme * if &background == "dark" | highlight Search guibg=#282828 guifg=#fe8019 | else | highlight Search guibg=#fbf1c7 guifg=#af3a03 | endif
+augroup END
+
+augroup RefreshAirline
+    autocmd!
+    autocmd ColorScheme * if exists(':AirlineRefresh') | :AirlineRefresh | endif
+augroup END
+
+augroup SpellBadUnderline
+    autocmd!
+    autocmd BufEnter,WinEnter * highlight SpellBad gui=underline term=underline cterm=underline
+augroup END
+
+if &term !=? 'linux' || has('gui_running')
+    set listchars=tab:›\ ,extends:>,precedes:<,nbsp:˷,eol:⤶,trail:~
+    set fillchars=vert:│,fold:─,diff:-
+    augroup TrailingSpaces
+        autocmd!
+        autocmd InsertEnter * set listchars-=eol:⤶,trail:~
+        autocmd InsertLeave * set listchars+=eol:⤶,trail:~
+    augroup END
+else
+    set listchars=tab:>\ ,extends:>,precedes:<,nbsp:+,eol:$,trail:~
+    set fillchars=vert:\|,fold:-,diff:-
+    augroup TrailingSpaces
+        autocmd!
+        autocmd InsertEnter * set listchars-=eol:$,trail:~
+        autocmd InsertLeave * set listchars+=eol:$,trail:~
+    augroup END
+endif
 " }}}
 
 " {{{ Formatting

@@ -3,8 +3,8 @@ path=/home/oda/mail
 
 [user]
 name=Brian Clemens
-primary_email=brian@teknik.io
-other_email=brianfclemens@gmail.com;brian.f.clemens.mil@mail.mil
+primary_email=brian@tiuxo.com
+other_email=brian@teknik.io;brianfclemens@gmail.com;brian.f.clemens.mil@mail.mil;support@tiuxo.com;
 
 [new]
 tags=unread;inbox;

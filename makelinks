@@ -1,6 +1,6 @@
 #! /bin/bash
 
-# This script is for my own use.  Don't do it.
+# Don't do it, you'll break everything.
 
 CONFIG="$(pwd)"
 
@@ -16,14 +16,8 @@ ln -fsT "${CONFIG}/beets/config.yaml" "${HOME}/.config/beets/config.yaml"
 # bin
 ln -fsT "${CONFIG}/bin" "${HOME}/bin"
 
-# bspwm
-ln -fsT "${CONFIG}/bspwm/bspwmrc" "${HOME}/.config/bspwm/bspwmrc"
-
 # compton
 ln -fsT "${CONFIG}/compton/compton.conf" "${HOME}/.config/compton.conf"
-
-# dunst
-ln -fsT "${CONFIG}/dunst/dunstrc" "${HOME}/.config/dunst/dunstrc"
 
 # fortune
 ln -fsT "${CONFIG}/fortune" "${HOME}/.config/fortune"
@@ -70,9 +64,6 @@ ln -fsT "${CONFIG}/notmuch/notmuch-config" "${HOME}/.notmuch-config"
 # nvim
 ln -fsT "${CONFIG}/nvim/init.vim" "${HOME}/.config/nvim/init.vim"
 
-# polybar
-ln -fsT "${CONFIG}/polybar/config" "${HOME}/.config/polybar/config"
-
 # ranger
 ln -fsT "${CONFIG}/ranger/colorschemes/gruvbox.py" "${HOME}/.config/ranger/colorschemes/gruvbox.py"
 ln -fsT "${CONFIG}/ranger/rc.conf" "${HOME}/.config/ranger/rc.conf"
@@ -82,9 +73,6 @@ ln -fsT "${CONFIG}/ranger/scope.sh" "${HOME}/.config/ranger/scope.sh"
 # rofi
 ln -fsT "${CONFIG}/rofi/config.rasi" "${HOME}/.config/rofi/config.rasi"
 ln -fsT "${CONFIG}/rofi/gruvbox.rasi" "${HOME}/.config/rofi/gruvbox.rasi"
-
-# sxhkd
-ln -fsT "${CONFIG}/sxhkd/sxhkdrc" "${HOME}/.config/sxhkd/sxhkdrc"
 
 # tmux
 ln -fsT "${CONFIG}/tmux/tmux.conf" "${HOME}/.tmux.conf"

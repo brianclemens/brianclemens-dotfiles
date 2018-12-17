@@ -8,7 +8,7 @@ export VISUAL='nvim'
 # }}}
 
 # {{{ docker
-export DOCKER_HOST='tcp://dockmaster.tiuxo.com:2376'
+export DOCKER_HOST='tcp://75.189.196.236:2376'
 export DOCKER_TLS_VERIFY=1
 # }}}
 

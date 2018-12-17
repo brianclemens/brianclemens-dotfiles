@@ -8,11 +8,19 @@ local lain = require("lain")
 -- Load and initialize theme handling library
 local beautiful = require("beautiful")
 beautiful.init("/home/oda/.config/awesome/theme.lua")
+local dpi = beautiful.xresources.apply_dpi
 
 -- Notification library
 local naughty = require("naughty")
 
 local markup = lain.util.markup
+
+-- {{{ Music player daemon
+local mpd_prefix = wibox.widget {
+    image = beautiful.icon_media_player,
+    forced_width = beautiful.bar_icon_size,
+    widget = wibox.widget.imagebox
+}
 
 mpd_widget = lain.widget.mpd {
     default_art = "/home/oda/.config/awesome/icons/default_album.png",
@@ -22,33 +30,88 @@ mpd_widget = lain.widget.mpd {
             artist = " " .. mpd_now.artist .. " "
             title  = mpd_now.title  .. " "
             widget:set_markup(markup.font(beautiful.font, markup("#FF8466", artist) .. " " .. title))
+            mpd_prefix:set_image(beautiful.icon_media_player)
         elseif mpd_now.state == "pause" then
             widget:set_markup(markup.font(beautiful.font, " mpd paused "))
+            mpd_prefix:set_image(beautiful.icon_media_player)
         else
             widget:set_text("")
+            mpd_prefix:set_image()
         end
     end
 }
+-- }}}
 
--- Keyboard map indicator and switcher
-mykeyboardlayout = awful.widget.keyboardlayout()
+-- {{{ Clock and calendar
+local clock_prefix = wibox.widget {
+    image = beautiful.icon_clock,
+    forced_width = beautiful.bar_icon_size,
+    widget = wibox.widget.imagebox
+}
 
--- clock with calendar popup
-clock_prefix = wibox.widget.textbox(" ")
-clock_widget = wibox.widget.textclock("%H:%M")
-calendar_popup = awful.widget.calendar_popup.month{
+local clock_widget = wibox.widget.textclock("%H:%M")
+
+local calendar_popup = awful.widget.calendar_popup.month{
     font = beautiful.font
 }
 calendar_popup:attach(clock_widget, "tc")
+-- }}}
 
-volume_prefix = wibox.widget.textbox("v")
+-- {{{ Wifi
+local wifi_prefix = wibox.widget {
+    image = beautiful.icon_wifi_disconnect,
+    forced_width = beautiful.bar_icon_size,
+    widget = wibox.widget.imagebox
+}
+-- }}}
+
+-- {{{ Volume
+local volume_prefix = wibox.widget {
+    image = beautiful.icon_volume_medium,
+    forced_width = beautiful.bar_icon_size,
+    widget = wibox.widget.imagebox
+}
+
 volume_widget = lain.widget.alsa {
     settings = function()
         vol_text = volume_now.level
+        if volume_now.status == "off" then
+            vol_text = "mute"
+            volume_prefix:set_image(beautiful.icon_volume_mute)
+        elseif tonumber(volume_now.level) < 25 then
+            volume_prefix:set_image(beautiful.icon_volume_off)
+        elseif tonumber(volume_now.level) < 50 then
+            volume_prefix:set_image(beautiful.icon_volume_low)
+        elseif tonumber(volume_now.level) < 75 then
+            volume_prefix:set_image(beautiful.icon_volume_medium)
+        else
+            volume_prefix:set_image(beautiful.icon_volume_high)
+        end
+        widget:set_markup(markup.fontfg(beautiful.font, beautiful.fg_normal, " " .. volume_now.level .. " "))
     end
 }
 
+volume_widget.widget:buttons(awful.util.table.join(
+    awful.button({}, 1, function() -- Left click
+        os.execute("amixer -q set Master toggle")
+        volume_widget.update()
+    end),
+    awful.button({}, 3, function() -- Right click
+        os.execute(string.format("%s set %s toggle", volume.cmd, volume.togglechannel or volume.channel))
+        volume_widget.update()
+    end),
+    awful.button({}, 4, function() -- Scroll up
+        os.execute("amixer -q set Master 1%+")
+        volume_widget.update()
+    end),
+    awful.button({}, 5, function() -- Scroll down
+        os.execute("amixer -q set Master 1%-")
+        volume_widget.update()
+    end)
+))
+
 volume_widget.update()
+-- }}}
 
 -- {{{ TODO what the fuck is this shit
 -- Create a wibox for each screen and add it
@@ -121,16 +184,16 @@ awful.screen.connect_for_each_screen(function(s)
         },
         { -- Middle
             layout = wibox.layout.fixed.horizontal,
-            clock_prefix,
+            wibox.container.place(clock_prefix),
             clock_widget,
         },
         { -- Right
             layout = wibox.layout.fixed.horizontal,
+            wibox.container.place(mpd_prefix),
             mpd_widget,
-            mykeyboardlayout,
+            wibox.container.place(volume_prefix),
             volume_widget.widget,
             wibox.widget.systray(),
-            s.mylayoutbox,
         },
     }
 end)

@@ -12,10 +12,10 @@ local theme = {}
 theme.font = "Source Sans Pro 14"
 
 theme.bg_normal = "#1d2021d8"
-theme.fg_normal = "#f0f0f0d8"
+theme.fg_normal = "#fbf1c7d8"
 
 theme.bg_focus = "#076678d8"
-theme.fg_focus = "#ffffff"
+theme.fg_focus = "#fbf1c7"
 
 theme.bg_urgent     = "#ff0000"
 theme.bg_minimize   = "#444444"
@@ -29,7 +29,35 @@ theme.useless_gap   = dpi(12)
 theme.border_radius = dpi(12)
 theme.border_width  = dpi(0)
 
--- {{{ calendar widget
+theme.bar_icon_size = dpi(25)
+
+theme.bar_value_bg = ({ type = "linear",
+    from = { 0, 0 },
+    to = { 0, 75 },
+    stops = { { 0, "#1d2021" },
+        { 1, "#665c54" },
+        { 2, "#1d2021" }
+    }
+})
+
+-- {{{ Volume widget
+theme.icon_volume_mute = icon_path .. "volume_mute.svg"
+theme.icon_volume_off = icon_path .. "volume_off.svg"
+theme.icon_volume_low = icon_path .. "volume_low.svg"
+theme.icon_volume_medium = icon_path .. "volume_medium.svg"
+theme.icon_volume_high = icon_path .. "volume_high.svg"
+-- }}}
+
+-- {{{ MPD widget
+theme.icon_media_player = icon_path .. "media_player.png"
+-- }}}
+
+-- {{{ Network widget
+theme.icon_wifi = icon_path .. "media_player.png"
+-- }}}
+
+-- {{{ Clock and calendar widget
+theme.icon_clock = icon_path .. "clock.svg"
 theme.calendar_focus_bg_color = "#00000000"
 theme.calendar_focus_border_width = 2
 theme.calendar_focus_shape = function(cr,w,h)

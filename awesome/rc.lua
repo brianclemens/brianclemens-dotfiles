@@ -10,8 +10,10 @@ local lain = require("lain")
 local beautiful = require("beautiful")
 beautiful.init("/home/oda/.config/awesome/theme.lua")
 
--- Notification library
+-- Notifications
 local naughty = require("naughty")
+naughty.config.defaults.border_width = beautiful.notification_border_width
+naughty.config.defaults.margin = beautiful.notification_margin
 
 -- Populate hotkeys
 require("bindings")

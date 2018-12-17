@@ -46,18 +46,31 @@ alias testpowerline='echo "\ue0b0 \u00b1 \ue0a0 \u27a6 \u2718 \u26a1 \u2699"'
 #   }}}
 
 #   {{{ Web Services
-0x0() { curl -F"file=@$1" https://0x0.st; }             # temporary upload
-cheatsheet() { curl cheat.sh/$1; }                      # command cheatsheet
-qrcode() { echo $@ | curl -F-=\<- qrenco.de; }          # print qrcode
+# 0x0.st
+0upload() { curl -F"file=@$1" https://0x0.st; }
+0remote() { curl -F"url=$1" https://0x0.st; }
+0shorten() { curl -F"shorten=$1" https://0x0.st; }
+
+# cheat.sh
+cheatsheet() { curl cheat.sh/$1; }
+
+# OpenDNS
+alias wanip='drill +short myip.opendns.com @resolver1.opendns.com'
+
+# PornHub
 alias porn=' mpv "http://www.pornhub.com/random"'       # ayy lmao
-alias wanip='dig +short myip.opendns.com @resolver1.opendns.com'
+
+# qrenco.de
+qrcode() { echo $@ | curl -F-=\<- qrenco.de; }          # print qrcode
+
+# wttr.in
 alias weather='curl -s wttr.in/~白井市 | head -7'       # print weather
 alias weatherforecast='curl -s wttr.in/~白井市 | head -37 | tail -30'
 #   }}}
 
 alias ap='sudo create_ap --config ~/.config/create_ap.conf' # spawn wifi spot
 alias axel='axel -a -n 2 -T 10 -U "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36" -v'
-alias bm='bmon -p wlp0s29u1u2,wlp0s29u1u1,wlp2s0,ap0 -o "curses:fgchar=S;bgchar=.;nchar=N;uchar=?;details"'
+alias bm='bmon -p dong0,dong1,wifi0,ap0 -o "curses:fgchar=S;bgchar=.;nchar=N;uchar=?;details"'
 alias d='kitty +kitten diff'                            # fast diff
 alias dc='docker-compose'                               # docker
 alias feh='feh --scale-down'                            # feh fit photo
@@ -74,7 +87,6 @@ alias pactree='pactree --color'         # colorize pactree
 alias ping='ping -c 4'                  # don't ping forever
 alias tree='tree -C'                    # colorize tree
 alias vi='nvim'; alias vim='nvim'       # use nvim where vi or vim is called
-alias vd='nvim -d'                      # use nvim when diffing
 alias zeph='Xephyr :5 & sleep 1 ; DISPLAY=:5 awesome'   # xephyr window
 
 # }}}

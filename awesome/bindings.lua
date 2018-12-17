@@ -24,25 +24,29 @@ clientbuttons = gears.table.join(
 
 -- {{{ Key bindings
 globalkeys = gears.table.join(
+-- Hotkey map cheatsheet
     awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
               {description="show help", group="awesome"}),
+
+-- Previously selected tag
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore,
               {description = "go back", group = "tag"}),
 
+-- Next window
     awful.key({ modkey,           }, "j",
         function ()
             awful.client.focus.byidx( 1)
         end,
-        {description = "focus next by index", group = "client"}
-    ),
+        {description = "focus next by index", group = "client"}),
+
+-- Previous window
     awful.key({ modkey,           }, "k",
         function ()
             awful.client.focus.byidx(-1)
         end,
-        {description = "focus previous by index", group = "client"}
-    ),
+        {description = "focus previous by index", group = "client"}),
 
-    -- Layout manipulation
+-- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end,
               {description = "swap with next client by index", group = "client"}),
     awful.key({ modkey, "Shift"   }, "k", function () awful.client.swap.byidx( -1)    end,
@@ -62,44 +66,89 @@ globalkeys = gears.table.join(
         end,
         {description = "go back", group = "client"}),
 
-    -- Standard program
-    awful.key({ modkey }, "Return", function () awful.spawn(terminal) end,
-              {description = "terminal", group = "launcher"}),
-    awful.key({ modkey }, "space", function () awful.spawn("rofi -show combi") end,
-              {description = "launcher", group = "launcher"}),
+-- Terminal
+    awful.key({ modkey }, "Return", function ()
+        awful.spawn(terminal)
+    end,
+   {description = "terminal", group = "launcher"}),
+
+-- Launcher
+    awful.key({ modkey }, "space", function ()
+        awful.spawn("rofi -show combi")
+    end,
+   {description = "launcher", group = "launcher"}),
+
+-- Window manager
     awful.key({ modkey, "Control" }, "r", awesome.restart,
               {description = "reload awesome", group = "awesome"}),
+
     awful.key({ modkey, "Shift" }, "q", awesome.quit,
               {description = "quit awesome", group = "awesome"}),
 
-    -- file browser
-    awful.key({ modkey }, "e", function () awful.spawn("thunar") end,
-              {description = "file browser", group = "launcher"}),
+-- File browser
+    awful.key({ modkey }, "e", function ()
+        awful.spawn("thunar")
+    end,
+    {description = "file browser", group = "launcher"}),
 
-    -- media control
-    awful.key({ modkey }, "]", function () awful.spawn("mpc next") end,
-              {description = "next track", group = "media"}),
-    awful.key({ modkey }, "[", function () awful.spawn("mpc prev") end,
-              {description = "previous track", group = "media"}),
-    awful.key({ modkey }, "\\", function () awful.spawn("mpc toggle") end,
-              {description = "toggle playback", group = "media"}),
-    awful.key({ modkey, "Shift"  }, "\\", function () awful.spawn(terminal .. " -e ncmpcpp") end,
-              {description = "music client", group = "launcher"}),
+-- Media controls
+    awful.key({ modkey }, "]", function ()
+            awful.spawn("mpc next")
+            mpd_widget.update()
+        end,
+        {description = "next", group = "media"}),
 
-    -- screen brightness
-    awful.key({}, "XF86MonBrightnessDown", function () awful.spawn("xbacklight -dec 1 -steps 1") end),
-    awful.key({}, "XF86MonBrightnessUp", function () awful.spawn("xbacklight -inc 1 -steps 1") end),
+    awful.key({ modkey }, "[", function ()
+            awful.spawn("prev")
+            mpd_widget.update()
+        end,
+        {description = "previous", group = "media"}),
 
-    -- screenshot
-    awful.key({}, "XF86WebCam", function () awful.spawn.with_shell("~/bin/screenshot") end),
+    awful.key({ modkey }, "\\", function ()
+            awful.spawn("mpc toggle")
+            mpd_widget.update()
+        end,
+        {description = "toggle playback", group = "media"}),
 
-    -- touchpad
-    awful.key({}, "XF86TouchpadToggle", function () awful.spawn.with_shell("~/bin/toggletouchpad") end),
+    awful.key({ modkey, "Shift"  }, "\\", function ()
+            awful.spawn(terminal .. " -e ncmpcpp")
+        end,
+        {description = "music player", group = "launcher"}),
 
-    -- volume
-    awful.key({}, "XF86AudioLowerVolume", function () awful.spawn("amixer -q set Master 5%-") end),
-    awful.key({}, "XF86AudioRaiseVolume", function () awful.spawn("amixer -q set Master 5%+") end),
-    awful.key({}, "XF86AudioMute", function () awful.spawn("amixer -q set Master toggle") end),
+-- Screen brightness
+    awful.key({}, "XF86MonBrightnessDown", function ()
+        awful.spawn("xbacklight -dec 1 -steps 1")
+    end),
+
+    awful.key({}, "XF86MonBrightnessUp", function ()
+        awful.spawn("xbacklight -inc 1 -steps 1")
+    end),
+
+-- Screenshot
+    awful.key({}, "XF86WebCam", function ()
+        awful.spawn.with_shell("~/bin/screenshot")
+    end),
+
+-- Touchpad toggle
+    awful.key({}, "XF86TouchpadToggle", function ()
+        awful.spawn.with_shell("~/bin/toggletouchpad")
+    end),
+
+-- Volume
+    awful.key({}, "XF86AudioLowerVolume", function ()
+        os.execute("amixer -q set Master 5%-")
+        volume_widget.update()
+    end),
+
+    awful.key({}, "XF86AudioRaiseVolume", function ()
+        os.execute("amixer -q set Master 5%+")
+        volume_widget.update()
+    end),
+
+    awful.key({}, "XF86AudioMute", function ()
+        os.execute("amixer -q set Master toggle")
+        volume_widget.update()
+    end),
 
     awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)          end,
               {description = "increase master width factor", group = "layout"}),
@@ -127,7 +176,7 @@ globalkeys = gears.table.join(
               end,
               {description = "restore minimized", group = "client"}),
 
-    -- Prompt
+-- Prompt
     awful.key({ modkey },            "r",     function () awful.screen.focused().mypromptbox:run() end,
               {description = "run prompt", group = "launcher"}),
 
@@ -140,10 +189,7 @@ globalkeys = gears.table.join(
                     history_path = awful.util.get_cache_dir() .. "/history_eval"
                   }
               end,
-              {description = "lua execute prompt", group = "awesome"}),
-    -- Menubar
-    awful.key({ modkey }, "p", function() menubar.show() end,
-              {description = "show the menubar", group = "launcher"})
+              {description = "lua execute prompt", group = "awesome"})
 )
 
 clientkeys = gears.table.join(
