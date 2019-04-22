@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# Aliases for managing a Mikrotik router
+
+# Remove a host from the list 'blacklist'
+mikrotik_unblock() {
+    ssh "$1" "ip firewall address-list remove [find list=blacklist address=$2]"
+}
+
+# Remove the WAN IP of this host from the list 'blacklist'
+mikrotik_unblock_me() {
+    ssh "$1" "ip firewall address-list remove [find list=blacklist address=$(curl -s http://whatismyip.akamai.com)]"
+}

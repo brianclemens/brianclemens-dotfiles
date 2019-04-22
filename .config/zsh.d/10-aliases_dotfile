@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# Aliases for managing dotfiles
+
+alias dot='/usr/bin/git --git-dir=$HOME/.config/dotfiles --work-tree=$HOME'

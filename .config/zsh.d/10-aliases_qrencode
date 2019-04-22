@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# Aliases for https://qrenco.de
+
+# Generate a qr code from stdin
+qrcode() {
+    echo "$@" | curl -F-=\<- https://qrenco.de
+}

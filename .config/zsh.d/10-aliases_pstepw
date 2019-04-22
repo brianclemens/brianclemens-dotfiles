@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# Aliases for https://pste.pw
+
+# Upload a file to pste.pw and copy the URL to clipboards
+pste() {
+    url="$(curl -F "key=$(pass pste.pw/apikey)" -F "file=@$1" https://pste.pw/api/upload | grep -o -i "https://a.pste.pw/*.[a-z0-9._-]*")"
+    echo "$url" | xclip -selection primary
+    echo "$url" | xclip -selection clipboard
+    notify-send "pste.pw Upload Complete" "$1"
+}

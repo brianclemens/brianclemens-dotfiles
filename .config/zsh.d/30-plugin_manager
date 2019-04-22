@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+# zsh plugin management by https://github.com/zdharma/zplugin
+
+source "$ZPLG_HOME/bin/zplugin.zsh"
+autoload -Uz _zplugin
+(( ${+_comps} )) && _comps[zplugin]=_zplugin

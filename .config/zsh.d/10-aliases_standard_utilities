@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# Ascend working directory tree with '.'
+alias .='cd ../'
+alias ..='cd ../../'
+alias ...='cd ../../../'
+
+# Interactive and verbose copy
+alias cp='cp -i -v'
+
+# List all files
+alias l='ls -l -a'
+
+# List files
+alias ll='ls -l'
+
+# List files to pager
+ls() {
+    command ls -F -h --color=always -v --time-style=long-iso -C "$@" | less -R -X -F
+}
+
+# Create directories recursively
+alias mkdir='mkdir -p'
+
+# Interactive and verbose move
+alias mv='mv -i -v'
+
+# Interactive and verbose delete
+alias rm='rm -i -v'

@@ -1,0 +1,33 @@
+#!/bin/zsh
+
+# ZSH completion
+
+autoload -Uz compinit
+
+# Throttle compinit to once an hour
+re_initialize=0
+for match in $HOME/.zcompdump*(.Nmh+1); do
+    re_initialize=1
+    break
+done
+if [ "$re_initialize" -eq "1" ]; then
+    compinit
+    compdump
+else
+    compinit -C
+fi
+
+# Autocomplete aliases
+setopt COMPLETE_ALIASES
+
+# Show menu-style completion
+zstyle ':completion:*' menu select
+
+# Fuzzy completion
+zstyle ':completion:*' matcher-list '' \
+    'm:{a-z\-}={A-Z\_}' \
+    'r:[^[:alpha:]]||[[:alpha:]]=** r:|=* m:{a-z\-}={A-Z\_}' \
+    'r:[[:ascii:]]||[[:ascii:]]=** r:|=* m:{a-z\-}={A-Z\_}'
+zstyle ':completion:*:functions' ignored-patterns '_*'
+zstyle ':completion:*' format $'\n%F{green}%d%f'
+zstyle ':completion:*' group-name ''

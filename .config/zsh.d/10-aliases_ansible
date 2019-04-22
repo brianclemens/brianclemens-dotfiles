@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# Aliases for Ansible
+
+# Go to Ansible home directory
+alias ad='cd $ANSIBLE_HOME'
+
+# Use site playbook
+alias an='ansible-playbook $ANSIBLE_HOME/site.yml'

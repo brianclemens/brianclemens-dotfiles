@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# Aliases for https://wttr.in
+
+# Show the current weather
+alias weather='curl -s https://wttr.in/~白井市 | head -7'
+
+# Show weather forecast
+alias weatherforecast='curl -s https://wttr.in/~白井市 | head -37 | tail -30'

@@ -1,0 +1,6 @@
+#!/bin/zsh
+
+# Syntax highlighting by https://github.com/zdharma/fast-syntax-highlighting
+
+zplugin ice wait"0" lucid
+zplugin light zdharma/fast-syntax-highlighting

@@ -1,0 +1,26 @@
+#!/bin/sh
+
+# Aliases for https://0x0.st
+
+# Upload a local file
+0x0_upload() {
+    url="$(curl -F "file=@$1" https://0x0.st)"
+    echo "$url" | xclip -selection primary
+    echo "$url" | xclip -selection clipboard
+    notify-send "0x0.st Upload Complete" "$1"
+}
+
+# Upload a remote file
+0x0_remote() {
+    url="$(curl -F "url=$1" https://0x0.st)"
+    echo "$url" | xclip -selection primary
+    echo "$url" | xclip -selection clipboard
+    notify-send "0x0.st Upload Complete" "$1"
+}
+
+# Shorten a URL
+0x0_shorten() {
+    url="$(curl -F "shorten=$1" https://0x0.st)"
+    echo "$url" | xclip -selection primary
+    echo "$url" | xclip -selection clipboard
+}

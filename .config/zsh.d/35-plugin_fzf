@@ -1,0 +1,5 @@
+#!/bin/zsh
+
+# Command line fuzzy finder by https://github.com/junegunn/fzf
+
+zplugin ice from"gh-r" as"program"; zplugin load junegunn/fzf-bin
