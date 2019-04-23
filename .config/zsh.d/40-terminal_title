@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# Set terminal title
+
+case $TERM in
+  (*xterm* | rxvt*)
+    # Write some info to terminal title when idle
+    function precmd {
+      print -Pn "\\e]0;zsh %(1j,%j job%(2j|s|); ,)%~\\a"
+    }
+    # Write currently executing command and args to terminal title
+    function preexec {
+      printf "\\033]0;%s\\a" "$1"
+    }
+  ;;
+esac

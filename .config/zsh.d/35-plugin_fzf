@@ -3,3 +3,6 @@
 # Command line fuzzy finder by https://github.com/junegunn/fzf
 
 zplugin ice from"gh-r" as"program"; zplugin load junegunn/fzf-bin
+
+source "$HOME/.config/nvim/plugged/fzf/shell/completion.zsh"
+source "$HOME/.config/nvim/plugged/fzf/shell/key-bindings.zsh"

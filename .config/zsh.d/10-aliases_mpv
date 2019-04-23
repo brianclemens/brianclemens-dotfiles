@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# Aliases for mpv https://mpv.io
+
+# ayy lmao
+alias porn=' mpv --no-terminal --ytdl "http://www.pornhub.com/random"'

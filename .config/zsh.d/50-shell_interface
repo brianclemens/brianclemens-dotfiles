@@ -1,0 +1,6 @@
+#!/bin/zsh
+
+# ZSH interface settings
+
+# Use vim mode
+bindkey -v

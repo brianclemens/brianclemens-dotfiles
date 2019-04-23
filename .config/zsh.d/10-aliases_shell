@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# Aliases for shell management
+
+# List background jobs
+alias j='jobs -l'
+
+# Show executable paths
+alias path='echo -e ${PATH//:/\\n}'
+
+# Show library paths
+alias libpath='echo -e ${LD_LIBRARY_PATH//:/\\n}'
+
+# Test printing of powerline characters
+alias testpowerline='echo "\ue0b0 \u00b1 \ue0a0 \u27a6 \u2718 \u26a1 \u2699"'

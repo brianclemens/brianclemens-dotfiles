@@ -8,6 +8,12 @@ alias ...='cd ../../../'
 # Interactive and verbose copy
 alias cp='cp -i -v'
 
+# Use colors in grep
+alias grep='grep --color=auto'
+
+# Use colors in ip
+alias ip='ip -c'
+
 # List all files
 alias l='ls -l -a'
 
@@ -25,5 +31,17 @@ alias mkdir='mkdir -p'
 # Interactive and verbose move
 alias mv='mv -i -v'
 
+# Ping 4 times
+alias ping='ping -c 4'
+
 # Interactive and verbose delete
 alias rm='rm -i -v'
+
+# Alias sudo so that subsequent aliases are passed to it
+alias sudo='sudo'
+
+# Use colors in tree
+alias tree='tree -C'
+
+# Show remote host in w
+alias w='w -f'

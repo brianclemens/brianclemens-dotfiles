@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+# ZSH history settings
+
+# Location of history file
+HISTFILE="$HOME/.local/histfile"
+
+# Maximum history entries
+HISTSIZE=4000
+SAVEHIST=4000
+
+# Pop duplicate entries from the history file
+setopt HIST_EXPIRE_DUPS_FIRST

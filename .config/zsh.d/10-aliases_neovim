@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# Aliases for neovim https://neovim.io
+
+# Diff using neovim
+alias d='nvim -d'
+
+# Use neovim in place of vi or vim
+alias vi='nvim'
+alias vim='nvim'

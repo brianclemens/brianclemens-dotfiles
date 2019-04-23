@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# Set terminal colors
+
+source "$HOME/.config/nvim/plugged/gruvbox/gruvbox_256palette.sh"

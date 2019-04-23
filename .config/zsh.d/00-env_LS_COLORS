@@ -1,0 +1,37 @@
+#!/bin/zsh
+
+mime_archive=(
+	7z ace arj bz bz2 cpio deb dz gz jar lzh lzma rar rpm rz svgz
+	tar taz tbz2 tgz tz xz z Z zip zoo
+)
+mime_audio=(
+	aif aifc aiff amr amr au awb awb axa flac gsm kar m3u m3u m4a mid midi
+	mp2 mp3 mpega mpga oga ogg pls ra ra ram rm sd2 sid snd spx wav wax wma
+)
+mime_document=(pdf ps)
+mime_image=(
+	art bmp cdr cdt cpt cr2 crw djv djvu erf gif ico ief jng jpe jpeg jpg nef
+	orf pat pbm pcx pgm png pnm ppm psd ras rgb svg svgz tif tiff wbmp xbm
+	xpm xwd
+)
+mime_video=(
+	3gp asf asx avi axv dif divx dl dv fli flv gl lsf lsx m2t mkv mng mov
+	movie mp4 mpe mpeg mpg mpv mxu ogm ogv qt rmvb ts webm wm wmv wmx wvx
+)
+
+#        default:file :dirctory:  link  :  pipe  : socket
+LS_COLORS="no=00:fi=00:di=01;37:ln=01;36:pi=40;33:so=01;35"
+
+#            door    : block dev : char dev  :broken link: setuid
+LS_COLORS+=":do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:su=37;41"
+
+#            setgid  : +t,o+w :  o+w   : sticky : executable
+LS_COLORS+=":sg=30;43:tw=30;42:ow=34;42:st=37;44:ex=01;32"
+
+LS_COLORS+=:${(j/:/):-"*."${^mime_archive}"=04;31"}
+LS_COLORS+=:${(j/:/):-"*."${^mime_audio}"=04;36"}
+LS_COLORS+=:${(j/:/):-"*."${^mime_document}"=04"}
+LS_COLORS+=:${(j/:/):-"*."${^mime_image}"=04;33"}
+LS_COLORS+=:${(j/:/):-"*."${^mime_video}"=04;32"}
+
+export LS_COLORS

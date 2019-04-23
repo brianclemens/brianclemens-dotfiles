@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# Aliases for neomutt https://neomutt.org
+
+# Use neomutt in place of mutt
+alias mutt='neomutt'
