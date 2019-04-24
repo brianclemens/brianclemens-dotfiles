@@ -1,21 +1,35 @@
 " {{{ Plugins
 call plug#begin('~/.config/nvim/plugged')
-    Plug 'airblade/vim-gitgutter'               " show git diffs
-    Plug 'majutsushi/tagbar'                    " code browser
-    Plug 'junegunn/fzf'                         " search
-    Plug 'morhetz/gruvbox'                      " theme
-    Plug 'vim-airline/vim-airline'              " status line
-    Plug 'w0rp/ale'                             " linting
-    Plug 'Yggdroot/indentLine'                  " indentation guides
-    Plug 'tomtom/tcomment_vim'                  " comments
+    Plug 'junegunn/fzf'
 
+    " Autocompletion
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+    Plug 'paretje/deoplete-notmuch', {'for': 'mail'}
+    Plug 'fszymanski/deoplete-emoji'
+    " Plug 'ncm2/float-preview.nvim'
+
+    " Version control
+    Plug 'airblade/vim-gitgutter'
+    Plug 'tpope/vim-fugitive'
+
+    " Interface
+    Plug 'morhetz/gruvbox'
+    Plug 'Yggdroot/indentLine'
+    Plug 'vim-airline/vim-airline'
+
+    " Snippets
+    Plug 'SirVer/ultisnips'
+    Plug 'honza/vim-snippets'
+
+    " Language comprehension
+    Plug 'pearofducks/ansible-vim', { 'do': 'cd ./UltiSnips; ./generate.py' }
+    Plug 'liuchengxu/vista.vim'
+    Plug 'w0rp/ale'
+    Plug 'tomtom/tcomment_vim'
     Plug 'autozimu/LanguageClient-neovim', {
             \ 'branch': 'next',
             \ 'do': 'bash install.sh',
             \ }
-"     Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
-     Plug 'lervag/vimtex', { 'for': ['latex', 'tex'] }
 call plug#end()
 " }}}
 
@@ -34,10 +48,6 @@ if !exists('g:airline_symbols')
 endif
 
 " Unicode symbols
-let g:airline_left_alt_sep = '»'
-let g:airline_left_sep = '▶'
-let g:airline_right_alt_sep = '«'
-let g:airline_right_sep = '◀'
 let g:airline_symbols.crypt = '🔒'
 let g:airline_symbols.linenr = '☰'
 let g:airline_symbols.linenr = '␊'
@@ -52,11 +62,10 @@ let g:airline_symbols.spell = 'Ꞩ'
 let g:airline_symbols.notexists = '∄'
 let g:airline_symbols.whitespace = 'Ξ'
 
-" Powerline symbols
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_right_alt_sep = ''
+let g:airline_left_sep = ' '
+let g:airline_left_alt_sep = '|'
+let g:airline_right_sep = ' '
+let g:airline_right_alt_sep = '|'
 let g:airline_symbols.branch = ''
 let g:airline_symbols.readonly = ''
 let g:airline_symbols.linenr = '☰'
@@ -64,11 +73,13 @@ let g:airline_symbols.maxlinenr = ''
 
 """ Extensions
 let g:airline#extensions#ale#enabled = 1
-let g:airline#extensions#ale#error_symbol = ''
-let g:airline#extensions#ale#warning_symbol = ''
+let g:airline#extensions#ale#error_symbol = '✘'
+let g:airline#extensions#ale#warning_symbol = '✘'
 let g:airline#extensions#ale#show_line_numbers = 0
 
 let g:airline#extensions#hunks#enabled = 0
+
+let g:airline#extensions#languageclient#enabled = 1
 
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_idx_mode = 1
@@ -86,61 +97,121 @@ let g:airline#extensions#whitespace#show_message = 1
 let g:airline#extensions#whitespace#mixed_indent_algo=1
 "   }}}
 
-"   {{{ Ale
-let g:ale_set_loclist=1
-let g:ale_sign_error=' ●'
-let g:ale_sign_warning=' ●'
-let g:ale_lint_on_text_changed='never'
-let g:ale_lint_on_enter=1
-let g:ale_lint_on_save=1
-let g:ale_lint_on_filetype_changed=1
-let g:ale_set_highlights=1
-let g:ale_set_signs=1
+"   {{{ ALE
+" Clean up files on save
+let g:ale_fix_on_save = 1
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\   'css': ['prettier'],
+\   'graphql': ['prettier'],
+\   'html': ['prettier'],
+\   'javascript': ['prettier'],
+\   'json': ['prettier'],
+\   'less': ['prettier'],
+\   'markdown': ['prettier'],
+\   'python': ['yapf'],
+\   'scss': ['prettier'],
+\   'typescript': ['prettier'],
+\   'view': ['prettier'],
+\   'yaml': ['prettier'],
+\}
 
+" Lint files on save and newline
+let g:ale_lint_on_save=1
+let g:ale_lint_on_enter=1
+let g:ale_lint_on_filetype_changed=1
+let g:ale_lint_on_text_changed='never'
+
+" Only run specified linters
+let g:ale_linters_explicit = 1
+let g:ale_linters = {
+\   'asciidoc': ['vale'],
+\   'bash': ['shellcheck'],
+\   'javascript': ['eslint'],
+\   'latex': ['vale'],
+\   'mail': ['vale'],
+\   'markdown': ['vale'],
+\   'python': ['pyls'],
+\   'sh': ['shellcheck'],
+\   'text': ['vale'],
+\   'vim': ['vint'],
+\   'yaml': ['yamllint'],
+\   'zsh': ['shellcheck'],
+\}
+
+" Do not lint or fix minified files.
+let g:ale_pattern_options_enabled = 1
+let g:ale_pattern_options = {
+\ '\.min\.js$': {'ale_linters': [], 'ale_fixers': []},
+\ '\.min\.css$': {'ale_linters': [], 'ale_fixers': []},
+\}
+
+" Show linting results
+let g:ale_set_signs=1
+let g:ale_set_highlights=1
+let g:ale_sign_error=' ✘'
+let g:ale_sign_warning=' ✘'
+" let g:ale_sign_warning=' ⚠'
+
+" Completion is handled by LanguageClient-neovim
+let g:ale_completion_enabled = 0
+
+let g:ale_set_loclist=1
 nmap [w <plug>(ale_previous_wrap)
 nmap ]w <plug>(ale_next_wrap)
-nnoremap <leader>a :ALEEnable<CR>
+nnoremap <leader>a :ALEToggle<CR>
+"   }}}
 
-augroup Ale
-    autocmd!
-    autocmd VimEnter * ALEDisable
-augroup END
+"   {{{ ansible-vim
+let g:ansible_name_highlight = 'b'
+let g:ansible_extra_keywords_highlight = 1
+let g:ansible_unindent_after_newline = 1
 "   }}}
 
 "   {{{ Deoplete and LanguageClient
 let g:deoplete#enable_at_startup = 1
 set completeopt-=preview
 
+" let g:deoplete#sources#notmuch#command = ['notmuch', 'address', '--format=sexp', '--output=recipients', '--deduplicate=address', 'tag:sent']
+
+call deoplete#custom#source('emoji', 'filetypes', ['mail', 'markdown', 'rst'])
+call deoplete#custom#source('emoji', 'converters', ['converter_emoji'])
+
 call g:deoplete#custom#source('LanguageClient',
             \ 'min_pattern_length',
-            \ 2)
+            \ 1)
 
-"" EchoDoc
+" EchoDoc
 let g:echodoc#enable_at_startup=1
 
-"" LanguageClient
+" LanguageClient
 let g:LanguageClient_serverCommands = {
+            \ 'bash': ['bash-language-server', 'start'],
             \ 'c': ['clangd'],
             \ 'cpp': ['clangd'],
-            \ 'css': ['css-languageserver'],
-            \ 'html': ['html-languageserver'],
+            \ 'css': ['css-languageserver', '--stdio'],
+            \ 'html': ['html-languageserver', '--stdio'],
             \ 'go': ['go-langserver'],
             \ 'java': ['jdtls'],
+            \ 'json': ['json-languageserver', '--stdio'],
             \ 'lua': ['lua-lsp'],
             \ 'python': ['pyls'],
             \ 'rust': ['rls'],
+            \ 'sh': ['bash-language-server', 'start'],
+            \ 'zsh': ['bash-language-server', 'start'],
             \ }
 
 " Automatically start language servers
 let g:LanguageClient_autoStart=1
+let g:LanguageClient_useVirtualText=0
 
 augroup LanguageClient_config
     autocmd!
-    autocmd User LanguageClientStarted setlocal signcolumn=yes
+    autocmd User LanguageClientStarted setlocal signcolumn=auto
     autocmd User LanguageClientStopped setlocal signcolumn=auto
 augroup END
 
-nnoremap <silent> <F12> :call LanguageClient_contextMenu()<CR>
+nnoremap <silent> L :call LanguageClient_contextMenu()<CR>
 nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
 nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
 nnoremap <silent> gr :call LanguageClient_textDocument_rename()<CR>
@@ -190,7 +261,7 @@ let g:gitgutter_sign_modified_removed='◢'
 "   }}}
 
 "   {{{ Gruvbox
-let g:gruvbox_contrast_dark = "hard"    " darker background
+let g:gruvbox_contrast_dark = 'hard'
 let g:gruvbox_bold = 1
 let g:gruvbox_italic = 1
 let g:gruvbox_underline = 1
@@ -198,50 +269,110 @@ let g:gruvbox_undercurl = 1
 "   }}}
 
 "   {{{ Indentline
+let g:indentLine_enabled = 0
 let g:indentLine_setColors = 0
-let g:indentLine_char = '▏'
+let g:indentLine_char = '┊'
 nnoremap <Leader>i  :IndentLinesToggle<CR>
 "   }}}
 
-"   {{{ Jedi
-autocmd FileType python setlocal completeopt-=preview
-let g:jedi#use_splits_not_buffers = "left"
+"   {{{ Neosnippet
+" imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+" smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+" xmap <C-k>     <Plug>(neosnippet_expand_target)
+"
+" smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+" \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+"
+" " For conceal markers.
+" if has('conceal')
+"   set conceallevel=2 concealcursor=niv
+" endif
 "   }}}
 
 "   {{{ Tagbar
 nmap <silent><Leader>t :TagbarToggle<CR>
 
 let g:tagbar_type_go = {
-	\ 'ctagstype' : 'go',
-	\ 'kinds'     : [
-		\ 'p:package',
-		\ 'i:imports:1',
-		\ 'c:constants',
-		\ 'v:variables',
-		\ 't:types',
-		\ 'n:interfaces',
-		\ 'w:fields',
-		\ 'e:embedded',
-		\ 'm:methods',
-		\ 'r:constructor',
-		\ 'f:functions'
-	\ ],
-	\ 'sro' : '.',
-	\ 'kind2scope' : {
-		\ 't' : 'ctype',
-		\ 'n' : 'ntype'
-	\ },
-	\ 'scope2kind' : {
-		\ 'ctype' : 't',
-		\ 'ntype' : 'n'
-	\ },
-	\ 'ctagsbin'  : 'gotags',
-	\ 'ctagsargs' : '-sort -silent'
+    \ 'ctagstype' : 'go',
+    \ 'kinds'     : [
+        \ 'p:package',
+        \ 'i:imports:1',
+        \ 'c:constants',
+        \ 'v:variables',
+        \ 't:types',
+        \ 'n:interfaces',
+        \ 'w:fields',
+        \ 'e:embedded',
+        \ 'm:methods',
+        \ 'r:constructor',
+        \ 'f:functions'
+    \ ],
+    \ 'sro' : '.',
+    \ 'kind2scope' : {
+        \ 't' : 'ctype',
+        \ 'n' : 'ntype'
+    \ },
+    \ 'scope2kind' : {
+        \ 'ctype' : 't',
+        \ 'ntype' : 'n'
+    \ },
+    \ 'ctagsbin'  : 'gotags',
+    \ 'ctagsargs' : '-sort -silent'
     \ }
+"   }}}
+
+"   {{{ Ultisnips
+let g:UltiSnipsExpandTrigger='<tab>'
+let g:UltiSnipsJumpForwardTrigger='<c-b>'
+let g:UltiSnipsJumpBackwardTrigger='<c-z>'
+let g:UltiSnipsEditSplit='vertical'
+let g:snips_author='Brian Clemens'
+let g:snips_email='brian@tiuxo.com'
+let g:snips_github='brianclemens'
 "   }}}
 
 "   {{{ Vimtex
 let g:vimtex_view_method='zathura'
+"   }}}
+
+"   {{{ Vista.vim
+" Position to open the vista sidebar.
+let g:vista_sidebar_position = 'vertical botright'
+
+" Width of vista sidebar.
+let g:vista_sidebar_width = 30
+
+" Set this flag to 0 to disable echoing when the cursor moves.
+let g:vista_echo_cursor = 1
+
+" Time delay for showing detailed symbol info at current cursor.
+let g:vista_cursor_delay = 400
+
+" Close the vista window automatically close when you jump to a symbol.
+let g:vista_close_on_jump = 1
+
+" Move to the vista window when it is opened.
+let g:vista_stay_on_open = 1
+
+" Blinking cursor 2 times with 100ms interval after jumping to the tag.
+let g:vista_blink = [2, 100]
+
+" How each level is indented and what to prepend.
+let g:vista_icon_indent = ['└', '├']
+
+" Executive used when opening vista sidebar without specifying it.
+let g:vista_default_executive = 'lcn'
+
+" To enable fzf's preview window set g:vista_fzf_preview.
+" The elements of g:vista_fzf_preview will be passed as arguments to fzf#vim#with_preview()
+" For example:
+let g:vista_fzf_preview = ['right:50%']
+
+function! NearestMethodOrFunction() abort
+  return get(b:, 'vista_nearest_method_or_function', '')
+endfunction
+call airline#parts#define('vista', {'function': 'NearestMethodOrFunction'})
+let g:airline_section_x = airline#section#create_left(['vista'])
 "   }}}
 " }}}
 
@@ -250,7 +381,7 @@ let g:vimtex_view_method='zathura'
 "" Leader key
 nnoremap <Space> <Nop>
 nnoremap <CR> <Nop>
-let mapleader=' '
+let g:mapleader=' '
 
 "" Split navigation
 nnoremap <C-h> <C-w><C-h>
@@ -275,13 +406,6 @@ nnoremap <A-j> :m+<CR>==
 nnoremap <A-k> :m-2<CR>==
 vnoremap <A-j> :m'>+<CR>gv=gv
 vnoremap <A-k> :m-2<CR>gv=gv
-
-" indenting
-nnoremap <Tab> >>_          " increase indent with >>
-nnoremap <S-Tab> <<_        " decrease indent with <<
-inoremap <S-Tab> <C-D>
-vnoremap <Tab> >gv          " tab to increase indent
-vnoremap <S-Tab> <gv        " shift tab to decrease indent
 
 " Copy to system clipboard
 nnoremap gy "+y
@@ -334,60 +458,59 @@ command! W execute 'silent! w !sudo /usr/bin/tee % >/dev/null' <bar> edit!
 
 " {{{ Behavior
 set fileencodings=utf-8,cp932,euc-jp,iso-2022-jp,latin1
-set nocompatible    " avoid legacy compatibility nonsense
-set path=$PWD/**    " use path vim is opened in as base directory
+set path=$PWD/**    " Use path vim is opened in as base directory
 
-" menu completion options
-set wildmenu        " enhanced command line completion
-set wildignorecase  " ignore case on ex-mode completion
-set wildmode=list:longest,full " complete longest match, list others
+" Menu completion options
+set wildmenu        " Enhanced command line completion
+set wildignorecase  " Ignore case on ex-mode completion
+set wildmode=list:longest,full " Complete longest match, list others
 set wildignore=.svn,CVS,.git,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.jpeg,*.png,*.xpm,*.gif
 
-" search options
-set hlsearch        " highlight search
-set incsearch       " highlight search results as the search is typed
-set magic           " set magic on, for regular expressions
-set ignorecase      " searches are not case-sensitive
-set smartcase       " case sensitive search if search contains capitals
+" Search options
+set hlsearch        " Highlight search
+set incsearch       " Highlight search results as the search is typed
+set magic           " Set magic on, for regular expressions
+set ignorecase      " Searches are not case-sensitive
+set smartcase       " Case sensitive search if search contains capitals
 
+" Highlight selected search matches for a moment
 nnoremap <silent> n n:call BlinkNextMatch()<CR>
 nnoremap <silent> N N:call BlinkNextMatch()<CR>
 
 function! BlinkNextMatch() abort
   highlight JustMatched ctermfg=white ctermbg=magenta cterm=bold
-
-  let pat = '\c\%#' . @/
-  let id = matchadd('JustMatched', pat)
+  let l:pat = '\c\%#' . @/
+  let l:id = matchadd('JustMatched', l:pat)
   redraw
-
   exec 'sleep 150m'
-  call matchdelete(id)
+  call matchdelete(l:id)
   redraw
 endfunction
 
-set autoread        " automatically refresh pane when file is changed externally
-set backspace=indent,eol,start " allow backspacing over auto indent and SoI
-set display+=lastline   " always display the last line of the screen
-set whichwrap+=<,>,h,l  " allow cursor to wrap lines
-set wrap            " soft wrap all files
-set confirm         " ask to confirm instead of failing
-set linebreak       " keep words whole when wrapping
-set scrolloff=2     " start scrolling a few lines from the border
-set visualbell      " use colour blink instead of sound
-set encoding=utf8   " use utf8 as internal encoding
-set hidden          " allow opening new buffers without saving changes
-set mouse=a         " allow mouse control in all modes
-set lazyredraw      " don't redraw the screen while executing macros
+set autoread        " Refresh pane when file is changed externally
+set backspace=indent,eol,start " Allow backspacing over auto indent and SoI
+set display+=lastline   " Always display the last line of the screen
+set whichwrap+=<,>,h,l  " Allow cursor to wrap lines
+set wrap            " Soft wrap all files
+set confirm         " Ask to confirm instead of failing
+set linebreak       " Keep words whole when wrapping
+set scrolloff=2     " Start scrolling a few lines from the border
+set visualbell      " Use colour blink instead of sound
+set encoding=utf8   " Use utf-8 as internal encoding
+scriptencoding utf-8
+set hidden          " Allow opening new buffers without saving changes
+set mouse=a         " Allow mouse control in all modes
+set lazyredraw      " Don't redraw the screen while executing macros
 
-" undo and backup
-set noswapfile      " plenty of RAM, do not need swap
-set nobackup        " remembering to save often
-set nowritebackup   " is the best kind of backup
-set undolevels=1000 " undo history to keep
+" Undo and backup
+set noswapfile      " Swap is not necessary
+set nobackup        " Don't litter backup files everywhere
+set nowritebackup
+set undolevels=1000 " Undo history to keep
 
-" panes
-set splitbelow      " open new panes on the bottom
-set splitright      " open new panes on the right
+" Open new panes on the bottom right
+set splitbelow
+set splitright
 " }}}
 
 " {{{ Interface
@@ -408,25 +531,23 @@ set numberwidth=3           " pad number column
 " status line
 set showcmd                 " show command in statusline
 set ruler                   " show line and cursor position
-" set laststatus=2            " wider status line for airline
+set laststatus=2            " wider status line for airline
 set noshowmode              " hide the default mode text
-set nomodeline              " hide the default mode line
 set shortmess=atToOI        " avoid prompts caused by the file messages
 set updatetime=1500         " status line refresh time
 
 " whitespace
 set listchars=tab:>-,trail:·        " show tabs and trailing space
 set list                            " enable the above settings
-autocmd BufWritePre * :%s/\s\+$//e  " auto remove trailing whitespace
 
 " colors
-" set t_Co=256                " enable 256 colour themes
-set termguicolors           " enable 256 colour themes
+set t_Co=256                " enable 256 colour themes
+" set termguicolors           " enable 256 colour themes
 colorscheme gruvbox         " gruvbox colourscheme
 set background=dark         " use dark background
 let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
-set cursorline              " highlight current line
+"  set cursorline              " highlight current line
 set ttyfast                 " improves redrawing for newer computers
 
 augroup LighterCursorLine
@@ -463,7 +584,7 @@ augroup END
 
 augroup SpellBadUnderline
     autocmd!
-    autocmd BufEnter,WinEnter * highlight SpellBad gui=underline term=underline cterm=underline
+    autocmd BufEnter,WinEnter * highlight SpellBad gui=underline term=underline cterm=underline ctermfg=red
 augroup END
 
 if &term !=? 'linux' || has('gui_running')
@@ -486,16 +607,25 @@ endif
 " }}}
 
 " {{{ Formatting
+set modeline                " respect file modelines
 set tabstop=4               " width of tab character
 set softtabstop=4           " how many columns the tab key inserts
 set shiftwidth=4            " width of indentation levels
 set expandtab               " expand tabs into spaces
 set smartindent             " smart autoindenting
 filetype plugin indent on   " determine indentation rules by filetype
+" }}}
 
-" folding
-set foldenable
-set foldmethod=marker
-set foldlevel=0
-set foldcolumn=0
+" {{{ Folding
+    " Enable folding
+    set foldenable
+
+    " Fold on special marker
+    set foldmethod=marker
+
+    " No automatic unfolding
+    set foldlevel=0
+
+    " No fold indicator in status columns
+    set foldcolumn=0
 " }}}
