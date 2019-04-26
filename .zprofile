@@ -10,9 +10,3 @@ fi
 if [ -x /usr/bin/gpg-agent ]; then
  eval "$(/usr/bin/gpg-agent --daemon)"
 fi
-
-# Start x11 on vt1
-if [ -z "$DISPLAY" ] && [ -n "$XDG_VTNR" ] && [ "$XDG_VTNR" -le 1 ]; then
-    # Intentionally forked and not exec'd, in case I break my X11 session
-    startx
-fi
