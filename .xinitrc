@@ -1,3 +1,6 @@
+# Load environmental variables
+[ -f "$HOME/.zshenv" ] && . "$HOME/.zshenv"
+
 # Start compositor
 compton &
 

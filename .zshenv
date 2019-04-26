@@ -24,7 +24,7 @@ export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:wrap"
 export GIMP2_DIRECTORY="$HOME/.config/gimp"
 
 # GTK
-export GDK_DPI_SCALE=1.5
+export GDK_DPI_SCALE=1.2
 
 # Java
 export _JAVA_AWT_WM_NONREPARENTING=1    # Fix for tiling window managers
