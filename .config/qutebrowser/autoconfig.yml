@@ -252,7 +252,7 @@ settings:
     global: letter
   hints.next_regexes:
     global:
-    - \b次\b
+    - \b次(のページ)?\b
     - \bnext\b
     - \bmore\b
     - \bnewer\b
@@ -261,12 +261,14 @@ settings:
     - \bcontinue\b
   hints.prev_regexes:
     global:
-    - \b前\b
+    - \b前(ノページ)?\b
     - \bprev(ious)?\b
     - \bback\b
     - \bolder\b
     - \b[<←≪]\b
     - \b(<<|«)\b
+  hints.scatter:
+    global: true
   input.forward_unbound_keys:
     global: none
   input.insert_mode.auto_enter:

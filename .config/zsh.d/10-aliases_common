@@ -4,6 +4,7 @@
 alias .='cd ../'
 alias ..='cd ../../'
 alias ...='cd ../../../'
+alias gh='cd $HOME'
 
 # Interactive and verbose copy
 alias cp='cp -i -v'
@@ -14,15 +15,21 @@ alias grep='grep --color=auto'
 # Use colors in ip
 alias ip='ip -c'
 
-# List all files
+# List all files with details
 alias l='ls -l -a'
 
-# List files
+# List files with details
 alias ll='ls -l'
 
-# List files to pager
+# List files
 ls() {
-    command ls -F -h --color=always -v --time-style=long-iso -C "$@" | less -R -X -F
+    command ls -C \
+        --classify \
+        --color=always \
+        --group-directories-first \
+        --human-readable \
+        -v \
+        --time-style=long-iso "$@" | less -F -R -X
 }
 
 # Create directories recursively
