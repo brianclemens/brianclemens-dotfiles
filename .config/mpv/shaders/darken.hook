@@ -1,0 +1,9 @@
+//!HOOK LINEAR
+//!BIND HOOKED
+
+#define CONTRAST 0.25
+
+vec4 hook()
+{
+    return CONTRAST * HOOKED_texOff(0);
+}

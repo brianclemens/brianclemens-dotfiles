@@ -1,5 +1,5 @@
 ! Fonts
-*.font:	xft:Fira Code:size=16
+*.font:	xft:Operator Mono Lig Book:size=16
 Xft.autohint:   0
 Xft.dpi: 96
 Xft.lcdfilter:  lcddefault

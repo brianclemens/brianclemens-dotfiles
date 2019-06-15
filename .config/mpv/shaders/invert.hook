@@ -1,0 +1,17 @@
+//!HOOK LUMA
+//!BIND HOOKED
+
+vec4 hook()
+{
+    float luma = LUMA_texOff(0).x;
+    return vec4(1.0 - luma);
+}
+
+//!HOOK CHROMA
+//!BIND HOOKED
+
+vec4 hook()
+{
+    // you could also refer to the texture like this (instead of CHROMA)
+    return HOOKED_texOff(0).gbra;
+}

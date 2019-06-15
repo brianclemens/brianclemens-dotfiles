@@ -1,0 +1,21 @@
+// Example of a comment at the beginning
+
+//!HOOK LUMA
+//!BIND HOOKED
+//!WIDTH HOOKED.w 10 /
+//!HEIGHT HOOKED.h 10 /
+//!SAVE LUMASMALL
+//!WHEN LUMA.w 500 >
+
+vec4 hook()
+{
+    return LUMA_texOff(0);
+}
+
+//!HOOK MAIN
+//!BIND LUMASMALL
+
+vec4 hook()
+{
+    return vec4(LUMASMALL_texOff(0).rrr, 1);
+}

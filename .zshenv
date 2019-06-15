@@ -1,16 +1,20 @@
 # General options
-export BROWSER="firefox"
+export BROWSER="qutebrowser"
 export DEFAULT_USER="brian"
 export EDITOR="nvim"
 export LANG="en_US.UTF-8"
 export NO_AT_BRIDGE=1
-export TERMINAL="urxvtc"
+export TERMINAL="kitty"
 export VISUAL="nvim"
 export WWW_HOME="https://duckduckgo.com"
 
 # Ansible
 export ANSIBLE_HOME="$HOME/Documents/ansible"
 export ANSIBLE_CONFIG="$ANSIBLE_HOME/ansible.cfg"
+
+# Debian
+export DEBEMAIL="brian@tiuxo.com"
+export DEBFULLNAME="Brian Clemens"
 
 # Firefox
 export MOZ_USE_XINPUT2=1    # Pixel-perfect scrolling
@@ -62,6 +66,7 @@ PATH="$HOME/bin:$PATH"
 PATH="$HOME/go/bin:$PATH"
 
 # QT
+export QT_SCALE_FACTOR=1.5
 export QT_QPA_PLATFORMTHEME="gtk2"
 export QT_STYLE_OVERRIDE="GTK+"
 

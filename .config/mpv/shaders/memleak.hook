@@ -1,0 +1,7 @@
+//!HOOK SCALED
+//!BIND HOOKED
+
+vec4 hook()
+{
+    return vec4(0);
+}

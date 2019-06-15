@@ -11,6 +11,13 @@ compton &
 # Load xresources
 xrdb -merge "$HOME/.config/xresources" &
 
+# ibus
+export GTK_IM_MODULE="ibus"
+# export GLFW_IM_MODULE="ibus"
+export QT_IM_MODULE="ibus"
+export XMODIFIERS="@im=ibus"
+ibus-daemon &
+
 # Load keyboard layout modifications
 xmodmap "$HOME/.config/xmodmap" &
 
@@ -30,18 +37,12 @@ unclutter &
 # Start touchpad gestures daemon
 libinput-gestures &
 
-# Use fcitx for Japanese input
-export GTK_IM_MODULE="fcitx"
-export QT_IM_MODULE="fcitx"
-export XMODIFIERS="@im=fcitx"
-fcitx &
-
 # Load Pulseaudio bell
 # pactl upload-sample /usr/share/sounds/freedesktop/stereo/bell.oga x11-bell &
 # pactl load-module module-x11-bell sample=x11-bell display=$DISPLAY &
 
-# Start terminal daemon
-urxvtd -q -o -f &
+# Start terminal daemon (if not using kitty)
+# urxvtd -q -o -f &
 
 # Start AwesomeWM
 exec dbus-launch --exit-with-session --sh-syntax awesome

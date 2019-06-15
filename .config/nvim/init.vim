@@ -5,7 +5,6 @@ call plug#begin('~/.config/nvim/plugged')
     " Autocompletion
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
     Plug 'paretje/deoplete-notmuch', {'for': 'mail'}
-    Plug 'fszymanski/deoplete-emoji'
     " Plug 'ncm2/float-preview.nvim'
 
     " Version control
@@ -15,7 +14,9 @@ call plug#begin('~/.config/nvim/plugged')
     " Interface
     Plug 'morhetz/gruvbox'
     Plug 'Yggdroot/indentLine'
-    Plug 'vim-airline/vim-airline'
+    Plug 'vim-airline/vim-airline', { 'tag': '*' }
+    Plug 'junegunn/goyo.vim'
+    Plug 'junegunn/limelight.vim'
 
     " Snippets
     Plug 'SirVer/ultisnips'
@@ -23,7 +24,7 @@ call plug#begin('~/.config/nvim/plugged')
 
     " Language comprehension
     Plug 'pearofducks/ansible-vim', { 'do': 'cd ./UltiSnips; ./generate.py' }
-    Plug 'liuchengxu/vista.vim'
+    Plug 'majutsushi/tagbar'
     Plug 'w0rp/ale'
     Plug 'tomtom/tcomment_vim'
     Plug 'autozimu/LanguageClient-neovim', {
@@ -37,51 +38,30 @@ call plug#end()
 "   {{{ Airline
 let g:airline_theme='gruvbox'
 let g:airline_powerline_fonts=1
-let g:airline_skip_empty_sections=0
-let g:airline_section_z='%3p%% %3l:%-2v'
+let g:airline_skip_empty_sections=1
 let g:airline_focuslost_inactive=1
 
+" Simplify location section
+let g:airline_section_z='%3p%% %3l:%-2v'
 
 " Symbols table
 if !exists('g:airline_symbols')
     let g:airline_symbols={}
 endif
-
-" Unicode symbols
-let g:airline_symbols.crypt = '🔒'
-let g:airline_symbols.linenr = '☰'
-let g:airline_symbols.linenr = '␊'
-let g:airline_symbols.linenr = '␤'
-let g:airline_symbols.linenr = '¶'
-let g:airline_symbols.maxlinenr = '␤'
-let g:airline_symbols.branch = '⎇'
-let g:airline_symbols.paste = 'ρ'
-let g:airline_symbols.paste = 'Þ'
-let g:airline_symbols.paste = '∥'
-let g:airline_symbols.spell = 'Ꞩ'
-let g:airline_symbols.notexists = '∄'
-let g:airline_symbols.whitespace = 'Ξ'
-
-let g:airline_left_sep = ' '
+let g:airline_left_sep = ''
 let g:airline_left_alt_sep = '|'
-let g:airline_right_sep = ' '
+let g:airline_right_sep = ''
 let g:airline_right_alt_sep = '|'
-let g:airline_symbols.branch = ''
-let g:airline_symbols.readonly = ''
-let g:airline_symbols.linenr = '☰'
-let g:airline_symbols.maxlinenr = ''
 
 """ Extensions
-let g:airline#extensions#ale#enabled = 1
+let g:airline_extensions = ['ale', 'branch', 'fugitiveline', 'languageclient', 'quickfix', 'tabline', 'tagbar', 'term', 'whitespace', 'wordcount']
+
 let g:airline#extensions#ale#error_symbol = '✘'
 let g:airline#extensions#ale#warning_symbol = '✘'
 let g:airline#extensions#ale#show_line_numbers = 0
 
-let g:airline#extensions#hunks#enabled = 0
+"let g:airline#extensions#tagbar#flags = 's'
 
-let g:airline#extensions#languageclient#enabled = 1
-
-let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_idx_mode = 1
 let g:airline#extensions#tabline#tab_nr_type = 1
 let g:airline#extensions#tabline#show_tab_nr = 0
@@ -193,6 +173,7 @@ let g:LanguageClient_serverCommands = {
             \ 'html': ['html-languageserver', '--stdio'],
             \ 'go': ['go-langserver'],
             \ 'java': ['jdtls'],
+            \ 'javascript': ['javascript-typescript-stdio'],
             \ 'json': ['json-languageserver', '--stdio'],
             \ 'lua': ['lua-lsp'],
             \ 'python': ['pyls'],
@@ -260,6 +241,36 @@ let g:gitgutter_sign_removed_first_line='◥'
 let g:gitgutter_sign_modified_removed='◢'
 "   }}}
 
+"   {{{ Goyo
+function! s:goyo_enter()
+  if executable('tmux') && strlen($TMUX)
+    silent !tmux set status off
+    silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
+  endif
+  set noshowmode
+  set noshowcmd
+  set scrolloff=999
+  Limelight
+endfunction
+
+function! s:goyo_leave()
+  if executable('tmux') && strlen($TMUX)
+    silent !tmux set status on
+    silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z
+  endif
+  set showmode
+  set showcmd
+  set scrolloff=5
+  Limelight!
+endfunction
+
+autocmd! User GoyoEnter nested call <SID>goyo_enter()
+autocmd! User GoyoLeave nested call <SID>goyo_leave()
+
+nmap <Leader>g :Goyo<CR>
+xmap <Leader>g :Goyo<CR>
+"   }}}
+
 "   {{{ Gruvbox
 let g:gruvbox_contrast_dark = 'hard'
 let g:gruvbox_bold = 1
@@ -273,6 +284,13 @@ let g:indentLine_enabled = 0
 let g:indentLine_setColors = 0
 let g:indentLine_char = '┊'
 nnoremap <Leader>i  :IndentLinesToggle<CR>
+"   }}}
+
+"   {{{ Limelight
+let g:limelight_conceal_ctermfg = 243
+
+nmap <Leader>l :Limelight!!<CR>
+xmap <Leader>l :Limelight!!<CR>
 "   }}}
 
 "   {{{ Neosnippet
@@ -292,33 +310,42 @@ nnoremap <Leader>i  :IndentLinesToggle<CR>
 "   {{{ Tagbar
 nmap <silent><Leader>t :TagbarToggle<CR>
 
-let g:tagbar_type_go = {
-    \ 'ctagstype' : 'go',
-    \ 'kinds'     : [
-        \ 'p:package',
-        \ 'i:imports:1',
-        \ 'c:constants',
-        \ 'v:variables',
-        \ 't:types',
-        \ 'n:interfaces',
-        \ 'w:fields',
-        \ 'e:embedded',
-        \ 'm:methods',
-        \ 'r:constructor',
-        \ 'f:functions'
+let g:tagbar_type_yaml = {
+    \ 'ctagstype' : 'AnsiblePlaybook',
+    \ 'kinds' : [
+        \ 'p:play'
     \ ],
-    \ 'sro' : '.',
-    \ 'kind2scope' : {
-        \ 't' : 'ctype',
-        \ 'n' : 'ntype'
-    \ },
-    \ 'scope2kind' : {
-        \ 'ctype' : 't',
-        \ 'ntype' : 'n'
-    \ },
-    \ 'ctagsbin'  : 'gotags',
-    \ 'ctagsargs' : '-sort -silent'
-    \ }
+    \ 'sort' : 0
+\ }
+
+" For use with gotags https://github.com/jstemmer/gotags
+" let g:tagbar_type_go = {
+"     \ 'ctagstype' : 'go',
+"     \ 'kinds'     : [
+"         \ 'p:package',
+"         \ 'i:imports:1',
+"         \ 'c:constants',
+"         \ 'v:variables',
+"         \ 't:types',
+"         \ 'n:interfaces',
+"         \ 'w:fields',
+"         \ 'e:embedded',
+"         \ 'm:methods',
+"         \ 'r:constructor',
+"         \ 'f:functions'
+"     \ ],
+"     \ 'sro' : '.',
+"     \ 'kind2scope' : {
+"         \ 't' : 'ctype',
+"         \ 'n' : 'ntype'
+"     \ },
+"     \ 'scope2kind' : {
+"         \ 'ctype' : 't',
+"         \ 'ntype' : 'n'
+"     \ },
+"     \ 'ctagsbin'  : 'gotags',
+"     \ 'ctagsargs' : '-sort -silent'
+"     \ }
 "   }}}
 
 "   {{{ Ultisnips
@@ -333,46 +360,6 @@ let g:snips_github='brianclemens'
 
 "   {{{ Vimtex
 let g:vimtex_view_method='zathura'
-"   }}}
-
-"   {{{ Vista.vim
-" Position to open the vista sidebar.
-let g:vista_sidebar_position = 'vertical botright'
-
-" Width of vista sidebar.
-let g:vista_sidebar_width = 30
-
-" Set this flag to 0 to disable echoing when the cursor moves.
-let g:vista_echo_cursor = 1
-
-" Time delay for showing detailed symbol info at current cursor.
-let g:vista_cursor_delay = 400
-
-" Close the vista window automatically close when you jump to a symbol.
-let g:vista_close_on_jump = 1
-
-" Move to the vista window when it is opened.
-let g:vista_stay_on_open = 1
-
-" Blinking cursor 2 times with 100ms interval after jumping to the tag.
-let g:vista_blink = [2, 100]
-
-" How each level is indented and what to prepend.
-let g:vista_icon_indent = ['└', '├']
-
-" Executive used when opening vista sidebar without specifying it.
-let g:vista_default_executive = 'lcn'
-
-" To enable fzf's preview window set g:vista_fzf_preview.
-" The elements of g:vista_fzf_preview will be passed as arguments to fzf#vim#with_preview()
-" For example:
-let g:vista_fzf_preview = ['right:50%']
-
-function! NearestMethodOrFunction() abort
-  return get(b:, 'vista_nearest_method_or_function', '')
-endfunction
-call airline#parts#define('vista', {'function': 'NearestMethodOrFunction'})
-let g:airline_section_x = airline#section#create_left(['vista'])
 "   }}}
 " }}}
 

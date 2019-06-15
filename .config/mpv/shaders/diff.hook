@@ -1,0 +1,24 @@
+//!HOOK SCALED
+//!BIND SCALED
+//!BIND MAIN
+//!SAVE diff
+//!WIDTH MAIN.w
+//!HEIGHT MAIN.h
+//!COMPONENTS 3
+
+vec4 hook()
+{
+    vec4 a = SCALED_texOff(0);
+    vec4 b = MAIN_texOff(0);
+    vec4 diff = (a - b) + vec4(0.5);
+
+    return diff;
+}
+
+//!HOOK SCALED
+//!BIND diff
+
+vec4 hook()
+{
+    return diff_texOff(0);
+}

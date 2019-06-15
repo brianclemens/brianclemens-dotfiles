@@ -1,0 +1,9 @@
+//!HOOK CHROMA
+//!BIND HOOKED
+//!OFFSET 100 100
+
+vec4 hook()
+{
+    // constant offset by 100 pixels towards the bottom right
+    return HOOKED_texOff(-vec2(100,100));
+}

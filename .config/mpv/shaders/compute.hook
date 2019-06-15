@@ -1,0 +1,38 @@
+//!HOOK LUMA
+//!BIND HOOKED
+//!COMPUTE 32 32
+//!DESC avg convolution
+
+// Kernel size, 41x41 as an example
+const ivec2 ksize = ivec2(41, 41);
+const ivec2 offset = ksize / 2;
+
+// We need to load extra source texels to account for padding due to kernel
+// overhang
+const ivec2 isize = ivec2(gl_WorkGroupSize) + ksize - 1;
+
+shared float inp[isize.y][isize.x];
+
+void hook()
+{
+    // load texels into shmem
+    ivec2 base = ivec2(gl_WorkGroupID) * ivec2(gl_WorkGroupSize);
+    for (uint y = gl_LocalInvocationID.y; y < isize.y; y += gl_WorkGroupSize.y) {
+        for (uint x = gl_LocalInvocationID.x; x < isize.x; x += gl_WorkGroupSize.x)
+            inp[y][x] = texelFetch(HOOKED_raw, base + ivec2(x,y) - offset, 0).x;
+    }
+
+    // ensure writes visible
+    groupMemoryBarrier();
+    barrier();
+
+    // do convolution
+    float sum;
+    for (uint y = 0; y < ksize.y; y++) {
+        for (uint x = 0; x < ksize.x; x++)
+            sum += inp[gl_LocalInvocationID.y+y][gl_LocalInvocationID.x+x];
+    }
+
+    vec4 color = vec4(sum / (ksize.x * ksize.y), 0, 0, 1);
+    imageStore(out_image, ivec2(gl_GlobalInvocationID), color);
+}
