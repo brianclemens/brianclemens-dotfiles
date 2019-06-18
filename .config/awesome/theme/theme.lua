@@ -8,9 +8,9 @@ local theme_path = config_dir .. "/theme/"
 local theme = {}
 
 -- {{{ Font
-theme.font = "Source Sans Pro Display 14"
+theme.font = "Source Sans Pro Display Medium 16"
 theme.font_height = beautiful.get_font_height(theme.font)
-theme.bar_height = beautiful.get_font_height(theme.font)*1.5
+theme.bar_height = beautiful.get_font_height(theme.font)*1.3
 -- }}}
 
 -- {{{ Bar
@@ -18,14 +18,15 @@ theme.bar_icon_size = dpi(25)
 
 -- Normal
 theme.fg_normal = "#ebdbb2"
-theme.bg_normal = ({ type = "linear",
-    from = { 0, 0 },
-    to = { 0, theme.bar_height },
-    stops = { { 0, "#1d2021" },
-        { 0.5, "#282828" },
-        { 1, "#101010" }
-    }
-})
+theme.bg_normal = "#1d2021"
+-- theme.bg_normal = ({ type = "linear",
+--     from = { 0, 0 },
+--     to = { 0, theme.bar_height },
+--     stops = { { 0, "#1d2021" },
+--         { 0.5, "#282828" },
+--         { 1, "#101010" }
+--     }
+-- })
 
 -- Focus
 theme.fg_focus = "#fbf1c7"

@@ -1,3 +1,5 @@
+import sys, os
+
 # Load settings configured via autoconfig.yml
 config.load_autoconfig()
 
@@ -5,6 +7,10 @@ config.load_autoconfig()
 config.set('content.javascript.enabled', True, 'file://*')
 config.set('content.javascript.enabled', True, 'chrome://*/*')
 config.set('content.javascript.enabled', True, 'qute://*/*')
+
+## Standard forward / back bindings to go with libinput-gestures
+config.bind('<Alt-Left>', 'back')
+config.bind('<Alt-Right>', 'forward')
 
 ## MPV (https://mpv.io)
 config.bind('<z><m>', 'spawn --userscript view_in_mpv')
@@ -21,3 +27,11 @@ config.bind('<z><p>',
 
 ## Reading view (https://github.com/buriy/python-readability)
 config.bind('<z><r>', 'spawn --userscript readability')
+
+try:
+    # Ad blocking
+    sys.path.append(os.path.join(sys.path[0], 'jblock'))
+    config.source('jblock/jblock/integrations/qutebrowser.py')
+
+except ImportError:
+    pass

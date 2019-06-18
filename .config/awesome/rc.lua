@@ -49,7 +49,7 @@ local editor_cmd    = "kitty --single-instance -e nvim"
 local modkey        = "Mod4"
 local terminal      = "kitty --single-instance"
 
-awful.util.tagnames = { "term", "doc", "www", "ssh", "org", "chat", "med" }
+awful.util.tagnames = { "cli", "doc", "www", "ssh", "org", "tst", "irc", "med" }
 awful.util.terminal = terminal
 
 awful.layout.layouts = {
@@ -65,7 +65,20 @@ beautiful.init(config_dir .. "/theme/theme.lua")
 revelation.init()
 -- }}}
 
--- {{{ Widgets
+-- {{{ Screen
+local function set_wallpaper(s)
+    if beautiful.wallpaper then
+        gears.wallpaper.tiled(beautiful.wallpaper, s)
+    end
+end
+
+-- Re-set wallpaper when a screen's geometry changes
+screen.connect_signal("property::geometry", set_wallpaper)
+
+-- Shared widgets
+-- Clock
+local mytextclock = wibox.widget.textclock()
+
 local taglist_buttons = gears.table.join(
     awful.button({ }, 1, function(t)
         awful.menu.client_list({ theme = { width = 400 } }, { }, function(c)
@@ -90,59 +103,41 @@ local taglist_buttons = gears.table.join(
     end)
 )
 
-local mytextclock = wibox.widget.textclock()
-
--- Keyboard map indicator and switcher
-local mykeyboardlayout = awful.widget.keyboardlayout()
--- }}}
-
--- {{{ Bar
--- }}}
-
--- {{{ Screen
-local function set_wallpaper(s)
-    if beautiful.wallpaper then
-        gears.wallpaper.tiled(beautiful.wallpaper, s)
-    end
-end
-
--- Re-set wallpaper when a screen's geometry changes
-screen.connect_signal("property::geometry", set_wallpaper)
-
+-- Taglist
 -- Create a wibox for each screen and add it
 awful.screen.connect_for_each_screen(function(s)
     -- Wallpaper
     set_wallpaper(s)
 
-    -- Each screen has its own tag table.
+    -- Tag table.
     awful.tag(awful.util.tagnames, s, awful.layout.layouts[1])
 
-    -- Create a promptbox for each screen
+    -- Prompt box
     s.mypromptbox = awful.widget.prompt()
-    -- Create an imagebox widget which will contain an icon indicating which layout we're using.
-    -- We need one layoutbox per screen.
+
+    -- Layout box
     s.mylayoutbox = awful.widget.layoutbox(s)
     s.mylayoutbox:buttons(gears.table.join(
-                           awful.button({ }, 1, function () awful.layout.inc( 1) end),
-                           awful.button({ }, 3, function () awful.layout.inc(-1) end),
-                           awful.button({ }, 4, function () awful.layout.inc( 1) end),
-                           awful.button({ }, 5, function () awful.layout.inc(-1) end)))
-    -- Create a taglist widget
+        awful.button({ }, 1, function () awful.layout.inc( 1) end),
+        awful.button({ }, 3, function () awful.layout.inc(-1) end),
+        awful.button({ }, 4, function () awful.layout.inc( 1) end),
+        awful.button({ }, 5, function () awful.layout.inc(-1) end)))
+
+    -- Taglist
     s.mytaglist = awful.widget.taglist {
         screen  = s,
         filter  = awful.widget.taglist.filter.all,
         buttons = taglist_buttons
     }
 
-    -- Create the wibox
-    s.mywibox = awful.wibar({ position = "top", screen = s })
+    s.mywibox = awful.wibar({ position = "top", height=beautiful.bar_height, screen = s })
 
-    -- Add widgets to the wibox
     s.mywibox:setup {
         layout = wibox.layout.align.horizontal,
         expand = "none",
         { -- Left
             layout = wibox.layout.fixed.horizontal,
+            s.mylayoutbox,
             s.mytaglist,
             s.mypromptbox,
         },
@@ -152,9 +147,7 @@ awful.screen.connect_for_each_screen(function(s)
         },
         { -- Right
             layout = wibox.layout.fixed.horizontal,
-            mykeyboardlayout,
             wibox.widget.systray(),
-            s.mylayoutbox,
         },
     }
 end)
@@ -171,12 +164,12 @@ globalkeys = gears.table.join(
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore,
               {description = "go back", group = "tag"}),
 
-    awful.key({ modkey,           }, "e",
+    awful.key({ modkey, "Shift"   }, "e",
     function()
         revelation({curr_tag_only=true})
     end,
               {description="show expose for current tag", group="awesome"}),
-    awful.key({ modkey, "Shift"   }, "e",      revelation,
+    awful.key({ modkey,           }, "e",      revelation,
               {description="show expose", group="awesome"}),
 
     awful.key({ modkey,           }, "j",
@@ -398,31 +391,15 @@ awful.rules.rules = {
     -- Floating clients.
     { rule_any = {
         instance = {
-          "DTA",  -- Firefox addon DownThemAll.
-          "copyq",  -- Includes session name in class.
           "pinentry",
         },
         class = {
-          "Arandr",
-          "Blueman-manager",
-          "Gpick",
-          "Kruler",
-          "MessageWin",  -- kalarm.
-          "Sxiv",
-          "Tor Browser", -- Needs a fixed window size to avoid fingerprinting by screen size.
-          "Wpa_gui",
-          "veromix",
           "xtightvncviewer"},
-
-        -- Note that the name property shown in xprop might be set slightly after creation of the client
-        -- and the name shown there might not match defined rules here.
         name = {
-          "Event Tester",  -- xev.
+          "Event Tester",
         },
         role = {
-          "AlarmWindow",  -- Thunderbird's calendar.
-          "ConfigManager",  -- Thunderbird's about:config.
-          "pop-up",       -- e.g. Google Chrome's (detached) Developer Tools.
+          "pop-up",
         }
       }, properties = { floating = true }},
 
@@ -430,10 +407,6 @@ awful.rules.rules = {
     { rule_any = {type = { "normal", "dialog" }
       }, properties = { titlebars_enabled = true }
     },
-
-    -- Set Firefox to always map on the tag named "2" on screen 1.
-    -- { rule = { class = "Firefox" },
-    --   properties = { screen = 1, tag = "2" } },
 }
 -- }}}
 
@@ -480,8 +453,8 @@ client.connect_signal("request::titlebars", function(c)
             layout  = wibox.layout.fixed.horizontal
         },
         { -- Right
-            layout = wibox.layout.fixed.horizontal(),
-            buttons = buttons
+            buttons = buttons,
+            layout = wibox.layout.fixed.horizontal()
         },
         layout = wibox.layout.align.horizontal,
         expand = "none"

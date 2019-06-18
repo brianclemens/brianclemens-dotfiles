@@ -5,6 +5,16 @@ config_version: 2
 settings:
   auto_save.session:
     global: true
+  bindings.commands:
+    global:
+      normal:
+        zll: spawn --userscript qute-pass
+        zlo: spawn --userscript qute-pass --otp-only
+        zlp: spawn --userscript qute-pass --password-only
+        zlu: spawn --userscript qute-pass --username-only
+        zm: spawn --userscript view_in_mpv
+        zp: spawn --userscript ~/.config/qutebrowser/userscripts/qutepocket
+        zr: spawn --userscript readability
   colors.completion.category.bg:
     global: 'qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #665c54, stop:1 #1d2021)'
   colors.completion.category.border.bottom:
@@ -164,7 +174,7 @@ settings:
   colors.tabs.selected.odd.fg:
     global: '#fbf1c7'
   colors.webpage.bg:
-    global: '#f0f0f0'
+    global: null
   completion.open_categories:
     global:
     - searchengines
@@ -183,9 +193,49 @@ settings:
     global: false
   content.autoplay:
     global: false
+  content.canvas_reading:
+    global: true
   content.cookies.accept:
-    global: no-3rdparty
+    global: all
   content.cookies.store:
+    global: true
+  content.headers.accept_language:
+    global: en-US,en;q=0.5
+  content.headers.custom:
+    global:
+      accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+  content.headers.referer:
+    global: same-domain
+  content.headers.user_agent:
+    global: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:66.0) Gecko/20100101 Firefox/66.0
+  content.host_blocking.enabled:
+    global: false
+  content.host_blocking.lists:
+    global:
+    - https://www.fanboy.co.nz/r/fanboy-ultimate.txt
+    - https://raw.githubusercontent.com/eEIi0A5L/adblock_filter/master/mochi_filter.txt
+    - https://raw.githubusercontent.com/eEIi0A5L/adblock_filter/master/mochi_filter_extended.txt
+    - https://raw.githubusercontent.com/eEIi0A5L/adblock_filter/master/negi_filter.txt
+    - https://raw.githubusercontent.com/eEIi0A5L/adblock_filter/master/kame_filter.txt
+    - https://raw.githubusercontent.com/eEIi0A5L/adblock_filter/master/kotori_filter.txt
+    - https://raw.githubusercontent.com/eEIi0A5L/adblock_filter/master/kujira_filter.txt
+    - https://raw.githubusercontent.com/eEIi0A5L/adblock_filter/master/fix_filter.txt
+    - https://280blocker.net/files/280blocker_adblock.txt
+    - https://filters.adtidy.org/extension/chromium/filters/7.txt
+  content.javascript.can_open_tabs_automatically:
+    global: false
+  content.javascript.enabled:
+    global: true
+  content.register_protocol_handler:
+    global: ask
+  content.ssl_strict:
+    global: ask
+  content.user_stylesheets:
+    global:
+    - userstyles/newsblur.css
+  content.webgl:
+    global: true
+  content.xss_auditing:
     global: true
   downloads.open_dispatcher:
     global: null
@@ -221,7 +271,7 @@ settings:
   fonts.messages.warning:
     global: 12pt SF Pro Display
   fonts.monospace:
-    global: '"Fira Code"'
+    global: '"Operator Mono SSm"'
   fonts.prompts:
     global: 12pt SF Pro Display
   fonts.statusbar:
