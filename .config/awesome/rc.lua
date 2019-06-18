@@ -136,18 +136,22 @@ awful.screen.connect_for_each_screen(function(s)
         layout = wibox.layout.align.horizontal,
         expand = "none",
         { -- Left
-            layout = wibox.layout.fixed.horizontal,
-            s.mylayoutbox,
+            {
+                s.mylayoutbox,
+                margins = beautiful.xresources.apply_dpi(5),
+                layout = wibox.layout.margin,
+            },
             s.mytaglist,
             s.mypromptbox,
+            layout = wibox.layout.fixed.horizontal,
         },
         { -- Middle
-            layout = wibox.layout.fixed.horizontal,
             mytextclock,
+            layout = wibox.layout.fixed.horizontal,
         },
         { -- Right
-            layout = wibox.layout.fixed.horizontal,
             wibox.widget.systray(),
+            layout = wibox.layout.fixed.horizontal,
         },
     }
 end)
@@ -427,7 +431,6 @@ end)
 
 -- Add a titlebar if titlebars_enabled is set to true in the rules.
 client.connect_signal("request::titlebars", function(c)
-    -- buttons for the titlebar
     local buttons = gears.table.join(
         awful.button({ }, 1, function()
             c:emit_signal("request::activate", "titlebar", {raise = true})
@@ -447,7 +450,14 @@ client.connect_signal("request::titlebars", function(c)
             layout  = wibox.layout.fixed.horizontal
         },
         { -- Middle
-            awful.titlebar.widget.iconwidget(c),
+            {
+                awful.titlebar.widget.iconwidget(c),
+                top = beautiful.xresources.apply_dpi(5),
+                bottom = beautiful.xresources.apply_dpi(5),
+                right = beautiful.xresources.apply_dpi(5),
+                draw_empty = false,
+                layout = wibox.layout.margin
+            },
             awful.titlebar.widget.titlewidget(c),
             buttons = buttons,
             layout  = wibox.layout.fixed.horizontal
@@ -457,7 +467,7 @@ client.connect_signal("request::titlebars", function(c)
             layout = wibox.layout.fixed.horizontal()
         },
         layout = wibox.layout.align.horizontal,
-        expand = "none"
+        expand = "none",
     }
 end)
 
@@ -465,9 +475,6 @@ end)
 client.connect_signal("mouse::enter", function(c)
     c:emit_signal("request::activate", "mouse_enter", {raise = false})
 end)
-
-client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
-client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 
 -- Rounded corners
 if beautiful.border_radius ~= 0 then

@@ -1,9 +1,8 @@
 local config_dir = os.getenv("HOME") .. "/.config/awesome"
+local theme_path = config_dir .. "/theme/"
 
 local beautiful = require("beautiful")
 local dpi = beautiful.xresources.apply_dpi
-
-local theme_path = config_dir .. "/theme/"
 
 local theme = {}
 
@@ -18,69 +17,58 @@ theme.bar_icon_size = dpi(25)
 
 -- Normal
 theme.fg_normal = "#ebdbb2"
-theme.bg_normal = "#1d2021"
--- theme.bg_normal = ({ type = "linear",
---     from = { 0, 0 },
---     to = { 0, theme.bar_height },
---     stops = { { 0, "#1d2021" },
---         { 0.5, "#282828" },
---         { 1, "#101010" }
---     }
--- })
+theme.bg_normal = "#0d1011"
 
 -- Focus
 theme.fg_focus = "#fbf1c7"
-theme.bg_focus = ({ type = "linear",
-    from = { 0, 0 },
-    to = { 0, theme.bar_height },
-    stops = { { 0, "#1d2021" },
-        { 0.5, "#3c3836" },
-        { 1, "#101010" }
-    }
-})
+theme.bg_focus = theme.bg_normal
 
 -- Minimize
 theme.fg_minimize = "#a89984"
-theme.bg_minimize = ({ type = "linear",
-    from = { 0, 0 },
-    to = { 0, theme.bar_height },
-    stops = { { 0, "#1d2021" },
-        { 0.5, "#3c3836" },
-        { 1, "#101010" }
-    }
-})
+theme.bg_minimize = theme.bg_normal
 
 -- Urgent
-theme.bg_urgent = ({ type = "linear",
-    from = { 0, 0 },
-    to = { 0, theme.bar_height },
-    stops = { { 0, "#1d2021" },
-        { 0.5, "#cc241d" },
-        { 1, "#101010" }
-    }
-})
-theme.fg_urgent = theme.fg_normal
-
--- The systray doesn't work without a solid color background
--- theme.bg_systray = "#1d2021"
+theme.fg_urgent = "#cc241d"
+theme.bg_urgent = theme.bg_normal
 -- }}}
 
--- {{{ Borders
-theme.border_radius = dpi(12)
-theme.border_width = dpi(0)
+-- {{{ Borders / gap
+theme.border_radius = dpi(8)
 theme.useless_gap = dpi(12)
 -- }}}
 
--- Display the taglist squares
-theme.taglist_squares_sel   = "/usr/share/awesome/themes/default/taglist/squarefw.png"
-theme.taglist_squares_unsel = "/usr/share/awesome/themes/default/taglist/squarew.png"
+-- {{{ Layout
+theme.layout_fairh = "/usr/share/awesome/themes/default/layouts/fairhw.png"
+theme.layout_fairv = "/usr/share/awesome/themes/default/layouts/fairvw.png"
+theme.layout_floating  = "/usr/share/awesome/themes/default/layouts/floatingw.png"
+theme.layout_magnifier = "/usr/share/awesome/themes/default/layouts/magnifierw.png"
+theme.layout_max = "/usr/share/awesome/themes/default/layouts/maxw.png"
+theme.layout_fullscreen = "/usr/share/awesome/themes/default/layouts/fullscreenw.png"
+theme.layout_tilebottom = "/usr/share/awesome/themes/default/layouts/tilebottomw.png"
+theme.layout_tileleft   = "/usr/share/awesome/themes/default/layouts/tileleftw.png"
+theme.layout_tile = "/usr/share/awesome/themes/default/layouts/tilew.png"
+theme.layout_tiletop = "/usr/share/awesome/themes/default/layouts/tiletopw.png"
+theme.layout_spiral  = "/usr/share/awesome/themes/default/layouts/spiralw.png"
+theme.layout_dwindle = "/usr/share/awesome/themes/default/layouts/dwindlew.png"
+theme.layout_cornernw = "/usr/share/awesome/themes/default/layouts/cornernww.png"
+theme.layout_cornerne = "/usr/share/awesome/themes/default/layouts/cornernew.png"
+theme.layout_cornersw = "/usr/share/awesome/themes/default/layouts/cornersww.png"
+theme.layout_cornerse = "/usr/share/awesome/themes/default/layouts/cornersew.png"
+-- }}}
 
--- Variables set for theming the menu:
--- menu_[bg|fg]_[normal|focus]
--- menu_[border_color|border_width]
+-- {{{ Menu
 theme.menu_submenu_icon = "/usr/share/awesome/themes/default/submenu.png"
-theme.menu_height = 15
+theme.menu_height = theme.bar_height
 theme.menu_width  = 100
+-- }}}
+
+-- {{{ Taglist
+theme.taglist_fg_focus = "#fbf1c7"
+theme.taglist_fg_urgent = "#d65d0e"
+theme.taglist_fg_occupied = "#928374"
+theme.taglist_fg_empty = "#3c3836"
+theme.taglist_fg_volatile = "#cc241d"
+-- }}}
 
 -- {{{ Titlebars
 theme.titlebar_bg_normal = ({ type = "linear",
@@ -151,30 +139,6 @@ theme.titlebar_minimize_button_normal_press = theme_path .. "icons/tb_minimize_n
 
 theme.wallpaper = theme_path .. "wallpaper.png"
 
--- You can use your own layout icons like this:
-theme.layout_fairh = "/usr/share/awesome/themes/default/layouts/fairhw.png"
-theme.layout_fairv = "/usr/share/awesome/themes/default/layouts/fairvw.png"
-theme.layout_floating  = "/usr/share/awesome/themes/default/layouts/floatingw.png"
-theme.layout_magnifier = "/usr/share/awesome/themes/default/layouts/magnifierw.png"
-theme.layout_max = "/usr/share/awesome/themes/default/layouts/maxw.png"
-theme.layout_fullscreen = "/usr/share/awesome/themes/default/layouts/fullscreenw.png"
-theme.layout_tilebottom = "/usr/share/awesome/themes/default/layouts/tilebottomw.png"
-theme.layout_tileleft   = "/usr/share/awesome/themes/default/layouts/tileleftw.png"
-theme.layout_tile = "/usr/share/awesome/themes/default/layouts/tilew.png"
-theme.layout_tiletop = "/usr/share/awesome/themes/default/layouts/tiletopw.png"
-theme.layout_spiral  = "/usr/share/awesome/themes/default/layouts/spiralw.png"
-theme.layout_dwindle = "/usr/share/awesome/themes/default/layouts/dwindlew.png"
-theme.layout_cornernw = "/usr/share/awesome/themes/default/layouts/cornernww.png"
-theme.layout_cornerne = "/usr/share/awesome/themes/default/layouts/cornernew.png"
-theme.layout_cornersw = "/usr/share/awesome/themes/default/layouts/cornersww.png"
-theme.layout_cornerse = "/usr/share/awesome/themes/default/layouts/cornersew.png"
-
-theme.awesome_icon = "/usr/share/awesome/icons/awesome16.png"
-
--- Define the icon theme for application icons. If not set then the icons
--- from /usr/share/icons and /usr/share/icons/hicolor will be used.
-theme.icon_theme = gnome
+theme.icon_theme = "gnome"
 
 return theme
-
--- vim: filetype=lua:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:textwidth=80
