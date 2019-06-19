@@ -17,7 +17,7 @@ theme.bar_icon_size = dpi(25)
 
 -- Normal
 theme.fg_normal = "#ebdbb2"
-theme.bg_normal = "#0d1011"
+theme.bg_normal = "#0d1011b0"
 
 -- Focus
 theme.fg_focus = "#fbf1c7"
@@ -33,6 +33,7 @@ theme.bg_urgent = theme.bg_normal
 -- }}}
 
 -- {{{ Borders / gap
+theme.border_width = 0
 theme.border_radius = dpi(8)
 theme.useless_gap = dpi(12)
 -- }}}
@@ -74,11 +75,11 @@ theme.taglist_fg_volatile = "#cc241d"
 theme.titlebar_bg_normal = ({ type = "linear",
     from = { 0, 0 },
     to = { 0, theme.bar_height },
-    stops = { { 0, "#1d2021" },
-        { 0.5, "#282828" },
-        { 1, "#101010" }
+    stops = { { 0, "#282828" },
+        { 1, "#1d2021" }
     }
 })
+
 
 theme.titlebar_fg_normal = ({ type = "linear",
     from = { 0, 0 },
@@ -92,9 +93,8 @@ theme.titlebar_fg_normal = ({ type = "linear",
 theme.titlebar_bg_focus = ({ type = "linear",
     from = { 0, 0 },
     to = { 0, theme.bar_height },
-    stops = { { 0, "#1d2021" },
-        { 0.5, "#3c3836" },
-        { 1, "#101010" }
+    stops = { { 0, "#3c3836" },
+        { 1, "#282828" }
     }
 })
 
