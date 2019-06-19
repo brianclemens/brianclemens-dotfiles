@@ -1,1 +1,11 @@
-tb_close_focus_press.svg
+<svg
+   viewBox="0 0 100 100">
+  <rect
+     style="fill:#9d0006; stroke:#000000; stroke-width:0"
+     width="50"
+     height="50"
+     x="25"
+     y="25"
+     ry="25"
+     rx="25" />
+</svg>
