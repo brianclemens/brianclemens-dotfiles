@@ -139,7 +139,7 @@ awful.screen.connect_for_each_screen(function(s)
             {
                 s.mylayoutbox,
                 margins = beautiful.xresources.apply_dpi(5),
-                layout = wibox.layout.margin,
+                layout = wibox.container.margin,
             },
             s.mytaglist,
             s.mypromptbox,
@@ -440,7 +440,7 @@ client.connect_signal("request::titlebars", function(c)
         end)
     )
 
-    awful.titlebar(c) : setup {
+    awful.titlebar(c, { size = beautiful.titlebar_height } ) : setup {
         { -- Left
             awful.titlebar.widget.closebutton(c),
             awful.titlebar.widget.minimizebutton(c),
@@ -454,7 +454,7 @@ client.connect_signal("request::titlebars", function(c)
                 bottom = beautiful.xresources.apply_dpi(5),
                 right = beautiful.xresources.apply_dpi(5),
                 draw_empty = false,
-                layout = wibox.layout.margin
+                layout = wibox.container.margin
             },
             awful.titlebar.widget.titlewidget(c),
             buttons = buttons,

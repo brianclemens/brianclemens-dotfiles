@@ -537,32 +537,32 @@ let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
 "  set cursorline              " highlight current line
 set ttyfast                 " improves redrawing for newer computers
 
-augroup LighterCursorLine
-    autocmd!
-    "autocmd ColorScheme * highlight clear CursorLine
-    "autocmd ColorScheme * highlight CursorLine guibg=#32302f
-    autocmd ColorScheme * if &background == "dark" | highlight CursorLine guibg=#32302f | else | highlight CursorLine guibg=#f2e5bc | endif
-augroup END
+" augroup LighterCursorLine
+"     autocmd!
+"     "autocmd ColorScheme * highlight clear CursorLine
+"     "autocmd ColorScheme * highlight CursorLine guibg=#32302f
+"     autocmd ColorScheme * if &background == "dark" | highlight CursorLine guibg=#32302f | else | highlight CursorLine guibg=#f2e5bc | endif
+" augroup END
 
-augroup BoldCursorLineNr
-    autocmd!
-    "autocmd ColorScheme * highlight CursorLineNR cterm=bold guibg=#282828
-    autocmd ColorScheme * if &background == "dark" | highlight CursorLineNR cterm=bold guibg=#32302f | else | highlight CursorLineNR cterm=bold guibg=#f2e5bc | endif
-augroup END
+" augroup BoldCursorLineNr
+"     autocmd!
+"     "autocmd ColorScheme * highlight CursorLineNR cterm=bold guibg=#282828
+"     autocmd ColorScheme * if &background == "dark" | highlight CursorLineNR cterm=bold guibg=#32302f | else | highlight CursorLineNR cterm=bold guibg=#f2e5bc | endif
+" augroup END
 
-augroup LighterQuickFixLine
-    autocmd!
-    "autocmd ColorScheme * highlight QuickFixLine ctermbg=Yellow guibg=#504945
-    "autocmd ColorScheme * highlight qfFileName guifg=#fe8019
-    autocmd ColorScheme * if &background == "dark" | highlight QuickFixLine ctermbg=Yellow guibg=#504945 | else | highlight QuickFixLine ctermbg=Yellow guibg=#d5c4a1 | endif
-    autocmd ColorScheme * if &background == "dark" | highlight qfFileName guifg=#fe8019 | else | highlight qfFileName guifg=#af3a03 | endif
-augroup END
+" augroup LighterQuickFixLine
+"     autocmd!
+"     "autocmd ColorScheme * highlight QuickFixLine ctermbg=Yellow guibg=#504945
+"     "autocmd ColorScheme * highlight qfFileName guifg=#fe8019
+"     autocmd ColorScheme * if &background == "dark" | highlight QuickFixLine ctermbg=Yellow guibg=#504945 | else | highlight QuickFixLine ctermbg=Yellow guibg=#d5c4a1 | endif
+"     autocmd ColorScheme * if &background == "dark" | highlight qfFileName guifg=#fe8019 | else | highlight qfFileName guifg=#af3a03 | endif
+" augroup END
 
-augroup SearchHighlightColor
-    autocmd!
-    "autocmd ColorScheme * highlight Search guibg=#282828 guifg=#fe8019
-    autocmd ColorScheme * if &background == "dark" | highlight Search guibg=#282828 guifg=#fe8019 | else | highlight Search guibg=#fbf1c7 guifg=#af3a03 | endif
-augroup END
+" augroup SearchHighlightColor
+"     autocmd!
+"     "autocmd ColorScheme * highlight Search guibg=#282828 guifg=#fe8019
+"     autocmd ColorScheme * if &background == "dark" | highlight Search guibg=#282828 guifg=#fe8019 | else | highlight Search guibg=#fbf1c7 guifg=#af3a03 | endif
+" augroup END
 
 augroup RefreshAirline
     autocmd!
