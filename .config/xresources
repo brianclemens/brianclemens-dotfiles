@@ -1,9 +1,9 @@
 ! Fonts
-*.font:	xft:Operator Mono Lig Book:size=16
-Xft.autohint:   0
+! *.font:	xft:Operator Mono Lig Book:size=16
 Xft.dpi: 96
+Xft.autohint:   0
 Xft.lcdfilter:  lcddefault
-Xft.hintstyle:  hintfull
+Xft.hintstyle:  hintslight
 Xft.hinting:    true
 Xft.antialias:  true
 Xft.rgba:       rgb
@@ -53,7 +53,7 @@ URxvt.keysym.M-Delete: perl:matcher:list
 ! Colors
 *.transparent: false
 *.cursorColor:  #ebdbb2
-*.background:   #1d2021
+*.background:   #282828
 *.foreground:   #ebdbb2
 
 ! Black

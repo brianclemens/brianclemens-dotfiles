@@ -12,7 +12,6 @@ settings:
         zlo: spawn --userscript qute-pass --otp-only
         zlp: spawn --userscript qute-pass --password-only
         zlu: spawn --userscript qute-pass --username-only
-        zm: spawn --userscript view_in_mpv
         zp: spawn --userscript ~/.config/qutebrowser/userscripts/qutepocket
         zr: spawn --userscript readability
   colors.completion.category.bg:
@@ -253,45 +252,47 @@ settings:
   editor.encoding:
     global: utf-8
   fonts.completion.category:
-    global: 12pt SF Pro Display
+    global: 12pt Source Sans Pro
   fonts.completion.entry:
-    global: 12pt SF Pro Display
+    global: 12pt Source Sans Pro
   fonts.debug_console:
     global: 12pt monospace
   fonts.downloads:
-    global: 12pt SF Pro Display
+    global: 12pt Source Sans Pro
   fonts.hints:
-    global: 12pt SF Pro Display
+    global: 12pt Source Sans Pro
   fonts.keyhint:
-    global: 12pt SF Pro Display
+    global: 12pt Source Sans Pro
   fonts.messages.error:
-    global: 12pt SF Pro Display
+    global: 12pt Source Sans Pro
   fonts.messages.info:
-    global: 12pt SF Pro Display
+    global: 12pt Source Sans Pro
   fonts.messages.warning:
-    global: 12pt SF Pro Display
+    global: 12pt Source Sans Pro
   fonts.monospace:
     global: '"Operator Mono SSm"'
   fonts.prompts:
-    global: 12pt SF Pro Display
+    global: 12pt Source Sans Pro
   fonts.statusbar:
-    global: 12pt SF Pro Display
+    global: 12pt Source Sans Pro
   fonts.tabs:
-    global: 12pt SF Pro Display
+    global: 12pt Source Sans Pro
   fonts.web.family.cursive:
     global: null
   fonts.web.family.fantasy:
     global: null
   fonts.web.family.fixed:
-    global: '"Fira Code"'
+    global: monospace
   fonts.web.family.sans_serif:
-    global: '"SF Pro Text" "Hiragino Sans GB"'
+    global: '"Source Sans Pro" "Hiragino Sans GB"'
   fonts.web.family.serif:
-    global: '"SF Pro Text" "Hiragino Sans GB"'
+    global: '"Source Sans Pro" "Hiragino Sans GB"'
   fonts.web.family.standard:
-    global: '"SF Pro Text" "Hiragino Sans GB"'
+    global: '"Source Sans Pro" "Hiragino Sans GB"'
   fonts.web.size.default:
     global: 16
+  hints.auto_follow:
+    global: unique-match
   hints.border:
     global: '1px solid #1d2021'
   hints.chars:

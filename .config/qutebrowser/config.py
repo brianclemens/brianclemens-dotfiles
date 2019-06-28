@@ -12,8 +12,11 @@ config.set('content.javascript.enabled', True, 'qute://*/*')
 config.bind('<Alt-Left>', 'back')
 config.bind('<Alt-Right>', 'forward')
 
+## MPD
+config.bind('<z><m>', 'spawn --userscript add_to_mpd')
+
 ## MPV (https://mpv.io)
-config.bind('<z><m>', 'spawn --userscript view_in_mpv')
+config.bind('<z><v>', 'spawn --userscript view_in_mpv')
 
 ## Pass password manager (https://www.passwordstore.org)
 config.bind('<z><l><l>', 'spawn --userscript qute-pass')

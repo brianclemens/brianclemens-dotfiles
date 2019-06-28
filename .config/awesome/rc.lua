@@ -6,6 +6,7 @@ pcall(require, "luarocks.loader")
 local awful         = require("awful")
                       require("awful.autofocus")
 local beautiful     = require("beautiful")
+local dpi           = beautiful.xresources.apply_dpi
 local gears         = require("gears")
 local hotkeys_popup = require("awful.hotkeys_popup")
                       require("awful.hotkeys_popup.keys")
@@ -14,6 +15,7 @@ local wibox         = require("wibox")
 
 -- External
 local lain          = require("lain")
+local markup        = lain.util.markup
 local revelation    = require("revelation")
 -- }}}
 
@@ -49,7 +51,7 @@ local editor_cmd    = "kitty --single-instance -e nvim"
 local modkey        = "Mod4"
 local terminal      = "kitty --single-instance"
 
-awful.util.tagnames = { "cli", "doc", "www", "ssh", "org", "tst", "irc", "med" }
+awful.util.tagnames = { "cli", "doc", "www", "ssh", "org", "tst", "irc", "med", "tmp" }
 awful.util.terminal = terminal
 
 awful.layout.layouts = {
@@ -66,6 +68,7 @@ revelation.init()
 -- }}}
 
 -- {{{ Screen
+-- {{{ Wallpaper
 local function set_wallpaper(s)
     if beautiful.wallpaper then
         gears.wallpaper.tiled(beautiful.wallpaper, s)
@@ -74,11 +77,141 @@ end
 
 -- Re-set wallpaper when a screen's geometry changes
 screen.connect_signal("property::geometry", set_wallpaper)
+-- }}}
 
--- Shared widgets
--- Clock
-local mytextclock = wibox.widget.textclock()
+-- {{{ Clock widget
+local mytextclock = wibox.widget.textclock(markup.color(beautiful.bg_normal, beautiful.color.gray, "%a, %b %d %-H:%M"))
+-- }}}
 
+-- {{{ Volume widget
+local vol_icon = wibox.widget.imagebox()
+local myvolume = lain.widget.pulsebar({
+    notification_preset = { font = "Monospace 12", fg = beautiful.fg_normal },
+    settings = function()
+        local i, perc = "", tonumber(volume_now.left) or 0
+        if volume_now.muted == "yes" then
+            i = "volume_muteblock"
+        else
+            if perc <= 25 then
+                i = "volume_mute"
+            elseif perc <= 50 then
+                i = "volume_low"
+            elseif perc <= 75 then
+                i = "volume_med"
+            elseif perc <= 100 then
+                i = "volume_high"
+            else
+                i = "volume_over"
+            end
+        end
+        vol_icon:set_image(beautiful.icon[i])
+    end
+})
+
+vol_icon:buttons(gears.table.join (
+    awful.button({}, 1, function()
+        awful.spawn(string.format("%s -e pulsemixer", awful.util.terminal))
+    end),
+    awful.button({}, 2, function()
+        os.execute(string.format("pactl set-sink-volume %d 100%%", myvolume.device))
+        myvolume.notify()
+    end),
+    awful.button({}, 3, function()
+        os.execute(string.format("pactl set-sink-mute %d toggle", myvolume.device))
+        myvolume.notify()
+    end),
+    awful.button({}, 4, function()
+        os.execute(string.format("pactl set-sink-volume %d +1%%", myvolume.device))
+        myvolume.notify()
+    end),
+    awful.button({}, 5, function()
+        os.execute(string.format("pactl set-sink-volume %d -1%%", myvolume.device))
+        myvolume.notify()
+    end)
+))
+-- }}}
+
+-- {{{ MPD widget
+local mpd_icon = wibox.widget.imagebox()
+local mympd = lain.widget.mpd({
+    settings = function()
+        if mpd_now.state == "play" then
+            mpd_icon:set_image(beautiful.icon.mpd_play)
+            -- Use name instead of title when the title is unavailible
+            -- This happens when streaming from SoundCloud
+            if mpd_now.title == "N/A" then
+                widget:set_markup(mpd_now.name)
+            elseif mpd_now.artist == "N/A" then
+                widget:set_markup(mpd_now.title)
+            else
+                widget:set_markup(
+                    markup.bold(mpd_now.title) ..
+                    " - " ..
+                    mpd_now.artist)
+            end
+
+        elseif mpd_now.state == "pause" then
+            mpd_icon:set_image(beautiful.icon.mpd_pause)
+            if mpd_now.title == "N/A" then
+                widget:set_markup(markup(beautiful.color.gray, mpd_now.name))
+            elseif mpd_now.artist == "N/A" then
+                widget:set_markup(markup(beautiful.color.gray, mpd_now.title))
+            else
+                widget:set_markup(markup(beautiful.color.gray,
+                    markup.bold(mpd_now.title) ..
+                    " - " ..
+                    mpd_now.artist))
+            end
+
+        else
+            mpd_icon:set_image()
+            widget:set_markup("")
+        end
+    end
+})
+-- }}}
+
+-- {{{ Network widgets
+local wireless_icon = wibox.widget.imagebox(beautiful.icon["wifidisc"], true)
+local wireless_widget = awful.widget.watch(
+    { awful.util.shell, "-c", "nmcli -g ACTIVE,IN-USE,DEVICE,SSID,SIGNAL dev wifi" }, 5,
+    function(w, stdout)
+        local wifi_now, index = {}, "wireless_offline"
+
+        wifi_now.status = stdout:match("(yes): ?*?:") and "connected" or "disconnected"
+
+        if wifi_now.status == "disconnected" then
+            index = "wireless_offline"
+            -- wifi_now.device = stdout:match("^.-:.-:(.-):") or "N/A"
+            -- wifi_now.ssid   = stdout:match("^.-:.-:.-:(.-):") or ""
+            -- wifi_now.signal = tonumber(stdout:match("^.-:.-:.-:.-:(%d+)")) or 0
+            -- w:set_markup(markup(beautiful.color["gray"], wifi_now.ssid))
+            w:set_markup("")
+        else
+            wifi_now.device = stdout:match("yes:%*:(.-):") or "N/A"
+            wifi_now.ssid   = stdout:match("yes:%*:.-:(.-):") or "invalid ssid"
+            wifi_now.signal = tonumber(stdout:match("yes:%*:.-:.-:(%d+)")) or 0
+            if wifi_now.signal == 0 then
+                index = "wireless_acquiring"
+            elseif wifi_now.signal <= 5 then
+                index = "wireless_none"
+            elseif wifi_now.signal <= 25 then
+                index = "wireless_low"
+            elseif wifi_now.signal <= 50 then
+                index = "wireless_ok"
+            elseif wifi_now.signal <= 75 then
+                index = "wireless_good"
+            else
+                index = "wireless_excellent"
+            end
+            w:set_markup(wifi_now.ssid)
+        end
+        wireless_icon:set_image(beautiful.icon[index])
+    end
+)
+-- }}}
+
+-- {{{ Taglist widget
 local taglist_buttons = gears.table.join(
     awful.button({ }, 1, function(t)
         awful.menu.client_list({ theme = { width = 400 } }, { }, function(c)
@@ -102,15 +235,21 @@ local taglist_buttons = gears.table.join(
         end
     end)
 )
+-- }}}
 
--- Taglist
 -- Create a wibox for each screen and add it
 awful.screen.connect_for_each_screen(function(s)
     -- Wallpaper
     set_wallpaper(s)
 
-    -- Tag table.
+    -- Create tags and tag list widget
     awful.tag(awful.util.tagnames, s, awful.layout.layouts[1])
+
+    s.mytaglist = awful.widget.taglist {
+        screen  = s,
+        filter  = awful.widget.taglist.filter.all,
+        buttons = taglist_buttons
+    }
 
     -- Prompt box
     s.mypromptbox = awful.widget.prompt()
@@ -123,15 +262,7 @@ awful.screen.connect_for_each_screen(function(s)
         awful.button({ }, 4, function () awful.layout.inc( 1) end),
         awful.button({ }, 5, function () awful.layout.inc(-1) end)))
 
-    -- Taglist
-    s.mytaglist = awful.widget.taglist {
-        screen  = s,
-        filter  = awful.widget.taglist.filter.all,
-        buttons = taglist_buttons
-    }
-
     s.mywibox = awful.wibar({ position = "top", height=beautiful.bar_height, screen = s })
-
     s.mywibox:setup {
         layout = wibox.layout.align.horizontal,
         expand = "none",
@@ -141,68 +272,124 @@ awful.screen.connect_for_each_screen(function(s)
                 margins = beautiful.xresources.apply_dpi(5),
                 layout = wibox.container.margin,
             },
-            s.mytaglist,
-            s.mypromptbox,
+            {
+                s.mytaglist,
+                margins = beautiful.xresources.apply_dpi(5),
+                layout = wibox.container.margin,
+            },
+            {
+                s.mypromptbox,
+                margins = beautiful.xresources.apply_dpi(5),
+                layout = wibox.container.margin,
+            },
             layout = wibox.layout.fixed.horizontal,
         },
         { -- Middle
-            mytextclock,
+            {
+                {
+                    mpd_icon,
+                    {
+                        mympd,
+                        max_size = dpi(600),
+                        extra_space = dpi(20),
+                        step_function = wibox.container.scroll.step_functions.linear_increase,
+                        layout = wibox.container.scroll.horizontal,
+                    },
+                    layout = wibox.layout.fixed.horizontal,
+                },
+                margins = beautiful.xresources.apply_dpi(5),
+                layout = wibox.container.margin,
+            },
             layout = wibox.layout.fixed.horizontal,
         },
         { -- Right
-            wibox.widget.systray(),
+            {
+                wibox.widget.systray(),
+                margins = beautiful.xresources.apply_dpi(5),
+                layout = wibox.container.margin,
+            },
+            {
+                {
+                    wireless_icon,
+                    wireless_widget,
+                    layout = wibox.layout.fixed.horizontal
+                },
+                margins = beautiful.xresources.apply_dpi(5),
+                layout = wibox.container.margin,
+            },
+            {
+                vol_icon,
+                margins = beautiful.xresources.apply_dpi(5),
+                layout = wibox.container.margin,
+            },
+            {
+                mytextclock,
+                color = beautiful.color.gray,
+                margins = beautiful.xresources.apply_dpi(5),
+                layout = wibox.container.margin,
+            },
             layout = wibox.layout.fixed.horizontal,
-        },
+        }
     }
 end)
 -- }}}
 
 -- {{{ Key bindings
-globalkeys = gears.table.join(
-    awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
-              {description="show help", group="awesome"}),
-    awful.key({ modkey,           }, "Left",   awful.tag.viewprev,
-              {description = "view previous", group = "tag"}),
-    awful.key({ modkey,           }, "Right",  awful.tag.viewnext,
-              {description = "view next", group = "tag"}),
-    awful.key({ modkey,           }, "Escape", awful.tag.history.restore,
-              {description = "go back", group = "tag"}),
+local globalkeys = gears.table.join(
 
-    awful.key({ modkey, "Shift"   }, "e",
-    function()
-        revelation({curr_tag_only=true})
-    end,
-              {description="show expose for current tag", group="awesome"}),
-    awful.key({ modkey,           }, "e",      revelation,
-              {description="show expose", group="awesome"}),
+    -- Hotkey popup
+    awful.key({ modkey }, "s", hotkeys_popup.show_help,
+        {description="show help", group="awesome"}),
 
-    awful.key({ modkey,           }, "j",
+    -- Tag next / previous
+    awful.key({ modkey }, "Left", awful.tag.viewprev,
+        {description = "view previous", group = "tag"}),
+    awful.key({ modkey }, "Right",  awful.tag.viewnext,
+        {description = "view next", group = "tag"}),
+
+    -- Return to previous tag
+    awful.key({ modkey }, "Escape", awful.tag.history.restore,
+        {description = "go back", group = "tag"}),
+
+    -- Revelation ("expose")
+    awful.key({ modkey, "Shift" }, "e",
+        function()
+            revelation({curr_tag_only=true})
+        end,
+        {description="show revelation for current tag", group="awesome"}),
+    awful.key({ modkey }, "e", revelation,
+        {description="show revelation", group="awesome"}),
+
+    -- Client next / previous
+    awful.key({ modkey }, "j",
         function ()
             awful.client.focus.byidx( 1)
         end,
-        {description = "focus next by index", group = "client"}
+        {description = "focus next", group = "client"}
     ),
-    awful.key({ modkey,           }, "k",
+    awful.key({ modkey }, "k",
         function ()
             awful.client.focus.byidx(-1)
         end,
-        {description = "focus previous by index", group = "client"}
+        {description = "focus previous", group = "client"}
     ),
-    awful.key({ modkey,           }, "w", function () awful.spawn("rofi -show combi") end,
+
+    -- Launcher
+    awful.key({ modkey }, "w", function () awful.spawn("rofi -show combi") end,
               {description = "launcher", group = "awesome"}),
 
     -- Layout manipulation
-    awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end,
+    awful.key({ modkey, "Shift" }, "j", function () awful.client.swap.byidx(  1)    end,
               {description = "swap with next client by index", group = "client"}),
-    awful.key({ modkey, "Shift"   }, "k", function () awful.client.swap.byidx( -1)    end,
+    awful.key({ modkey, "Shift" }, "k", function () awful.client.swap.byidx( -1)    end,
               {description = "swap with previous client by index", group = "client"}),
     awful.key({ modkey, "Control" }, "j", function () awful.screen.focus_relative( 1) end,
               {description = "focus the next screen", group = "screen"}),
     awful.key({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end,
               {description = "focus the previous screen", group = "screen"}),
-    awful.key({ modkey,           }, "u", awful.client.urgent.jumpto,
+    awful.key({ modkey }, "u", awful.client.urgent.jumpto,
               {description = "jump to urgent client", group = "client"}),
-    awful.key({ modkey,           }, "Tab",
+    awful.key({ modkey }, "Tab",
         function ()
             awful.client.focus.history.previous()
             if client.focus then
