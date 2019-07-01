@@ -1,0 +1,7 @@
+#EXTM3U
+
+#EXTINF:-1,TheJazzGroove.com - East Channel (MP3 128k)
+http://east-mp3-128.streamthejazzgroove.com/stream
+
+#EXTINF:-1,TheJazzGroove.com - East Channel (AAC 64k)
+http://east-aac-64.streamthejazzgroove.com/stream

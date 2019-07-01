@@ -58,7 +58,7 @@ theme.color.darkfg  = "#f2e5bc"
 
 -- {{{ Font
 theme.font = "Source Sans Pro Semibold 16"
-theme.mono_font = "Operator Mono Lig Book 16"
+theme.mono_font = "Operator Mono Book 16"
 theme.font_height = beautiful.get_font_height(theme.font)
 theme.bar_height = beautiful.get_font_height(theme.font)*1.3
 -- }}}
@@ -101,27 +101,28 @@ end
 -- {{{ Icons
 theme.icon = {}
 
-theme.icon.bat000charging    = icon_path .. "bat-000-charging.png"
-theme.icon.bat000            = icon_path .. "bat-000.png"
-theme.icon.bat020charging    = icon_path .. "bat-020-charging.png"
-theme.icon.bat020            = icon_path .. "bat-020.png"
-theme.icon.bat040charging    = icon_path .. "bat-040-charging.png"
-theme.icon.bat040            = icon_path .. "bat-040.png"
-theme.icon.bat060charging    = icon_path .. "bat-060-charging.png"
-theme.icon.bat060            = icon_path .. "bat-060.png"
-theme.icon.bat080charging    = icon_path .. "bat-080-charging.png"
-theme.icon.bat080            = icon_path .. "bat-080.png"
-theme.icon.bat100charging    = icon_path .. "bat-100-charging.png"
-theme.icon.bat100            = icon_path .. "bat-100.png"
-theme.icon.batcharged        = icon_path .. "bat-charged.png"
+-- Battery
+theme.icon.bat_missing          = icon_path .. "battery-missing.svg"
+theme.icon.bat_empty            = icon_path .. "battery-empty.svg"
+theme.icon.bat_empty_charging   = icon_path .. "battery-empty-charging.svg"
+theme.icon.bat_low              = icon_path .. "battery-low.svg"
+theme.icon.bat_low_charging     = icon_path .. "battery-low-charging.svg"
+theme.icon.bat_medium           = icon_path .. "battery-medium.svg"
+theme.icon.bat_medium_charging  = icon_path .. "battery-medium-charging.svg"
+theme.icon.bat_good             = icon_path .. "battery-good.svg"
+theme.icon.bat_good_charging    = icon_path .. "battery-good-charging.svg"
+theme.icon.bat_full             = icon_path .. "battery-full.svg"
+theme.icon.bat_full_charging    = icon_path .. "battery-full-charged.svg"
 
 -- Wired network
 theme.icon.wired            = icon_path .. "network-wired.svg"
 theme.icon.wired_offline    = icon_path .. "network-wired-offline.svg"
 
 -- MPD
+theme.icon.mpd_default        = icon_path .. "default-album-art.svg"
 theme.icon.mpd_pause          = icon_path .. "mpd-pause.svg"
 theme.icon.mpd_play           = icon_path .. "mpd-play.svg"
+theme.icon.mpd_stop           = icon_path .. "mpd-stop.svg"
 
 -- Volume
 theme.icon.volume_over      = icon_path .. "audio-volume-overamplified.svg"
@@ -168,12 +169,30 @@ theme.layout_cornerse   = icon_path .. "layouts/cornersew.png"
 theme.menu_submenu_icon = "/usr/share/awesome/themes/default/submenu.png"
 theme.menu_height = theme.bar_height
 theme.menu_width  = dpi(100)
+theme.menu_border_width = dpi(1)
+theme.menu_border_color = theme.color.gray
+theme.menu_shape = function(cr, width, height)
+    gears.shape.infobubble(cr, width, height, corner_radius, arrow_size, width - dpi(35))
+end
 
-theme.menu_bg_normal = theme.bg_normal
+theme.menu_bg_normal = theme.color.bg
 theme.menu_fg_normal = theme.color.fg2
 
-theme.menu_bg_focus = theme.color.bg2
+theme.menu_bg_focus = theme.color.bg1
 theme.menu_fg_focus = theme.color.fg
+-- }}}
+
+-- {{{ Notifications
+theme.notification_font = theme.font
+theme.notification_bg = theme.color.bg1
+theme.notification_fg = theme.color.fg2
+theme.notification_border_color = theme.color.gray
+theme.notification_border_width = dpi(2)
+theme.notification_margin = dpi(10)
+theme.notification_spacing = dpi(10)
+theme.notification_shape = function(cr, width, height)
+    gears.shape.rounded_rect(cr, width, height, theme.corner_radius)
+end
 -- }}}
 
 -- {{{ Prompt
@@ -238,6 +257,18 @@ theme.titlebar_minimize_button_focus_press  = icon_path .. "tb_minimize_focus_pr
 theme.titlebar_minimize_button_normal       = icon_path .. "tb_minimize_normal.svg"
 theme.titlebar_minimize_button_normal_hover = icon_path .. "tb_minimize_normal_hover.svg"
 theme.titlebar_minimize_button_normal_press = icon_path .. "tb_minimize_normal_press.svg"
+-- }}}
+
+-- {{{ Tooltips
+theme.tooltip_bg = theme.color.bg1
+theme.tooltip_fg = theme.color.fg2
+theme.tooltip_font = theme.font
+theme.tooltip_border_color = theme.color.gray
+theme.tooltip_border_width = dpi(2)
+theme.panel_tooltip_shape = function(cr, width, height)
+    gears.shape.infobubble(cr, width, height, corner_radius, arrow_size, width - dpi(35))
+end
+
 -- }}}
 
 theme.wallpaper = theme_path .. "tweed.png"

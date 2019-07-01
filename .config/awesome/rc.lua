@@ -79,14 +79,65 @@ end
 screen.connect_signal("property::geometry", set_wallpaper)
 -- }}}
 
--- {{{ Clock widget
-local mytextclock = wibox.widget.textclock(markup.color(beautiful.bg_normal, beautiful.color.gray, "%a, %b %d %-H:%M"))
+-- {{{ Battery widget
+local battery_icon = wibox.widget.imagebox(beautiful.icon.bat_missing)
+local battery_tooltip = awful.tooltip({
+    objects = { battery_icon },
+    margins = dpi(10),
+    mode = "outside",
+    preferred_alignments = { "back" },
+    shape = beautiful.panel_tooltip_shape,
+})
+
+local battery_widget = lain.widget.bat({
+    settings = function()
+        local index, perc = "", tonumber(bat_now.perc) or 0
+
+        if perc <= 10 then
+            index = "bat_empty"
+        elseif perc <= 25 then
+            index = "bat_low"
+        elseif perc <= 50 then
+            index = "bat_medium"
+        elseif perc <= 75 then
+            index = "bat_good"
+        elseif perc <= 100 then
+            index = "bat_full"
+        end
+
+        if bat_now.ac_status == 1 then
+            index = index .. "_charging"
+        end
+
+        battery_tooltip:set_markup(string.format("%s%% charged\n%s remaining", perc, bat_now.time))
+        battery_icon:set_image(beautiful.icon[index])
+    end
+})
+-- }}}
+
+-- {{{ Clock / calendar widget
+local textclock_widget = wibox.widget.textclock(
+    markup.color(beautiful.bg_normal, beautiful.color.gray, "%a, %b %d %-H:%M"))
+local calendar_widget = lain.widget.cal({
+    attach_to = { textclock_widget },
+    icons = "",
+    notification_preset = {
+        fg = beautiful.color.fg2,
+        bg = beautiful.color.bg1,
+        position = "top_right",
+        font = beautiful.mono_font,
+        margin = dpi(20),
+        shape = beautiful.panel_tooltip_shape,
+        border_width = beautiful.tooltip_border_width,
+        border_color = beautiful.tooltip_border_color,
+    }
+})
 -- }}}
 
 -- {{{ Volume widget
-local vol_icon = wibox.widget.imagebox()
-local myvolume = lain.widget.pulsebar({
-    notification_preset = { font = "Monospace 12", fg = beautiful.fg_normal },
+local volume_icon = wibox.widget.imagebox()
+local volume_widget = lain.widget.pulsebar({
+    notification_preset = { font = beautiful.mono_font, fg = beautiful.fg_normal },
     settings = function()
         local i, perc = "", tonumber(volume_now.left) or 0
         if volume_now.muted == "yes" then
@@ -104,36 +155,38 @@ local myvolume = lain.widget.pulsebar({
                 i = "volume_over"
             end
         end
-        vol_icon:set_image(beautiful.icon[i])
+        volume_icon:set_image(beautiful.icon[i])
     end
 })
 
-vol_icon:buttons(gears.table.join (
+volume_icon:buttons(gears.table.join (
     awful.button({}, 1, function()
-        awful.spawn(string.format("%s -e pulsemixer", awful.util.terminal))
+        os.execute(string.format("pactl set-sink-mute %d toggle", volume_widget.device))
+        volume_widget.notify()
     end),
     awful.button({}, 2, function()
-        os.execute(string.format("pactl set-sink-volume %d 100%%", myvolume.device))
-        myvolume.notify()
+        os.execute(string.format("pactl set-sink-volume %d 100%%", volume_widget.device))
+        volume_widget.notify()
     end),
     awful.button({}, 3, function()
-        os.execute(string.format("pactl set-sink-mute %d toggle", myvolume.device))
-        myvolume.notify()
+        awful.spawn(string.format("%s -e pulsemixer", awful.util.terminal))
     end),
     awful.button({}, 4, function()
-        os.execute(string.format("pactl set-sink-volume %d +1%%", myvolume.device))
-        myvolume.notify()
+        os.execute(string.format("pactl set-sink-volume %d +1%%", volume_widget.device))
+        volume_widget.notify()
     end),
     awful.button({}, 5, function()
-        os.execute(string.format("pactl set-sink-volume %d -1%%", myvolume.device))
-        myvolume.notify()
+        os.execute(string.format("pactl set-sink-volume %d -1%%", volume_widget.device))
+        volume_widget.notify()
     end)
 ))
 -- }}}
 
 -- {{{ MPD widget
 local mpd_icon = wibox.widget.imagebox()
-local mympd = lain.widget.mpd({
+local mpd_widget = lain.widget.mpd({
+    cover_size = dpi(100),
+    default_art = beautiful.icon.mpd_default,
     settings = function()
         if mpd_now.state == "play" then
             mpd_icon:set_image(beautiful.icon.mpd_play)
@@ -169,46 +222,100 @@ local mympd = lain.widget.mpd({
         end
     end
 })
+
+mpd_icon:buttons(gears.table.join (
+    awful.button({}, 1, function()
+        os.execute("mpc toggle")
+        mpd_widget.update()
+    end),
+    awful.button({}, 2, function()
+        os.execute("mpc prev")
+        mpd_widget.update()
+    end),
+    awful.button({}, 3, function()
+        os.execute("mpc next")
+        mpd_widget.update()
+    end),
+    awful.button({}, 4, function()
+        os.execute("mpc volume -1")
+        mpd_widget.update()
+    end),
+    awful.button({}, 5, function()
+        os.execute("mpc volume +1")
+        mpd_widget.update()
+    end)
+))
+
 -- }}}
 
 -- {{{ Network widgets
-local wireless_icon = wibox.widget.imagebox(beautiful.icon["wifidisc"], true)
-local wireless_widget = awful.widget.watch(
-    { awful.util.shell, "-c", "nmcli -g ACTIVE,IN-USE,DEVICE,SSID,SIGNAL dev wifi" }, 5,
-    function(w, stdout)
-        local wifi_now, index = {}, "wireless_offline"
-
-        wifi_now.status = stdout:match("(yes): ?*?:") and "connected" or "disconnected"
-
-        if wifi_now.status == "disconnected" then
-            index = "wireless_offline"
-            -- wifi_now.device = stdout:match("^.-:.-:(.-):") or "N/A"
-            -- wifi_now.ssid   = stdout:match("^.-:.-:.-:(.-):") or ""
-            -- wifi_now.signal = tonumber(stdout:match("^.-:.-:.-:.-:(%d+)")) or 0
-            -- w:set_markup(markup(beautiful.color["gray"], wifi_now.ssid))
-            w:set_markup("")
-        else
-            wifi_now.device = stdout:match("yes:%*:(.-):") or "N/A"
-            wifi_now.ssid   = stdout:match("yes:%*:.-:(.-):") or "invalid ssid"
-            wifi_now.signal = tonumber(stdout:match("yes:%*:.-:.-:(%d+)")) or 0
-            if wifi_now.signal == 0 then
-                index = "wireless_acquiring"
-            elseif wifi_now.signal <= 5 then
-                index = "wireless_none"
-            elseif wifi_now.signal <= 25 then
-                index = "wireless_low"
-            elseif wifi_now.signal <= 50 then
-                index = "wireless_ok"
-            elseif wifi_now.signal <= 75 then
-                index = "wireless_good"
-            else
-                index = "wireless_excellent"
-            end
-            w:set_markup(wifi_now.ssid)
+local wireless_icon = wibox.widget.imagebox(beautiful.icon.wireless_offline)
+local network_widget = lain.widget.net {
+    notify = "off",
+    wifi_state = "on",
+    eth_state = "on",
+    settings = function()
+        for device, feature in pairs(net_now.devices) do
+            print(device, feature.wifi)
         end
-        wireless_icon:set_image(beautiful.icon[index])
+        local wlp2s0 = net_now.devices.wlp2s0
+        if wlp2s0 then
+            local i = "wireless_offline"
+            if wlp2s0.wifi then
+                local signal = wlp2s0.signal
+                if signal < -83 then
+                    i = "wireless_low"
+                elseif signal < -70 then
+                    i = "wireless_ok"
+                elseif signal < -53 then
+                    i = "wireless_good"
+                elseif signal >= -53 then
+                    i = "wireless_excellent"
+                end
+                wireless_icon:set_image(beautiful.icon[i])
+            end
+        end
     end
-)
+}
+
+-- {{{ NetworkManager widget
+-- local wireless_widget = awful.widget.watch(
+--     { awful.util.shell, "-c", "nmcli -g ACTIVE,IN-USE,DEVICE,SSID,SIGNAL dev wifi" }, 5,
+--     function(w, stdout)
+--         local wifi_now, index = {}, "wireless_offline"
+--
+--         wifi_now.status = stdout:match("(yes): ?*?:") and "connected" or "disconnected"
+--
+--         if wifi_now.status == "disconnected" then
+--             index = "wireless_offline"
+--             -- wifi_now.device = stdout:match("^.-:.-:(.-):") or "N/A"
+--             -- wifi_now.ssid   = stdout:match("^.-:.-:.-:(.-):") or ""
+--             -- wifi_now.signal = tonumber(stdout:match("^.-:.-:.-:.-:(%d+)")) or 0
+--             -- w:set_markup(markup(beautiful.color["gray"], wifi_now.ssid))
+--             w:set_markup("")
+--         else
+--             wifi_now.device = stdout:match("yes:%*:(.-):") or "N/A"
+--             wifi_now.ssid   = stdout:match("yes:%*:.-:(.-):") or "invalid ssid"
+--             wifi_now.signal = tonumber(stdout:match("yes:%*:.-:.-:(%d+)")) or 0
+--             if wifi_now.signal == 0 then
+--                 index = "wireless_acquiring"
+--             elseif wifi_now.signal <= 5 then
+--                 index = "wireless_none"
+--             elseif wifi_now.signal <= 25 then
+--                 index = "wireless_low"
+--             elseif wifi_now.signal <= 50 then
+--                 index = "wireless_ok"
+--             elseif wifi_now.signal <= 75 then
+--                 index = "wireless_good"
+--             else
+--                 index = "wireless_excellent"
+--             end
+--             w:set_markup(wifi_now.ssid)
+--         end
+--         wireless_icon:set_image(beautiful.icon[index])
+--     end
+-- )
+-- }}}
 -- }}}
 
 -- {{{ Taglist widget
@@ -251,9 +358,6 @@ awful.screen.connect_for_each_screen(function(s)
         buttons = taglist_buttons
     }
 
-    -- Prompt box
-    s.mypromptbox = awful.widget.prompt()
-
     -- Layout box
     s.mylayoutbox = awful.widget.layoutbox(s)
     s.mylayoutbox:buttons(gears.table.join(
@@ -269,17 +373,12 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Left
             {
                 s.mylayoutbox,
-                margins = beautiful.xresources.apply_dpi(5),
+                margins = dpi(5),
                 layout = wibox.container.margin,
             },
             {
                 s.mytaglist,
-                margins = beautiful.xresources.apply_dpi(5),
-                layout = wibox.container.margin,
-            },
-            {
-                s.mypromptbox,
-                margins = beautiful.xresources.apply_dpi(5),
+                margins = dpi(5),
                 layout = wibox.container.margin,
             },
             layout = wibox.layout.fixed.horizontal,
@@ -289,7 +388,7 @@ awful.screen.connect_for_each_screen(function(s)
                 {
                     mpd_icon,
                     {
-                        mympd,
+                        mpd_widget,
                         max_size = dpi(600),
                         extra_space = dpi(20),
                         step_function = wibox.container.scroll.step_functions.linear_increase,
@@ -297,7 +396,7 @@ awful.screen.connect_for_each_screen(function(s)
                     },
                     layout = wibox.layout.fixed.horizontal,
                 },
-                margins = beautiful.xresources.apply_dpi(5),
+                margins = dpi(5),
                 layout = wibox.container.margin,
             },
             layout = wibox.layout.fixed.horizontal,
@@ -305,27 +404,34 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Right
             {
                 wibox.widget.systray(),
-                margins = beautiful.xresources.apply_dpi(5),
+                margins = dpi(5),
                 layout = wibox.container.margin,
             },
             {
-                {
-                    wireless_icon,
-                    wireless_widget,
-                    layout = wibox.layout.fixed.horizontal
-                },
-                margins = beautiful.xresources.apply_dpi(5),
+                wireless_icon,
+                margins = dpi(5),
                 layout = wibox.container.margin,
             },
             {
-                vol_icon,
-                margins = beautiful.xresources.apply_dpi(5),
+                volume_icon,
+                margins = dpi(5),
                 layout = wibox.container.margin,
             },
             {
-                mytextclock,
+                battery_icon,
+                top = dpi(5),
+                bottom = dpi(5),
+                left = dpi(5),
+                right = dpi(10),
+                layout = wibox.container.margin,
+            },
+            {
+                textclock_widget,
                 color = beautiful.color.gray,
-                margins = beautiful.xresources.apply_dpi(5),
+                top = dpi(5),
+                bottom = dpi(5),
+                left = dpi(10),
+                right = dpi(10),
                 layout = wibox.container.margin,
             },
             layout = wibox.layout.fixed.horizontal,
@@ -374,9 +480,17 @@ local globalkeys = gears.table.join(
         {description = "focus previous", group = "client"}
     ),
 
-    -- Launcher
-    awful.key({ modkey }, "w", function () awful.spawn("rofi -show combi") end,
-              {description = "launcher", group = "awesome"}),
+    -- Window switcher
+    awful.key({ modkey }, "w", function () awful.spawn("rofi -show window") end,
+              {description = "window switcher", group = "awesome"}),
+
+    -- Window switcher
+    awful.key({ modkey }, "r", function () awful.spawn("rofi -show run") end,
+              {description = "window switcher", group = "awesome"}),
+
+    -- Window switcher
+    awful.key({ modkey }, "w", function () awful.spawn("rofi -show window") end,
+              {description = "window switcher", group = "awesome"}),
 
     -- Layout manipulation
     awful.key({ modkey, "Shift" }, "j", function () awful.client.swap.byidx(  1)    end,
@@ -433,23 +547,9 @@ local globalkeys = gears.table.join(
                     )
                   end
               end,
-              {description = "restore minimized", group = "client"}),
-
-    -- Prompt
-    awful.key({ modkey },            "r",     function () awful.screen.focused().mypromptbox:run() end,
-              {description = "run prompt", group = "launcher"}),
-
-    awful.key({ modkey }, "x",
-              function ()
-                  awful.prompt.run {
-                    prompt       = "Run Lua code: ",
-                    textbox      = awful.screen.focused().mypromptbox.widget,
-                    exe_callback = awful.util.eval,
-                    history_path = awful.util.get_cache_dir() .. "/history_eval"
-                  }
-              end,
-              {description = "lua execute prompt", group = "awesome"})
+              {description = "restore minimized", group = "client"})
 )
+
 
 clientkeys = gears.table.join(
     awful.key({ modkey,           }, "f",
@@ -637,9 +737,9 @@ client.connect_signal("request::titlebars", function(c)
         { -- Middle
             {
                 awful.titlebar.widget.iconwidget(c),
-                top = beautiful.xresources.apply_dpi(5),
-                bottom = beautiful.xresources.apply_dpi(5),
-                right = beautiful.xresources.apply_dpi(5),
+                top = dpi(5),
+                bottom = dpi(5),
+                right = dpi(5),
                 draw_empty = false,
                 layout = wibox.container.margin
             },
