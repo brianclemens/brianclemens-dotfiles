@@ -1,0 +1,8 @@
+[Unit]
+Description=Mailbox synchronization service
+
+[Service]
+Type=oneshot
+ExecStartPre=/home/brian/bin/msmtp-runqueue.sh
+ExecStart=/usr/bin/mbsync -Va
+ExecStartPost=/home/brian/bin/notmuch.sh
