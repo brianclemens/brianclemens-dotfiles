@@ -575,20 +575,20 @@ augroup SpellBadUnderline
 augroup END
 
 if &term !=? 'linux' || has('gui_running')
-    set listchars=tab:›\ ,extends:>,precedes:<,nbsp:˷,eol:⤶,trail:~
+    set listchars=tab:›\ ,extends:>,precedes:<,nbsp:˷,eol:$,trail:·
     set fillchars=vert:│,fold:─,diff:-
     augroup TrailingSpaces
         autocmd!
-        autocmd InsertEnter * set listchars-=eol:⤶,trail:~
-        autocmd InsertLeave * set listchars+=eol:⤶,trail:~
+        autocmd InsertEnter * set listchars-=eol:$,trail:·
+        autocmd InsertLeave * set listchars+=eol:$,trail:·
     augroup END
 else
-    set listchars=tab:>\ ,extends:>,precedes:<,nbsp:+,eol:$,trail:~
+    set listchars=tab:>\ ,extends:>,precedes:<,nbsp:+,eol:$,trail:·
     set fillchars=vert:\|,fold:-,diff:-
     augroup TrailingSpaces
         autocmd!
-        autocmd InsertEnter * set listchars-=eol:$,trail:~
-        autocmd InsertLeave * set listchars+=eol:$,trail:~
+        autocmd InsertEnter * set listchars-=eol:$,trail:·
+        autocmd InsertLeave * set listchars+=eol:$,trail:·
     augroup END
 endif
 " }}}

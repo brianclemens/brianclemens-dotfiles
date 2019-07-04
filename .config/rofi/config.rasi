@@ -1,0 +1,33 @@
+configuration {
+	modi: "combi,drun,window,run,ssh";
+	width: 50;
+	lines: 10;
+	columns: 2;
+	font: "Source Sans Pro Medium 20";
+	bw: 2;
+	padding: 10;
+	yoffset: -200;
+	fixed-num-lines: false;
+	show-icons: true;
+	ssh-client: "mosh";
+	drun-icon-theme: "Papirus";
+	sort: true;
+	levenshtein-sort: true;
+	combi-modi: "drun,ssh";
+	matching: "fuzzy";
+	separator-style: "solid";
+	hide-scrollbar: true;
+	theme: "gruvbox";
+	color-normal: "argb:d0282828, #ebdbb2, argb:d032302f, #665c54, #fbf1c7";
+	color-urgent: "argb:d0cc241d, #282828, argb:d0cc241d, #fb4934, #282828";
+	color-active: "argb:d0d79921, #282828, argb:d0d79921, #fabd2f, #282828";
+	color-window: "argb:d0282828, #a89984, #a89984";
+	display-run: "$";
+	display-window: "switch to";
+	display-ssh: "dial";
+	display-drun: "";
+	display-combi: ":";
+	display-keys: "}";
+	kb-row-tab: "";
+	kb-row-select: "Tab";
+}
