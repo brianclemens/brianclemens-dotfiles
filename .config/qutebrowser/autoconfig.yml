@@ -252,31 +252,31 @@ settings:
   editor.encoding:
     global: utf-8
   fonts.completion.category:
-    global: 12pt Source Sans Pro
+    global: 12pt Fira Sans Condensed
   fonts.completion.entry:
-    global: 12pt Source Sans Pro
+    global: 12pt Fira Sans Condensed
   fonts.debug_console:
     global: 12pt monospace
   fonts.downloads:
-    global: 12pt Source Sans Pro
+    global: 12pt Fira Sans Condensed
   fonts.hints:
-    global: 12pt Source Sans Pro
+    global: 12pt Fira Sans Condensed
   fonts.keyhint:
-    global: 12pt Source Sans Pro
+    global: 12pt Fira Sans Condensed
   fonts.messages.error:
-    global: 12pt Source Sans Pro
+    global: 12pt Fira Sans Condensed
   fonts.messages.info:
-    global: 12pt Source Sans Pro
+    global: 12pt Fira Sans Condensed
   fonts.messages.warning:
-    global: 12pt Source Sans Pro
+    global: 12pt Fira Sans Condensed
   fonts.monospace:
-    global: '"Operator Mono SSm"'
+    global: Fira Code
   fonts.prompts:
-    global: 12pt Source Sans Pro
+    global: 12pt Fira Sans Condensed
   fonts.statusbar:
-    global: 12pt Source Sans Pro
+    global: 12pt Fira Sans Condensed
   fonts.tabs:
-    global: 12pt Source Sans Pro
+    global: 12pt Fira Sans Condensed
   fonts.web.family.cursive:
     global: null
   fonts.web.family.fantasy:
@@ -284,13 +284,19 @@ settings:
   fonts.web.family.fixed:
     global: monospace
   fonts.web.family.sans_serif:
-    global: '"Source Sans Pro" "Hiragino Sans GB"'
+    global: '"Fira Sans" "Hiragino Sans GB"'
   fonts.web.family.serif:
-    global: '"Source Sans Pro" "Hiragino Sans GB"'
+    global: '"Fira Sans" "Hiragino Sans GB"'
   fonts.web.family.standard:
-    global: '"Source Sans Pro" "Hiragino Sans GB"'
+    global: '"Fira Sans" "Hiragino Sans GB"'
   fonts.web.size.default:
     global: 16
+  fonts.web.size.default_fixed:
+    global: 16
+  fonts.web.size.minimum:
+    global: 16
+  fonts.web.size.minimum_logical:
+    global: 6
   hints.auto_follow:
     global: unique-match
   hints.border:

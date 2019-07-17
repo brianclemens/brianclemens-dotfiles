@@ -57,7 +57,7 @@ theme.color.darkfg  = "#f2e5bc"
 -- }}}
 
 -- {{{ Font
-theme.font = "Source Sans Pro Semibold 16"
+theme.font = "Fira Sans Condensed Medium 16"
 theme.mono_font = "Operator Mono Book 16"
 theme.font_height = beautiful.get_font_height(theme.font)
 theme.bar_height = beautiful.get_font_height(theme.font)*1.3

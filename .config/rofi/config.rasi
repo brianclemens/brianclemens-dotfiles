@@ -3,14 +3,14 @@ configuration {
 	width: 50;
 	lines: 10;
 	columns: 2;
-	font: "Source Sans Pro Medium 20";
+	font: "Fira Sans Regular 20";
 	bw: 2;
 	padding: 10;
 	yoffset: -200;
 	fixed-num-lines: false;
 	show-icons: true;
 	ssh-client: "mosh";
-	drun-icon-theme: "Papirus";
+	drun-icon-theme: "Papirus-dark";
 	sort: true;
 	levenshtein-sort: true;
 	combi-modi: "drun,ssh";

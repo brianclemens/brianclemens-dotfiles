@@ -1,0 +1,9 @@
+[Unit]
+Description=Offlineimap Query Timer
+
+[Timer]
+OnBootSec=1m
+OnUnitInactiveSec=15m
+
+[Install]
+WantedBy=default.target
