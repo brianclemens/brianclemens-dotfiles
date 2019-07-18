@@ -1,5 +1,5 @@
 {
- :translate-shell "0.9.0"
- :verbose         false
- :tl              "en"
+ :verbose           false
+ :tl                "en"
+ :engine            "yandex"
 }

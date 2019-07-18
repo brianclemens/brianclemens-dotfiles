@@ -62,20 +62,16 @@ bind index,pager L  sidebar-open
 
 # {{{ Status Bar
 set status_chars  = " *%A"
-set status_format = "   %f    %?n?%n/?%m %?d?   %d ?%?t?   %t ? %> %?p?   %p ?"
+set status_format = "   %f    %?n?%n/?%m %?d?   %d ?%?t?   %t ? %> %?p?   %p ?"
 push <show-version>
 # }}}
 
-# Index View Options
-set pager_index_lines = 10 # number of index lines to show
-set pager_context = 3      # number of context lines to show
-set pager_stop             # don't go to next message automatically
-set menu_scroll            # scroll in menus
-set tilde                  # show tildes like in vim
-unset markers              # no ugly plus signs
-set quote_regexp = "^( {0,4}[>|:#%]| {0,4}[a-z0-9]+[>|]+)+"
+# View
+set menu_scroll
 set date_format = "%m/%d"
-# set index_format = "[%Z] %D %-20.20F %s %g"
+
+
+# Index
 set index_format = "%D %-20.20F %s %g"
 set sort = threads
 set sort_aux = reverse-last-date-received
@@ -83,19 +79,43 @@ set uncollapse_jump         # don't collapse on an unread message
 set sort_re                 # thread based on regex
 set reply_regexp = "^(([Rr][Ee]?(\[[0-9]+\])?: *)?(\[[^]]+\] *)?)*"
 
-# Pager Key Bindings
+macro index \\\\ "<vfolder-from-query>" "Search mailbox"
+bind index,pager \` modify-labels
+macro index A "<modify-labels>+archive -unread -inbox\n" "Archive message"
+macro index I "<modify-labels>-archive +inbox\n" "Unarchive message"
+macro index c "<change-vfolder>?" "Change to vfolder overview"
+bind index g        noop
+bind index gg       first-entry
+bind index G        last-entry
+bind index R        group-reply
+bind index <tab>    sync-mailbox
+bind index <space>  collapse-thread
+macro index \Cr "T~U<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "mark all messages as read"
+macro index o "<shell-escape>offlineimap -o -u basic &<enter>" "synchronize mail"
+
+
+# Pager
+set tilde
+unset markers
+set quote_regexp = "^( {0,4}[>|:#%]| {0,4}[a-z0-9]+[>|]+)+"
+set pager_index_lines = 10 # number of index lines to show
+set pager_context = 3      # number of context lines to show
+set pager_stop             # don't go to next message automatically
+
 bind pager k  previous-line
 bind pager j  next-line
 bind pager g noop
 bind pager gg top
 bind pager G  bottom
-
 bind pager R  group-reply
+macro pager T "<pipe-message>tail -n +6 | .zplugin/plugins/soimort---translate-shell/translate | less -+S<enter>"
 
-# View attachments properly.
+# Attachments
 bind attach <return> view-mailcap
+macro pager T "<pipe-entry>.zplugin/plugins/soimort---translate-shell/translate | less -+S<enter>"
+macro attach V "<pipe-entry>cat >~/.cache/mail.html && qutebrowser ~/.cache/mail.html && rm ~/.cache/mail.html<enter>"
 
-# Header Options
+# Headers
 ignore
 unignore from: to: cc: date: subject:
 unignore organization: organisation: \
@@ -115,7 +135,6 @@ set record = +Sent
 set postponed = +Drafts
 set from = "brian@tiuxo.com"
 
-
 # Default inbox.
 set virtual_spoolfile=yes
 set nm_default_uri = "notmuch:///home/brian/Mail"
@@ -125,6 +144,7 @@ virtual-mailboxes "inbox" "notmuch://?query=tag:inbox"
 virtual-mailboxes "bugs" "notmuch://?query=tag:bugs"
 virtual-mailboxes "debian" "notmuch://?query=tag:debian"
 virtual-mailboxes "family" "notmuch://?query=tag:family"
+virtual-mailboxes "tlug" "notmuch://?query=tag:tlug"
 virtual-mailboxes "archive" "notmuch://?query=tag:archive"
 virtual-mailboxes "draft" "notmuch://?query=tag:draft"
 virtual-mailboxes "sent" "notmuch://?query=tag:sent"
@@ -133,34 +153,11 @@ virtual-mailboxes "trash" "notmuch://?query=tag:trash"
 
 # set vfolder_format = "%C %n/%m %f"
 
-# Index Key Bindings ---------------------------------
-macro index \\\\ "<vfolder-from-query>" "Search mailbox"
-bind index,pager \` modify-labels
-macro index A "<modify-labels>+archive -unread -inbox\n" "Archive message"
-macro index I "<modify-labels>-archive +inbox\n" "Unarchive message"
-macro index c "<change-vfolder>?" "Change to vfolder overview"
-
-bind index g        noop
-bind index gg       first-entry
-bind index G        last-entry
-
-bind index R        group-reply
-bind index <tab>    sync-mailbox
-bind index <space>  collapse-thread
-
-# Ctrl-R to mark all as read
-macro index \Cr "T~U<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "mark all messages as read"
-
-# Sync email
-macro index o "<shell-escape>mbsync -a -q &<enter>" "synchronize mail"
-
-# Open message in qutebrowser
-macro attach 'V' "<pipe-entry>cat >~/.cache/mail.html && qutebrowser ~/.cache/mail.html && rm ~/.cache/fmail.html<enter>"
-
 tag-transforms \
     "archive"   " " \
+    "debian"    " " \
+    "family"    " " \
     "inbox"     "​" \
-    "debian"    "" \
     "list"      " " \
     "replied"   " " \
     "sent"      " " \
