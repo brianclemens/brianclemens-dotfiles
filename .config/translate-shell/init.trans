@@ -1,0 +1,5 @@
+{
+ :translate-shell "0.9.0"
+ :verbose         false
+ :tl              "en"
+}

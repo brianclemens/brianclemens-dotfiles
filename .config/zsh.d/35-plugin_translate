@@ -1,0 +1,5 @@
+#!/bin/zsh
+
+# Shell interface to online translation engines https://github.com/soimort/translate-shell
+
+zplugin light soimort/translate-shell
