@@ -81,7 +81,7 @@ set reply_regexp = "^(([Rr][Ee]?(\[[0-9]+\])?: *)?(\[[^]]+\] *)?)*"
 
 macro index \\\\ "<vfolder-from-query>" "Search mailbox"
 bind index,pager \` modify-labels
-macro index A "<modify-labels>+archive -unread -inbox\n" "Archive message"
+macro index A "<modify-labels>+archive -inbox\n" "Archive message"
 macro index I "<modify-labels>-archive +inbox\n" "Unarchive message"
 macro index c "<change-vfolder>?" "Change to vfolder overview"
 bind index g        noop
@@ -127,7 +127,8 @@ hdr_order from: to: cc: date: subject:
 
 # Sending mail
 set edit_headers = yes
-set sendmail = "~/bin/msmtp-enqueue.sh --read-envelope-from"
+set sendmail = "/usr/bin/msmtp --read-envelope-from"
+# set sendmail = "~/bin/msmtp-enqueue.sh --read-envelope-from"
 
 # Account settings
 set folder = ~/Mail/brian-tiuxo.com
@@ -141,10 +142,12 @@ set nm_default_uri = "notmuch:///home/brian/Mail"
 
 # Mailboxes
 virtual-mailboxes "inbox" "notmuch://?query=tag:inbox"
-virtual-mailboxes "bugs" "notmuch://?query=tag:bugs"
-virtual-mailboxes "debian" "notmuch://?query=tag:debian"
-virtual-mailboxes "family" "notmuch://?query=tag:family"
-virtual-mailboxes "tlug" "notmuch://?query=tag:tlug"
+virtual-mailboxes " debian" "notmuch://?query=tag:debian"
+virtual-mailboxes " dev" "notmuch://?query=tag:dev OR tag:bugs"
+virtual-mailboxes " family" "notmuch://?query=tag:family"
+virtual-mailboxes " lobsters" "notmuch://?query=tag:lobsters"
+virtual-mailboxes " tlug" "notmuch://?query=tag:tlug"
+virtual-mailboxes " work" "notmuch://?query=tag:work"
 virtual-mailboxes "archive" "notmuch://?query=tag:archive"
 virtual-mailboxes "draft" "notmuch://?query=tag:draft"
 virtual-mailboxes "sent" "notmuch://?query=tag:sent"
@@ -155,14 +158,18 @@ virtual-mailboxes "trash" "notmuch://?query=tag:trash"
 
 tag-transforms \
     "archive"   " " \
+    "bugs"   	" " \
     "debian"    " " \
+    "dev"       " " \
     "family"    " " \
     "inbox"     "​" \
     "list"      " " \
+    "lobsters"  " " \
     "replied"   " " \
     "sent"      " " \
     "spam"      " " \
     "tlug"      " " \
+    "work"      " " \
     "trash"     " " \
     "unread"    " " \
 
