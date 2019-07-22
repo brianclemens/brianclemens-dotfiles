@@ -1,2 +1,2 @@
 #!/bin/sh
-afew --tag --new
+NOTMUCH_CONFIG="$HOME/.config/notmuch/notmuch-config" afew --tag --new

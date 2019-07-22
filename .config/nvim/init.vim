@@ -444,7 +444,7 @@ command! W execute 'silent! w !sudo /usr/bin/tee % >/dev/null' <bar> edit!
 " }}}
 
 " {{{ Behavior
-set fileencodings=utf-8,cp932,euc-jp,iso-2022-jp,latin1
+set fileencodings=utf-8,iso-2022-jp,cp932,euc-jp,latin1
 set path=$PWD/**    " Use path vim is opened in as base directory
 
 " Menu completion options

@@ -1,0 +1,29 @@
+application/epub+zip; zathura %s; nametemplate=%s.epub; description=epub document
+
+application/gzip; gzip -l %s; copiusoutput; nametemplate=%s.gz; description=Gzip archive
+
+application/msword; antiword %s; copiousoutput; nametemplate=%s.doc; description=Word Document
+
+application/pdf; zathura %s; description=PDF Document; nametemplate=%s.pdf; nametemplate=%s.pdf
+application/pdf; pdftotext %s -; copiousoutput; description=PDF Document
+
+application/pgp-keys; pgp -f < %s; copiousoutput; description=PGP Key
+
+application/vnd.openxmlformats-officedocument.wordprocessingml.document; pandoc %s -t plain | less; nametemplate=%s.docx; description=OpenXML Document
+application/vnd.openxmlformats-officedocument.wordprocessingml.document; pandoc %s -t plain; copiusoutput; nametemplate=%s.docx; description=OpenXML Document
+
+application/x-zip-compressed; unzip -l %s; copiousoutput; description=Zip Archive
+application/zip; unzip -l %s; copiousoutput; description=Zip Archive
+
+audio/*; mpv %s > /dev/null; description=Audio
+audio/*; mediainfo %s; copiousoutput; description=Audio
+
+image/*; feh --scale-down %s; description=Image
+image/*; convert %s jpg:- | jp2a --width=76 -; copiousoutput; description=Image
+
+text/html; firefox %s; nametemplate=%s.html; description=HTML
+text/html; w3m -I %{charset} -T text/html; copiousoutput; description=HTML
+text/plain; nvim --cmd "e ++enc=%{charset}" %s; description=Text
+
+video/*; mpv %s > /dev/null; description=Video
+video/*; ffmpegthumbnailer -i %s -c jpeg -o - | jp2a --width=76 -; copiousoutput; description=Video

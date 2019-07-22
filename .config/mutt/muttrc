@@ -72,7 +72,7 @@ set date_format = "%m/%d"
 
 
 # Index
-set index_format = "%D %-20.20F %s %g"
+set index_format = "%D %-20.20F %?M?[+%M] ?%s %g"
 set sort = threads
 set sort_aux = reverse-last-date-received
 set uncollapse_jump         # don't collapse on an unread message
@@ -136,6 +136,7 @@ set record = +Sent
 set postponed = +Drafts
 set from = "brian@tiuxo.com"
 
+
 # Default inbox.
 set virtual_spoolfile=yes
 set nm_default_uri = "notmuch:///home/brian/Mail"
@@ -191,50 +192,22 @@ mono  indicator     reverse
 mono  error         bold
 
 # index ----------------------------------------------------------------
-#color index         color160        default        "~D(!~p|~p)"               # deleted
-#color index         color235        default        ~F                         # flagged
-#color index         color166        default        ~=                         # duplicate messages
-#color index         color240        default        "~A!~N!~T!~p!~Q!~F!~D!~P"  # the rest
-#color index         J_base          default        "~A~N!~T!~p!~Q!~F!~D"      # the rest, new
-# color index         color223        default        "~A"                        # all messages
-# color index         color124        default        "~E"                        # expired messages
-# color index         color229        default        "~N"                        # new messages
-# color index         color246        default        "~O"                        # old messages
-# color index         color100        default        "~Q"                        # messages that have been replied to
-# color index         color246        default        "~R"                        # read messages
-# color index         color229        default        "~U"                        # unread messages
-# color index         color229        default        "~U~$"                      # unread, unreferenced messages
-# color index         color246        default        "~v"                        # messages part of a collapsed thread
-# color index         color132        default        "~P"                        # messages from me
-# color index         color223        default        "~p!~F"                     # messages to me
-# color index         color229        default        "~N~p!~F"                   # new messages to me
-# color index         color229        default        "~U~p!~F"                   # unread messages to me
-# color index         color229        default        "~R~p!~F"                   # messages to me
-# color index         color166        default        "~F"                        # flagged messages
-# color index         color166        default        "~F~p"                      # flagged messages to me
-# color index         color166        default        "~N~F"                      # new flagged messages
-# color index         color166        default        "~N~F~p"                    # new flagged messages to me
-# color index         color166        default        "~U~F~p"                    # new flagged messages to me
-# color index         color88         default        "~D"                        # deleted messages
-# color index         color246        default        "~v~(!~N)"                  # collapsed thread with no unread
-# color index         color229        default        "~v~(~N)"                   # collapsed thread with some unread
-# color index         color250        default        "~N~v~(~N)"                 # collapsed thread with unread parent
-# color index         color166        default         "~v~(~F)!~N"                # collapsed thread with flagged, no unread
-# color index         color166        default         "~v~(~F~N)"                 # collapsed thread with some unread & flagged
-# color index         color166        default         "~N~v~(~F~N)"               # collapsed thread with unread parent & flagged
-# color index         color166        default         "~N~v~(~F)"                 # collapsed thread with unread parent, no unread inside, but some flagged
-# color index         color229        default         "~v~(~p)"                   # collapsed thread with unread parent, no unread inside, some to me directly
-# color index         color88         default         "~v~(~D)"                   # thread with deleted (doesn't differentiate between all or partial)
-#color index         color136        default        "~(~N)"                    # messages in threads with some unread
-#color index         color64         default        "~S"                       # superseded messages
-#color index         color160        default        "~T"                       # tagged messages
-#color index         color166        color160       "~="                       # duplicated messages
+color index     color246    default     "~R"            # read
+color index     default     default     "~U"            # unread
+color index     red         default     "~D"            # deleted
+color index     color246    default     "~v~(!~N)"      # collapsed thread with no unread
+color index     default     default     "~v~(~N)"       # collapsed thread with some unread
+color index     color132    default     "~v~(~F)"       # collapsed thread with flagged
+color index     color132    default     "~F"            # flagged
+color index     default     blue        "~T"            # tagged
+color index_tags        color172    default     # message tags
+color index_collapsed   color106    default     # collapsed thread count
 
 # message headers ------------------------------------------------------
 
-color hdrdefault    color246         default
-color header        color250         default        "^(From)"
-color header        color229        default        "^(Subject)"
+color hdrdefault    color246        default
+color header        color250        default     "^(From)"
+color header        color229        default     "^(Subject)"
 
 # body -----------------------------------------------------------------
 
@@ -245,16 +218,14 @@ color quoted3       color172        default
 color quoted4       color124        default
 
 color signature     color248        default
-color bold          color223        default
-color underline     color250        default
-color normal        color250        default
+# color bold          color223        default
+# color underline     color250        default
+# color normal        color250        default
 
 ## pgp
-color body          color124        default        "(BAD signature)"
-color body          color106        default        "(Good signature)"
-color body          default         default        "^gpg: Good signature .*"
-color body          color172        default        "^gpg: "
-color body          color167        color160        "^gpg: BAD signature from.*"
-mono  body          bold                            "^gpg: Good signature"
-mono  body          bold                            "^gpg: BAD signature from.*"
+color body          green       default     "^gpg: Good signature .*"
+color body          color172    default     "^gpg: "
+color body          red         color160    "^gpg: BAD signature from.*"
+mono  body          bold                    "^gpg: Good signature"
+mono  body          bold                    "^gpg: BAD signature from.*"
 # }}}
