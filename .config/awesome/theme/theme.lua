@@ -93,6 +93,8 @@ theme.useless_gap = dpi(12)
 theme.hotkeys_font = theme.mono_font
 theme.hotkeys_description_font = theme.font
 theme.hotkeys_bg = "#1d2021d8"
+theme.hotkeys_border_width = dpi(4)
+theme.hotkeys_modifiers_fg = "#8ec07c"
 theme.hotkeys_shape = function(cr,w,h)
     gears.shape.rounded_rect(cr,w,h,theme.border_radius)
 end
