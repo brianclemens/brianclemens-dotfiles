@@ -485,6 +485,10 @@ local globalkeys = gears.table.join(
     awful.key({ modkey }, "w", function () awful.spawn("rofi -show combi") end,
         {description = "open launcher", group = "launcher"}),
 
+    -- Launcher
+    awful.key({ modkey }, "b", function () awful.spawn("pcmanfm") end,
+        {description = "open file browser", group = "launcher"}),
+
     -- Layout manipulation
     awful.key({ modkey, "Shift" }, "j", function () awful.client.swap.byidx(  1)    end,
         {description = "swap with next client by index", group = "client"}),

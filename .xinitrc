@@ -44,5 +44,8 @@ libinput-gestures &
 # Start terminal daemon (if not using kitty)
 # urxvtd -q -o -f &
 
+# PCManFM daemon
+pcmanfm -d &
+
 # Start AwesomeWM
 exec dbus-launch --exit-with-session --sh-syntax awesome
