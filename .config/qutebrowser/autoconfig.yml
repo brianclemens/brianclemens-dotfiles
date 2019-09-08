@@ -173,7 +173,7 @@ settings:
   colors.tabs.selected.odd.fg:
     global: '#fbf1c7'
   colors.webpage.bg:
-    global: null
+    global: '#ffffff'
   completion.open_categories:
     global:
     - searchengines
@@ -252,31 +252,31 @@ settings:
   editor.encoding:
     global: utf-8
   fonts.completion.category:
-    global: 12pt Fira Sans Condensed
+    global: 16pt Fira Sans Condensed
   fonts.completion.entry:
-    global: 12pt Fira Sans Condensed
+    global: 16pt Fira Sans Condensed
   fonts.debug_console:
-    global: 12pt monospace
+    global: 16pt monospace
   fonts.downloads:
-    global: 12pt Fira Sans Condensed
+    global: 16pt Fira Sans Condensed
   fonts.hints:
-    global: 12pt Fira Sans Condensed
+    global: 16pt Fira Sans Condensed
   fonts.keyhint:
-    global: 12pt Fira Sans Condensed
+    global: 16pt Fira Sans Condensed
   fonts.messages.error:
-    global: 12pt Fira Sans Condensed
+    global: 16pt Fira Sans Condensed
   fonts.messages.info:
-    global: 12pt Fira Sans Condensed
+    global: 16pt Fira Sans Condensed
   fonts.messages.warning:
-    global: 12pt Fira Sans Condensed
+    global: 16pt Fira Sans Condensed
   fonts.monospace:
     global: Fira Code
   fonts.prompts:
-    global: 12pt Fira Sans Condensed
+    global: 16pt Fira Sans Condensed
   fonts.statusbar:
-    global: 12pt Fira Sans Condensed
+    global: 16pt Fira Sans Condensed
   fonts.tabs:
-    global: 12pt Fira Sans Condensed
+    global: 16pt Fira Sans Condensed
   fonts.web.family.cursive:
     global: null
   fonts.web.family.fantasy:
@@ -338,8 +338,10 @@ settings:
     global: 0
   keyhint.radius:
     global: 6
+  qt.force_software_rendering:
+    global: none
   qt.highdpi:
-    global: false
+    global: true
   scrolling.smooth:
     global: true
   search.ignore_case:

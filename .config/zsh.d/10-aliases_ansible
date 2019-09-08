@@ -7,8 +7,8 @@ alias ad='cd $ANSIBLE_HOME'
 
 # Use vault password script
 # Not in ansible.cfg so as not to interfere with AWX
-export vid="prod@$ANSIBLE_HOME/scripts/vault_password_prod.sh"
-
-alias ansible='ansible --vault-id="$vid"'
-alias ansible-playbook='ansible-playbook --vault-id="$vid"'
-alias ansible-vault='ansible-vault --vault-id="$vid"'
+export vid="prod@scripts/vault_password_prod.sh"
+# 
+# alias ansible='ansible --vault-id="$vid"'
+# alias ansible-playbook='ansible-playbook --vault-id="$vid"'
+# alias ansible-vault='ansible-vault --vault-id="$vid"'

@@ -1,7 +1,15 @@
 ---
 rules:
-  braces: "enable"
-  brackets: "enable"
+  braces:
+    min-spaces-inside: 1
+    max-spaces-inside: 1
+    min-spaces-inside-empty: 0
+    max-spaces-inside-empty: 0
+  brackets:
+    min-spaces-inside: 0
+    max-spaces-inside: 0
+    min-spaces-inside-empty: 0
+    max-spaces-inside-empty: 0
   colons: "enable"
   commas: "enable"
   comments:
@@ -14,7 +22,8 @@ rules:
   empty-lines: "enable"
   empty-values: "enable"
   hyphens: "enable"
-  indentation: "enable"
+  indentation:
+    spaces: consistent
   key-duplicates: "enable"
   key-ordering: "disable"
   line-length:

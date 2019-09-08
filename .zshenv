@@ -16,6 +16,9 @@ export ANSIBLE_CONFIG="$ANSIBLE_HOME/ansible.cfg"
 export DEBEMAIL="brian@tiuxo.com"
 export DEBFULLNAME="Brian Clemens"
 
+# Doom (crispy doom https://github.com/fabiangreffrath/crispy-doom)
+export DOOMWADPATH="$HOME/.rbdoom3bfg/base/wads"
+
 # Firefox
 export MOZ_USE_XINPUT2=1    # Pixel-perfect scrolling
 
@@ -66,7 +69,7 @@ PATH="$HOME/bin:$PATH"
 PATH="$HOME/go/bin:$PATH"
 
 # QT
-export QT_SCALE_FACTOR=1.5
+# export QT_SCALE_FACTOR=1.5
 export QT_QPA_PLATFORMTHEME="gtk2"
 export QT_STYLE_OVERRIDE="GTK+"
 
@@ -86,6 +89,7 @@ export WEECHAT_HOME="$HOME/.config/weechat"
 # XDG
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.config"
+export XDG_DATA_DIR="/var/lib/flatpak/exports/share:$HOME/.config/flatpak/exports/share:$XDG_DATA_DIR"
 
 # zplugin
 export ZPLG_HOME="$HOME/.config/zplugin"

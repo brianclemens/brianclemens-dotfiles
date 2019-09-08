@@ -486,7 +486,7 @@ local globalkeys = gears.table.join(
         {description = "open launcher", group = "launcher"}),
 
     -- Launcher
-    awful.key({ modkey }, "b", function () awful.spawn("pcmanfm") end,
+    awful.key({ modkey }, "b", function () awful.spawn("thunar") end,
         {description = "open file browser", group = "launcher"}),
 
     -- Layout manipulation

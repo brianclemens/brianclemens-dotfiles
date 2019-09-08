@@ -18,9 +18,6 @@ export QT_IM_MODULE="ibus"
 export XMODIFIERS="@im=ibus"
 ibus-daemon &
 
-# Load keyboard layout modifications
-xmodmap "$HOME/.config/xmodmap" &
-
 # Configure touchpad (ws-jade-01)
 xinput --set-prop "ETPS/2 Elantech Touchpad" "libinput Tapping Enabled" 1 &
 xinput --set-prop "ETPS/2 Elantech Touchpad" "libinput Natural Scrolling Enabled" 1 &
@@ -44,8 +41,11 @@ libinput-gestures &
 # Start terminal daemon (if not using kitty)
 # urxvtd -q -o -f &
 
-# PCManFM daemon
-pcmanfm -d &
+# Thunar daemon
+thunar --daemon &
+
+# Load keyboard layout modifications
+xmodmap "$HOME/.config/xmodmap" &
 
 # Start AwesomeWM
 exec dbus-launch --exit-with-session --sh-syntax awesome

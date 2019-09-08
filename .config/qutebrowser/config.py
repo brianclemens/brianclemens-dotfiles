@@ -31,10 +31,11 @@ config.bind('<z><p>',
 ## Reading view (https://github.com/buriy/python-readability)
 config.bind('<z><r>', 'spawn --userscript readability')
 
-try:
-    # Ad blocking
-    sys.path.append(os.path.join(sys.path[0], 'jblock'))
-    config.source('jblock/jblock/integrations/qutebrowser.py')
+# Plugins
+# try:
+    # jblock
+    # sys.path.append(os.path.join(sys.path[0], 'jblock'))
+    # config.source('jblock/jblock/integrations/qutebrowser.py')
 
-except ImportError:
-    pass
+# except ImportError:
+#     pass

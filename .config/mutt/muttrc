@@ -81,6 +81,7 @@ set reply_regexp = "^(([Rr][Ee]?(\[[0-9]+\])?: *)?(\[[^]]+\] *)?)*"
 
 macro index \\\\ "<vfolder-from-query>" "Search mailbox"
 bind index,pager \` modify-labels
+macro index,pager \cb "<pipe-message> urlscan<Enter>" "call urlscan to extract URLs out of a message"
 macro index A "<modify-labels>+archive -inbox\n" "Archive message"
 macro index I "<modify-labels>-archive +inbox\n" "Unarchive message"
 macro index c "<change-vfolder>?" "Change to vfolder overview"
@@ -114,6 +115,7 @@ macro pager T "<pipe-message>tail -n +6 | .zplugin/plugins/soimort---translate-s
 bind attach <return> view-mailcap
 macro pager T "<pipe-entry>.zplugin/plugins/soimort---translate-shell/translate | less -+S<enter>"
 macro attach V "<pipe-entry>cat >~/.cache/mail.html && qutebrowser ~/.cache/mail.html && rm ~/.cache/mail.html<enter>"
+macro attach,compose \cb "<pipe-entry> urlscan<Enter>" "call urlscan to extract URLs out of a message"
 
 # Headers
 ignore

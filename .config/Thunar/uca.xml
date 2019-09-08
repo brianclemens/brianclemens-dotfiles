@@ -1,0 +1,35 @@
+<?xml encoding="UTF-8" version="1.0"?>
+<actions>
+<action>
+	<icon>utilities-terminal</icon>
+	<name>Open Terminal Here</name>
+	<unique-id>1567839834784486-1</unique-id>
+	<command>exo-open --working-directory %f --launch TerminalEmulator</command>
+	<description>Example for a custom action</description>
+	<patterns>*</patterns>
+	<startup-notify/>
+	<directories/>
+</action>
+<action>
+	<icon>cm_extractfiles</icon>
+	<name>Extract</name>
+	<unique-id>1567842942959626-1</unique-id>
+	<command>aunpack %f</command>
+	<description>Extract archive</description>
+	<patterns>*.7z;*.a;*.ace;*.alz;*.arc;*.arj;*.bz;*.bz2;*.cab;*.cpio;*.deb;*.gz;*.jar;*.lha;*.lhz;*.lrz;*.lz;*.lzma;*.lzo;*.rar;*.rpm;*.rz;*.tar;*.tar.*;*.war;*.xz;*.Z;*.zip</patterns>
+	<other-files/>
+</action>
+<action>
+	<icon>screencloud-uploading</icon>
+	<name>Upload</name>
+	<unique-id>1567844286672457-1</unique-id>
+	<command>echo &quot;$(curl -F &apos;file=@%f&apos; https://0x0.st)&quot; | xclip -selection clipboard; notify-send &quot;0x0 Upload completed&quot; &quot;%n&quot;</command>
+	<description>Upload to 0x0.st</description>
+	<patterns>*</patterns>
+	<audio-files/>
+	<image-files/>
+	<other-files/>
+	<text-files/>
+	<video-files/>
+</action>
+</actions>
