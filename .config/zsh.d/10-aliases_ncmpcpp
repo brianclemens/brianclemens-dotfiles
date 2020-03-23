@@ -1,6 +1,0 @@
-#!/bin/sh
-
-# Aliases for ncmpcpp https://rybczak.net/ncmpcpp
-
-# Open ncmpcpp to library panel
-alias ncmpcpp='ncmpcpp --screen media_library'

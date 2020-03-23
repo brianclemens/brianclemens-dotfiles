@@ -1,7 +1,0 @@
-# Cookie jar
-cookie-cache "~/.config/newsboat/cookies.txt"
-
-# Feed sync service (https://newsblur.com)
-urls-source "newsblur"
-newsblur-login "brian@tiuxo.com"
-newsblur-passwordeval "pass show newsblur.com/tiuxo"

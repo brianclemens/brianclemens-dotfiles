@@ -1,6 +1,0 @@
-#!/bin/sh
-
-# Aliases for Metasploit
-
-# No metasploit banner on startup
-alias msfconsole='msfconsole --quiet'

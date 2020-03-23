@@ -1,6 +1,0 @@
-#!/bin/sh
-
-# Aliases for feh https://feh.finalrewind.org
-
-# Thumbnail feh configuration
-alias thumbs='feh --theme thumbnails'

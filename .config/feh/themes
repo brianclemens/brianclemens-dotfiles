@@ -1,5 +1,0 @@
-# Default configuration
-feh  --auto-zoom --auto-rotate --cache-size 16 --draw-tinted --fontpath "/usr/share/fonts/truetype/dejavu/" --font "DejaVuSans/16" --image-bg "#1d2021" --info ";mediainfo %F" --menu-font "DejaVuSans/16" --scale-down
-
-# Thumbnail configuration
-thumbnails  --auto-rotate --cache-size 16 --draw-tinted --fontpath "/usr/share/fonts/truetype/dejavu/" --font "DejaVuSans/12" --image-bg "#1d2021" --index-info "%n\n%wx%h" --limit-width 1280 --menu-font "DejaVuSans/16" --stretch --thumb-height 256 --thumb-redraw 1 --thumb-width 256 --thumbnails --title-font "DejaVuSans/16"

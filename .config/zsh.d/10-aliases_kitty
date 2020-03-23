@@ -1,5 +1,0 @@
-#!/bin/sh
-
-# Aliases for kitty
-
-alias d='kitty +kitten diff'

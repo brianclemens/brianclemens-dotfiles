@@ -1,7 +1,0 @@
-#!/bin/sh
-
-# Aliases for neovim https://neovim.io
-
-# Use neovim in place of vi or vim
-alias vi='nvim'
-alias vim='nvim'

@@ -1,6 +1,0 @@
-#!/bin/sh
-
-# Aliases for xephyr
-
-# Open a PiP X11 desktop
-alias xeph='Xephyr :5 & sleep 1 ; DISPLAY=:5 awesome'
